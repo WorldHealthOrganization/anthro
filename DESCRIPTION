@@ -1,0 +1,35 @@
+Package: anthro
+Version: 0.9.0.9000
+Title: Computation of the WHO Child Growth Standards
+Description: A package to compute the WHO Child Growth Standards. 
+             More information on the methods is available online:
+             <http://www.who.int/childgrowth/standards/en/>.
+Authors@R: c(person("Dirk", "Schumacher", ,
+                    "mail@dirk-schumacher.net", c("aut", "cre")),
+             person("Elaine", "Borghi", , "borghie@who.int", "ctb"),
+             person("Jonathan", "Polonsky", , "polonskyj@who.int", "ctb"))
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Depends: R (>= 3.2)
+Imports: 
+    survey
+Suggests: 
+    testthat, covr
+RoxygenNote: 6.1.0
+Collate: 
+    'anthro.R'
+    'assertions.R'
+    'prevalence.R'
+    'utils.R'
+    'z-score-helper.R'
+    'z-score-arm-circumference-for-age.R'
+    'z-score-bmi-for-age.R'
+    'z-score-head-circumference-for-age.R'
+    'z-score-length-for-age.R'
+    'z-score-subscapular-skinfold-for-age.R'
+    'z-score-triceps-skinfold-for-age.R'
+    'z-score-weight-for-age.R'
+    'z-score-weight-for-lenhei.R'
+    'z-score.R'

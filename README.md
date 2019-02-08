@@ -7,6 +7,7 @@ status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro
 status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 
 # Anthro
 
@@ -61,7 +62,7 @@ saved as a `.csv` file as in the original function.
 You can also use the function with a given dataset with `with`
 
 ``` r
-your_data_set <- readr::read_csv("my_survey.csv")
+your_data_set <- read.csv("my_survey.csv")
 with(your_data_set, 
      anthro_zscores(sex = sex, age = age_in_days, 
                     weight = weight, lenhei = lenhei))

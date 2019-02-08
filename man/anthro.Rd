@@ -5,7 +5,7 @@
 \alias{anthro}
 \alias{package-anthro}
 \alias{anthro-package}
-\title{A package for the WHO Child Growth Standards}
+\title{Compute the WHO Child Growth Standards}
 \description{
 A package to compute the WHO Child Growth Standards.
 More information on the methods is available online:

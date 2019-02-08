@@ -155,3 +155,12 @@ test_that("arguments will be recycled", {
                         oedema = rep.int("n", 10))
   expect_equal(nrow(res), 10L)
 })
+
+test_that("young children with measured standing will not be adjusted", {
+  res <- anthro_zscores(sex = 1, age = c(8, 9),
+                        is_age_in_month = TRUE,
+                        lenhei = 60,
+                        measure = "h")
+  expect_equal(res$clenhei, c(60, 60.7))
+  expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
+})

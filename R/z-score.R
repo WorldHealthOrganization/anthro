@@ -211,6 +211,12 @@ anthro_zscores <- function(sex,
   oedema <- standardize_oedema_var(oedema)
 
   age_in_days <- age_to_days(age, is_age_in_month = is_age_in_month)
+  age_in_months <- age_to_months(age, is_age_in_month = is_age_in_month)
+
+  # we consider a height measure for children younger than 9 months as
+  # implausible
+  measure_implausible <- measure == "h" & age_in_months < 9
+  measure[measure_implausible] <- NA_character_
 
   clenhei <- adjust_lenhei(age_in_days, measure, lenhei)
 

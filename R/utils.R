@@ -19,8 +19,15 @@ age_to_days <- function(age, is_age_in_month) {
   if (is_age_in_month) {
     age * ANTHRO_DAYS_OF_MONTH
   } else {
-    # in months
     age
+  }
+}
+
+age_to_months <- function(age, is_age_in_month) {
+  if (is_age_in_month) {
+    age
+  } else {
+    age / ANTHRO_DAYS_OF_MONTH
   }
 }
 

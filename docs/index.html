@@ -101,7 +101,7 @@
 <a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; 4  NA  NA  NA  NA  NA</span></a></code></pre></div>
 <p>The returned value is a <code>data.frame</code> that can further be processed or saved as a <code>.csv</code> file as in the original function.</p>
 <p>You can also use the function with a given dataset with <code>with</code></p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">your_data_set &lt;-<span class="st"> </span>readr<span class="op">::</span><span class="kw"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span>(<span class="st">"my_survey.csv"</span>)</a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">your_data_set &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="st">"my_survey.csv"</span>)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/with">with</a></span>(your_data_set, </a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">     <span class="kw"><a href="reference/anthro_zscores.html">anthro_zscores</a></span>(<span class="dt">sex =</span> sex, <span class="dt">age =</span> age_in_days, </a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">                    <span class="dt">weight =</span> weight, <span class="dt">lenhei =</span> lenhei))</a></code></pre></div>
@@ -167,6 +167,7 @@
 <li><a href="https://ci.appveyor.com/project/dirkschumacher/anthro"><img src="https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
 <li><a href="https://codecov.io/github/dirkschumacher/anthro?branch=master"><img src="https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://cran.r-project.org/package=anthro"><img src="https://www.r-pkg.org/badges/version/anthro" alt="CRAN status"></a></li>
+<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="lifecycle"></a></li>
 </ul>
 </div>
 </div>

@@ -1,5 +1,15 @@
 #' Compute prevalence estimates
 #'
+#' Prevalence estimates according to the WHO recommended standard analysis:
+#' includes prevalence estimates with corresponding standard errors
+#' and confidence intervals, and z-score summary statistics
+#' (mean and standard deviation) with most common cut-offs describing the
+#' full index distribution (-3, -2, -1, +1, +2, +3), and at disaggregated
+#' levels for all available factors (age, sex, type of residence,
+#' geographical regions, wealth quintiles, mother education and one
+#' additional factor the user is interested in and for
+#' which data are available).
+#'
 #' In this function, all available (non-missing and non-flagged) z-score values
 #' are used for each indicator-specific prevalence
 #' estimation (standard analysis).
@@ -76,7 +86,7 @@
 #'  \item{HA}{Height-for-age}
 #'  \item{WA}{Weight-for-age}
 #'  \item{WA_2}{Underweight}
-#'  \item{BMI}{Body- mass- index- for- age}
+#'  \item{BMI}{Body-mass-index-for-age}
 #'  \item{WH}{Weight-for-height}
 #'  \item{HA_WH}{Height-for-age and weight-for-height combined}
 #' }

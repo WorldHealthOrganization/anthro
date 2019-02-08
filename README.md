@@ -12,9 +12,16 @@ status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org
 # Anthro
 
 The `anthro` package allows you to perform comprehensive analysis of
-anthropometric survey data based on the method developed by the
+anthropometric survey data based on the
+[method](https://www.who.int/childgrowth/standards/en/) developed by the
 Department of Nutrition for Health and Development at the World Health
 Organization.
+
+The package is modelled after the [R
+macros](https://www.who.int/childgrowth/software/en/) provided by WHO.
+The package adds more accurate calculations of confidence intervals and
+standard errors around the prevalence estimates, taking into account
+complex sample designs, whenever is the case
 
 ## Installation
 
@@ -36,8 +43,8 @@ This function calculates z-scores for the eight anthropometric
 indicators, weight-for- age, length/height-for-age,
 weight-for-length/height, body mass index (BMI)-for-age, head
 circumference-for-age, arm circumference-for-age, triceps
-skinfold-for-age and subscapular skinfold-for-age based on the WHO Child
-Growth Standards.
+skinfold-for-age and subscapular skinfold-for-age based on the [WHO
+Child Growth Standards](https://www.who.int/childgrowth/standards/en/).
 
 ``` r
 anthro_zscores(sex = c(1, 2, 1, 1),
@@ -70,7 +77,7 @@ with(your_data_set,
 
 To look at all parameters, type `?anthro_zscores`.
 
-### Prevalence
+### Prevalence estimates
 
 The prevalence estimates are similiar to `anthro_zscores`: again they
 take vectors instead of a data frame and column names for the

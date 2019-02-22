@@ -634,6 +634,7 @@ compute_prevalence_zscore_summary <-
           design,
           survey::svymean,
           na.rm = TRUE,
+          na.rm.all = TRUE,
           drop.empty.groups = FALSE
         )
       mean_est_ci_prev <-
@@ -655,19 +656,31 @@ compute_prevalence_zscore_summary <-
           design,
           survey::svymean,
           na.rm = TRUE,
+          na.rm.all = TRUE,
           drop.empty.groups = FALSE
         )
       mean_est_ci_summ <-
         confint(mean_est_summ, df = survey::degf(design))
-      mean_est_sd_summ <-
+
+      # the survey package's survey::svyvar fails if
+      # there is only one observation with an unexpected error it seems
+      # we catch this error here and set all results to NA
+      mean_est_sd_summ <- tryCatch({
         survey::svyby(
           ~ var_summ,
           ~ survey_subsets,
           design,
           survey::svyvar,
           na.rm = TRUE,
+          na.rm.all = TRUE,
           drop.empty.groups = FALSE
         )
+      }, error = function(er) {
+        data.frame(
+          dummy = rep.int(NA_real_, nrow(mean_est_ci_summ)),
+          result = rep.int(NA_real_, nrow(mean_est_ci_summ))
+        )
+      })
     })
 
     df <- data.frame(

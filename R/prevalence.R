@@ -645,7 +645,8 @@ compute_prevalence_zscore_summary <-
           vartype = "ci",
           df = survey::degf(design),
           method = "logit",
-          drop.empty.groups = FALSE
+          drop.empty.groups = FALSE,
+          na.rm.all = TRUE
         )[, 3L:4L]
       mean_est_summ <-
         survey::svyby(

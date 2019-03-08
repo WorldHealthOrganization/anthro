@@ -7,7 +7,7 @@ status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro
 status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 # Anthro
 
@@ -88,7 +88,7 @@ anthro_prevalence(sex = c(1, 2, 2, 1),
                   age = c(1001, 1000, 1010, 1000),
                   weight = c(18, 15, 10, 15),
                   lenhei = c(100, 80, 100, 100))[, 1:5]
-#>                       rowname HAZ_pop HAZ_unwpop HA_3_r  HA_3_se
+#>                         Group HAZ_pop HAZ_unwpop HA_3_r  HA_3_se
 #> 1                         All       4          4     25 25.00000
 #> 2         Age group: 00-05 mo      NA         NA     NA       NA
 #> 3         Age group: 06-11 mo      NA         NA     NA       NA

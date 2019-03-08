@@ -7,7 +7,7 @@ status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro
 status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
-[![lifecycle](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 # Anthro
 

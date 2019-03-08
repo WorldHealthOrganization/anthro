@@ -88,7 +88,7 @@ anthro_prevalence(sex = c(1, 2, 2, 1),
                   age = c(1001, 1000, 1010, 1000),
                   weight = c(18, 15, 10, 15),
                   lenhei = c(100, 80, 100, 100))[, 1:5]
-#>                       rowname HAZ_pop HAZ_unwpop HA_3_r  HA_3_se
+#>                         group HAZ_pop HAZ_unwpop HA_3_r  HA_3_se
 #> 1                         All       4          4     25 25.00000
 #> 2         Age group: 00-05 mo      NA         NA     NA       NA
 #> 3         Age group: 06-11 mo      NA         NA     NA       NA

@@ -468,7 +468,7 @@ compute_prevalence <- function(cutoffs,
     )
     df <- compute_prevalence_zscore_summary(survey_data,
                                             compute_total = is_total)
-    colnames(df) <- c("rowname",
+    colnames(df) <- c("group",
                       paste0(
                         zscore_label,
                         c("", "", rep.int(cutoffs_suffix, 4L), rep.int("", 5L)),
@@ -509,11 +509,11 @@ compute_prevalence <- function(cutoffs,
     prev_estimate_list[[1L]][[3L]]
   )
 
-  prev_estimates[["rowname"]] <-
+  prev_estimates[["group"]] <-
     ifelse(
-      prev_estimates[["rowname"]] != "All",
-      paste0(strata_label, ": ", prev_estimates[["rowname"]]),
-      prev_estimates[["rowname"]]
+      prev_estimates[["group"]] != "All",
+      paste0(strata_label, ": ", prev_estimates[["group"]]),
+      prev_estimates[["group"]]
     )
 
   prev_estimates
@@ -684,7 +684,7 @@ compute_prevalence_zscore_summary <-
     })
 
     df <- data.frame(
-      rowname = rownames(mean_est_prev),
+      group = rownames(mean_est_prev),
       Z_pop = vecn_prev$`I(!is.na(var_prev))TRUE`,
       Z_unwpop = vecn_unw_prev$`I(!is.na(var_prev))TRUE`,
       X_r_prev = mean_est_prev$var_prev * 100,
@@ -722,7 +722,7 @@ compute_prevalence_zscore_summary <-
       })
 
       total_df <- data.frame(
-        rowname = "All",
+        group = "All",
         Z_pop = vecn_prev,
         Z_unwpop = vecn_unw_prev,
         X_r_prev = as.numeric(mean_est_prev) * 100,

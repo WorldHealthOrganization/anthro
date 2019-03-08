@@ -31,7 +31,7 @@ describe("anthro_prevalence()", {
       lenhei = c(100, 80, 100, 100)
     )
     col_names <- colnames(res)
-    expect_equal(col_names[1L:3L], c("rowname", "HAZ_pop", "HAZ_unwpop"))
+    expect_equal(col_names[1L:3L], c("Group", "HAZ_pop", "HAZ_unwpop"))
     expect_equal(col_names[4L], c("HA_3_r"))
     expect_equal(col_names[8L], c("HA_2_r"))
     expect_equal(col_names[28L], c("HA_r"))
@@ -58,7 +58,7 @@ describe("anthro_prevalence()", {
       lenhei = c(100, 80, 100, 100, 100),
       wealthq = c("2", "2", "1", "1", "1")
     )
-    row_names <- res$rowname[grepl(res$rowname, pattern = "^Wealth")]
+    row_names <- res$Group[grepl(res$Group, pattern = "^Wealth")]
     expected_rownames <- paste0("Wealth quintile: ", c("Poorest", "Poorer"))
     expect_true(all(expected_rownames %in% row_names))
   })
@@ -70,7 +70,7 @@ describe("anthro_prevalence()", {
       lenhei = c(100, 80, 100, 100, 100)
     )
     row_names <-
-      res$rowname[grepl(res$rowname, pattern = "Male|Female$")]
+      res$Group[grepl(res$Group, pattern = "Male|Female$")]
     expected_row_names <- c(paste0("Sex: ", c("Female", "Male")),
                             paste0("Age + sex: 24-35 mo.", c("Female", "Male")))
     expect_true(all(expected_row_names %in% row_names))
@@ -110,7 +110,7 @@ describe("anthro_prevalence()", {
       lenhei = c(100, 80, 100, 100, 100),
       sw = 0.5
     )
-    age_row <- res$rowname[grepl(res$rowname, pattern = "^Age group:")]
+    age_row <- res$Group[grepl(res$Group, pattern = "^Age group:")]
     expect_true("Age group: 24-35 mo" %in% age_row)
   })
   it("filters out rows with age > 1826", {
@@ -161,7 +161,7 @@ describe("anthro_prevalence()", {
     )
     expect_equal(length(res[, 1]), 21)
     expect_true(any(grepl(x = res[, 1], pattern = "Female")))
-    expect_true(all(is.na(res[res$rowname == "Sex: Female", -1])))
+    expect_true(all(is.na(res[res$Group == "Sex: Female", -1])))
   })
   it("recycles arguments", {
     expect_silent({

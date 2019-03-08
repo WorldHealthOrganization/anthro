@@ -189,3 +189,25 @@ describe("anthro_prevalence()", {
     })
   })
 })
+
+test_that("bug20190222: it does not crash if all values are NA in a group", {
+  expect_silent(
+    res <- anthro_prevalence(
+      sex = c(1, 1, 1, 1, 1, 2, 2),
+      age = c(1001, 1000, 1010, 1000, 1000, 300, 300),
+      weight = c(18, 15, 10, 15, 15, 15, 15),
+      lenhei = c(100, 80, 100, 100, 100, 100, 100)
+    )
+  )
+})
+
+test_that("bug20190222: it does not crash if too fee elements are in a group", {
+  expect_silent(
+    res <- anthro_prevalence(
+      sex = c(1, 1, 1, 1, 1, 2),
+      age = c(1001, 1000, 1010, 1000, 1000, 300),
+      weight = c(18, 15, 10, 15, 15, 15),
+      lenhei = c(100, 80, 100, 100, 100, 100)
+    )
+  )
+})

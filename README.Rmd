@@ -76,3 +76,11 @@ anthro_prevalence(sex = c(1, 2, 2, 1),
 Using the function `with` it is easy to apply `anthro_prevalence` to a full dataset.
 
 To look at all parameters, type `?anthro_prevalence`.
+
+### Contribution
+
+Contributions are always very welcome. Please make sure to post an issue before sending a pull request.
+
+### Using the package in your own analyses
+
+The package has been tested thoroughly, but we cannot guarantee that there aren't any bugs nor comes this with any warranty (as with all open source software). If you find a bug or cannot reproduce results obtained with other implementations, please post an issue.

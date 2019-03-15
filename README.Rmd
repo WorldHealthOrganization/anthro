@@ -25,14 +25,16 @@ The package is modelled after the [R macros](https://www.who.int/childgrowth/sof
 
 ## Installation
 
-Currenlty only available from Github.
+```{r, eval=FALSE}
+install.packages("anthro")
+```
 
 ```{r, eval=FALSE}
 remotes::install_github("dirkschumacher/anthro")
 ```
 
-
 ## Examples
+
 ```{r, echo=TRUE}
 library(anthro)
 ```
@@ -43,10 +45,12 @@ This function calculates z-scores for the eight anthropometric indicators, weigh
 
 
 ```{r}
-anthro_zscores(sex = c(1, 2, 1, 1),
-               age = c(1001, 1000, 1010, 1000),
-               weight = c(18, 15, 10, 15),
-               lenhei = c(120, 80, 100, 100))
+anthro_zscores(
+  sex = c(1, 2, 1, 1),
+  age = c(1001, 1000, 1010, 1000),
+  weight = c(18, 15, 10, 15),
+  lenhei = c(120, 80, 100, 100)
+)
 ```
 
 The returned value is a `data.frame` that can further be processed or saved as a `.csv` file as in the original function.
@@ -55,9 +59,13 @@ You can also use the function with a given dataset with `with`
 
 ```{r, eval = FALSE}
 your_data_set <- read.csv("my_survey.csv")
-with(your_data_set, 
-     anthro_zscores(sex = sex, age = age_in_days, 
-                    weight = weight, lenhei = lenhei))
+with(
+  your_data_set,
+  anthro_zscores(
+    sex = sex, age = age_in_days,
+    weight = weight, lenhei = lenhei
+  )
+)
 ```
 
 To look at all parameters, type `?anthro_zscores`.
@@ -67,10 +75,12 @@ To look at all parameters, type `?anthro_zscores`.
 The prevalence estimates are similiar to `anthro_zscores`: again they take vectors instead of a data frame and column names for the aforementioned reasons.
 
 ```{r}
-anthro_prevalence(sex = c(1, 2, 2, 1),
-                  age = c(1001, 1000, 1010, 1000),
-                  weight = c(18, 15, 10, 15),
-                  lenhei = c(100, 80, 100, 100))[, 1:5]
+anthro_prevalence(
+  sex = c(1, 2, 2, 1),
+  age = c(1001, 1000, 1010, 1000),
+  weight = c(18, 15, 10, 15),
+  lenhei = c(100, 80, 100, 100)
+)[, 1:5]
 ```
 
 Using the function `with` it is easy to apply `anthro_prevalence` to a full dataset.

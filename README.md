@@ -25,7 +25,9 @@ complex sample designs, whenever is the case
 
 ## Installation
 
-Currenlty only available from Github.
+``` r
+install.packages("anthro")
+```
 
 ``` r
 remotes::install_github("dirkschumacher/anthro")
@@ -47,10 +49,12 @@ skinfold-for-age and subscapular skinfold-for-age based on the [WHO
 Child Growth Standards](https://www.who.int/childgrowth/standards/en/).
 
 ``` r
-anthro_zscores(sex = c(1, 2, 1, 1),
-               age = c(1001, 1000, 1010, 1000),
-               weight = c(18, 15, 10, 15),
-               lenhei = c(120, 80, 100, 100))
+anthro_zscores(
+  sex = c(1, 2, 1, 1),
+  age = c(1001, 1000, 1010, 1000),
+  weight = c(18, 15, 10, 15),
+  lenhei = c(120, 80, 100, 100)
+)
 #>   clenhei    cbmi  zlen flen  zwei fwei  zwfl fwfl  zbmi fbmi zhc fhc zac
 #> 1     120 12.5000  7.31    1  2.20    0 -2.39    0 -3.01    0  NA  NA  NA
 #> 2      80 23.4375 -3.50    0  0.95    0  4.13    0  4.66    0  NA  NA  NA
@@ -70,9 +74,13 @@ You can also use the function with a given dataset with `with`
 
 ``` r
 your_data_set <- read.csv("my_survey.csv")
-with(your_data_set, 
-     anthro_zscores(sex = sex, age = age_in_days, 
-                    weight = weight, lenhei = lenhei))
+with(
+  your_data_set,
+  anthro_zscores(
+    sex = sex, age = age_in_days,
+    weight = weight, lenhei = lenhei
+  )
+)
 ```
 
 To look at all parameters, type `?anthro_zscores`.
@@ -84,10 +92,12 @@ take vectors instead of a data frame and column names for the
 aforementioned reasons.
 
 ``` r
-anthro_prevalence(sex = c(1, 2, 2, 1),
-                  age = c(1001, 1000, 1010, 1000),
-                  weight = c(18, 15, 10, 15),
-                  lenhei = c(100, 80, 100, 100))[, 1:5]
+anthro_prevalence(
+  sex = c(1, 2, 2, 1),
+  age = c(1001, 1000, 1010, 1000),
+  weight = c(18, 15, 10, 15),
+  lenhei = c(100, 80, 100, 100)
+)[, 1:5]
 #>                         Group HAZ_pop HAZ_unwpop HA_3_r  HA_3_se
 #> 1                         All       4          4     25 25.00000
 #> 2         Age group: 00-05 mo      NA         NA     NA       NA

@@ -1,7 +1,9 @@
+^CRAN-RELEASE$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
+^README\.md$
 ^data-raw$
 ^\.travis\.yml$
 ^appveyor\.yml$

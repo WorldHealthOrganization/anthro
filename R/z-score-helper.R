@@ -135,10 +135,15 @@ function(name, measure, age_in_days, sex, growthstandards, flag_threshold,
   zscore <- apply_zscore_and_growthstandards(zscore_fun, growthstandards,
                                              age_in_days, sex, measure)
 
+  # we only compute zscores for children age <= 60 months
+  age_in_months <- age_to_months(age_in_days, is_age_in_month = FALSE)
+  valid_age <- age_in_months <= 60
+
   # at last we set certain zscores to NA
   valid_zscore <- !is.na(age_in_days) &
     age_in_days >= allowed_age_range[1L] &
     age_in_days <= allowed_age_range[2L] &
-    zscore_is_valid
+    zscore_is_valid &
+    valid_age
   flag_zscore(flag_threshold, name, zscore, valid_zscore)
 }

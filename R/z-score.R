@@ -1,5 +1,7 @@
 #' Calculate z-scores for the eight anthropometric indicators
 #'
+#' @description
+#'
 #' This function calculates z-scores for the eight anthropometric indicators,
 #' weight-for- age, length/height-for-age, weight-for-length/height,
 #' body mass index (BMI)-for-age, head circumference-for-age,

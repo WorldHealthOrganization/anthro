@@ -246,7 +246,7 @@ res
 
 # usually however your data is stored in a data.frame
 # and you pass the specific columns directly to the function
-data <- read.csv("<your data.csv>")
+data <- read.csv("<your data.csv>", stringsAsFactors = FALSE)
 anthro_prevalence(
   sex = data$sex,
   age = data$age,

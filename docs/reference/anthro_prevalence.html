@@ -134,7 +134,7 @@ which data are available).</p>
   <span class='kw'>headc</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>, <span class='kw'>armc</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>, <span class='kw'>triskin</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
   <span class='kw'>subskin</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>, <span class='kw'>oedema</span> <span class='kw'>=</span> <span class='st'>"n"</span>, <span class='kw'>sw</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cluster</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
   <span class='kw'>strata</span> <span class='kw'>=</span> <span class='fl'>1L</span>, <span class='kw'>typeres</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>gregion</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>wealthq</span> <span class='kw'>=</span> <span class='fl'>NA_integer_</span>, <span class='kw'>mothered</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
+  <span class='kw'>wealthq</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>, <span class='kw'>mothered</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
   <span class='kw'>othergr</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -276,11 +276,9 @@ geographical region.</p></td>
     </tr>
     <tr>
       <th>wealthq</th>
-      <td><p>An optional integer vector representing wealth
+      <td><p>An optional integer or character vector representing wealth
 quintiles where (1=poorest; 2,3,4,5=richest).
-All values can either be NA, or between 1 and 5.
-Character and numeric vectors are accepted, but they will be
-converted to integers using `as.integer`.</p></td>
+All values can either be NA, or 1, 2, 3, 4, 5 or Q1, Q2, Q3, Q4, Q5.</p></td>
     </tr>
     <tr>
       <th>mothered</th>
@@ -398,7 +396,7 @@ repeated to match the maximum length of all arguments except
 
 <span class='co'># usually however your data is stored in a data.frame</span>
 <span class='co'># and you pass the specific columns directly to the function</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"&lt;your data.csv&gt;"</span>)
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"&lt;your data.csv&gt;"</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='fu'>anthro_prevalence</span>(
   <span class='kw'>sex</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>sex</span>,
   <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>age</span>,

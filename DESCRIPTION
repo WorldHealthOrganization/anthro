@@ -3,7 +3,7 @@ Version: 0.9.1
 Title: Computation of the WHO Child Growth Standards
 Description: Provides WHO Child Growth Standards (z-scores) with
              confidence intervals and standard errors around the
-             prevalence estimates, taking into account complex sample designs. 
+             prevalence estimates, taking into account complex sample designs.
              More information on the methods is
              available online:
              <http://www.who.int/childgrowth/standards/en/>.

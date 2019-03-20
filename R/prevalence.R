@@ -59,10 +59,38 @@
 #'
 #' @examples
 #' \dontrun{
-#' anthro_prevalence(sex = c(1, 2, 2, 1),
-#'                   age = c(1001, 1000, 1010, 1000),
-#'                   weight = c(18, 15, 10, 15),
-#'                   lenhei = c(100, 80, 100, 100))
+#' library(anthro)
+#'
+#' # compute the prevalence estimates for 100 random children
+#' # with weight around 15kg and height around 100cm
+#' res <- anthro_prevalence(
+#'   sex = c(1, 2),
+#'   age = 1000, # days
+#'   weight = rnorm(100, 15, 1),
+#'   lenhei = rnorm(100, 100, 10),
+#' )
+#'
+#' # Height-for-age
+#' # We extract prevalence estimates for <-3SD, <-2SD (Stunting)
+#' # and the z-score mean
+#' col_names <- c("Group", "HAZ_unwpop", "HA_3_r", "HA_2_r", "HA_r")
+#' res <- res[, col_names]
+#'
+#' # rename the columns
+#' colnames(res) <- c("Group", "Unweighted N", "-3SD", "-2SD", "z-score mean ")
+#'
+#' # note that we only generated data for one age group
+#' res
+#'
+#' # usually however your data is stored in a data.frame
+#' # and you pass the specific columns directly to the function
+#' data <- read.csv("<your data.csv>")
+#' anthro_prevalence(
+#'   sex = data$sex,
+#'   age = data$age,
+#'   weight = data$weight,
+#'   lenhei = data$height
+#' )
 #' }
 #'
 #' @return Returns a data.frame with prevalence estimates for the various
@@ -127,6 +155,7 @@
 #'   weight-for-height combined (stunted & wasted) lower 95\% confidence
 #'   interval limit}
 #' }
+#'
 #' @include anthro.R
 #' @include assertions.R
 #' @importFrom stats confint

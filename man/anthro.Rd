@@ -7,7 +7,9 @@
 \alias{anthro-package}
 \title{Compute the WHO Child Growth Standards}
 \description{
-A package to compute the WHO Child Growth Standards.
+Provides WHO Child Growth Standards (z-scores) with
+confidence intervals and standard errors around the
+prevalence estimates, taking into account complex sample designs.
 More information on the methods is available online:
 <\url{http://www.who.int/childgrowth/standards/en/}>.
 

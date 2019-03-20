@@ -373,10 +373,38 @@ repeated to match the maximum length of all arguments except
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'>anthro_prevalence</span>(<span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>2</span>, <span class='fl'>1</span>),
-                  <span class='kw'>age</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1001</span>, <span class='fl'>1000</span>, <span class='fl'>1010</span>, <span class='fl'>1000</span>),
-                  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>18</span>, <span class='fl'>15</span>, <span class='fl'>10</span>, <span class='fl'>15</span>),
-                  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>80</span>, <span class='fl'>100</span>, <span class='fl'>100</span>))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>anthro</span>)
+
+<span class='co'># compute the prevalence estimates for 100 random children</span>
+<span class='co'># with weight around 15kg and height around 100cm</span>
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>anthro_prevalence</span>(
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
+  <span class='kw'>age</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='co'># days</span>
+  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>15</span>, <span class='fl'>1</span>),
+  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Normal'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>100</span>, <span class='fl'>10</span>),
+)
+
+<span class='co'># Height-for-age</span>
+<span class='co'># We extract prevalence estimates for &lt;-3SD, &lt;-2SD (Stunting)</span>
+<span class='co'># and the z-score mean</span>
+<span class='no'>col_names</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Group"</span>, <span class='st'>"HAZ_unwpop"</span>, <span class='st'>"HA_3_r"</span>, <span class='st'>"HA_2_r"</span>, <span class='st'>"HA_r"</span>)
+<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>[, <span class='no'>col_names</span>]
+
+<span class='co'># rename the columns</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>res</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span>)
+
+<span class='co'># note that we only generated data for one age group</span>
+<span class='no'>res</span>
+
+<span class='co'># usually however your data is stored in a data.frame</span>
+<span class='co'># and you pass the specific columns directly to the function</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"&lt;your data.csv&gt;"</span>)
+<span class='fu'>anthro_prevalence</span>(
+  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>sex</span>,
+  <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>age</span>,
+  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>weight</span>,
+  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>height</span>
+)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

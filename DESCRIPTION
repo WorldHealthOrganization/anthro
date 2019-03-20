@@ -1,7 +1,7 @@
 Package: anthro
 Version: 0.9.1
 Title: Computation of the WHO Child Growth Standards
-Description: WHO Child Growth Standards (z-scores) with
+Description: Provides WHO Child Growth Standards (z-scores) with
              confidence intervals and standard errors around the
              prevalence estimates, taking into account complex sample designs. 
              More information on the methods is

@@ -39,11 +39,9 @@
 #' @param gregion An optional integer or character vector representing a
 #' geographical region.
 #'
-#' @param wealthq An optional integer vector representing wealth
+#' @param wealthq An optional integer or character vector representing wealth
 #' quintiles where (1=poorest; 2,3,4,5=richest).
-#' All values can either be NA, or between 1 and 5.
-#' Character and numeric vectors are accepted, but they will be
-#' converted to integers using `as.integer`.
+#' All values can either be NA, or 1, 2, 3, 4, 5 or Q1, Q2, Q3, Q4, Q5.
 #'
 #' @param mothered An optional integer or character vector representing the
 #' education of the mother.
@@ -177,7 +175,7 @@ anthro_prevalence <- function(sex,
                               strata = 1L,
                               typeres = NA_character_,
                               gregion = NA_character_,
-                              wealthq = NA_integer_,
+                              wealthq = NA_character_,
                               mothered = NA_character_,
                               othergr = NA_character_) {
 
@@ -336,20 +334,26 @@ anthro_prevalence <- function(sex,
   gregion <- gregion[filter_zscores]
 
   wealthq <- as.character(wealthq[filter_zscores])
-  valid_wealthq_values <- is.na(wealthq) | wealthq %in% as.character(1L:5L)
+  valid_wealthq_values <- is.na(wealthq) |
+    wealthq %in% as.character(1L:5L) |
+    wealthq %in% paste0("Q", 1L:5L)
   if (!all(valid_wealthq_values)) {
     warning("Some entries in wealthq are out of range. Allowed values are: ",
-            "NA, 1, 2, 3, 4, 5. All other values will be converted to NA",
+            "NA, 1, 2, 3, 4, 5 or Q1, Q2, Q3, Q4, Q5. ",
+            "All other values will be converted to NA",
             call. = FALSE)
     wealthq[!valid_wealthq_values] <- NA_character_
   }
-  wealthq[wealthq %in% "1"] <- "Poorest"
-  wealthq[wealthq %in% "2"] <- "Poorer"
-  wealthq[wealthq %in% "3"] <- "Middle"
-  wealthq[wealthq %in% "4"] <- "Richer"
-  wealthq[wealthq %in% "5"] <- "Richest"
-  wealthq <- factor(wealthq, levels = c("Poorest", "Poorer", "Middle",
-                                        "Richer", "Richest"))
+  wealth_q_in <- function(x) {
+    wealthq %in% c(x, paste0("Q", x))
+  }
+  wealthq[wealth_q_in("1")] <- "Q1: Poorest"
+  wealthq[wealth_q_in("2")] <- "Q2"
+  wealthq[wealth_q_in("3")] <- "Q3"
+  wealthq[wealth_q_in("4")] <- "Q4"
+  wealthq[wealth_q_in("5")] <- "Q5: Richest"
+  wealthq <- factor(wealthq, levels = c("Q1: Poorest", "Q2", "Q3",
+                                        "Q4", "Q5: Richest"))
 
   mothered <- mothered[filter_zscores]
   othergr <- othergr[filter_zscores]

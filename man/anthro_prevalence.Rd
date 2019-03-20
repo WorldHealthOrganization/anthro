@@ -9,7 +9,7 @@ anthro_prevalence(sex, age = NA_real_, is_age_in_month = FALSE,
   headc = NA_real_, armc = NA_real_, triskin = NA_real_,
   subskin = NA_real_, oedema = "n", sw = 1, cluster = 1L,
   strata = 1L, typeres = NA_character_, gregion = NA_character_,
-  wealthq = NA_integer_, mothered = NA_character_,
+  wealthq = NA_character_, mothered = NA_character_,
   othergr = NA_character_)
 }
 \arguments{
@@ -116,11 +116,9 @@ for outputs purposes.}
 \item{gregion}{An optional integer or character vector representing a
 geographical region.}
 
-\item{wealthq}{An optional integer vector representing wealth
+\item{wealthq}{An optional integer or character vector representing wealth
 quintiles where (1=poorest; 2,3,4,5=richest).
-All values can either be NA, or between 1 and 5.
-Character and numeric vectors are accepted, but they will be
-converted to integers using `as.integer`.}
+All values can either be NA, or 1, 2, 3, 4, 5 or Q1, Q2, Q3, Q4, Q5.}
 
 \item{mothered}{An optional integer or character vector representing the
 education of the mother.

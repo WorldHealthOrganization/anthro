@@ -37,7 +37,7 @@ describe("anthro_prevalence()", {
     expect_equal(col_names[28L], c("HA_r"))
     expect_equal(col_names[33L], c("WAZ_pop"))
   })
-  it("warns if wealthq is not NA,1,2,3,4,5", {
+  it("warns if wealthq is not NA,1,2,3,4,5 or Q1:Q5", {
     expect_warning(
       anthro_prevalence(
         sex = c(1, 2, 2, 1, 1),
@@ -50,7 +50,35 @@ describe("anthro_prevalence()", {
       all = TRUE
     )
   })
-  it("orders wealth quantile ascending", {
+  it("warns if wealthq is not NA,1,2,3,4,5 or Q1:Q5", {
+    expect_warning(
+      anthro_prevalence(
+        sex = c(1, 2, 2, 1, 1),
+        age = c(1001, 1000, 1010, 1000, 1000),
+        weight = c(18, 15, 10, 15, 15),
+        lenhei = c(100, 80, 100, 100, 100),
+        wealthq = c("Q1", "Q2", "Q3", "a", "a")
+      ),
+      "wealthq",
+      all = TRUE
+    )
+  })
+  it("labels wealth quintiles from Q1:Q5", {
+    res <- anthro_prevalence(
+      sex = c(1, 2),
+      age = 1000,
+      weight = rnorm(100, 15, 2),
+      lenhei = rnorm(100, 100, 2),
+      wealthq = c("Q1", "Q2", "3", "4", "5")
+    )
+    row_names <- res$Group[grepl(res$Group, pattern = "^Wealth")]
+    expected_rownames <- paste0("Wealth quintile: ", c("Q1: Poorest", "Q2",
+                                                       "Q3", "Q4",
+                                                       "Q5: Richest"))
+    expect_true(all(expected_rownames %in% row_names))
+    expect_equal(res[22:26, "HAZ_pop"], rep.int(20, 5)) # 20 per quintile
+  })
+  it("orders wealth quintiles ascending", {
     res <- anthro_prevalence(
       sex = c(1, 2, 2, 1, 1),
       age = c(1001, 1000, 1010, 1000, 1000),
@@ -59,7 +87,7 @@ describe("anthro_prevalence()", {
       wealthq = c("2", "2", "1", "1", "1")
     )
     row_names <- res$Group[grepl(res$Group, pattern = "^Wealth")]
-    expected_rownames <- paste0("Wealth quintile: ", c("Poorest", "Poorer"))
+    expected_rownames <- paste0("Wealth quintile: ", c("Q1: Poorest", "Q2"))
     expect_true(all(expected_rownames %in% row_names))
   })
   it("orders Female before Male", {

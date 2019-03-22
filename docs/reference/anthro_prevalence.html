@@ -370,8 +370,7 @@ repeated to match the maximum length of all arguments except
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>anthro</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>anthro</span>)
 
 <span class='co'># compute the prevalence estimates for 100 random children</span>
 <span class='co'># with weight around 15kg and height around 100cm</span>
@@ -392,18 +391,28 @@ repeated to match the maximum length of all arguments except
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>res</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span>)
 
 <span class='co'># note that we only generated data for one age group</span>
-<span class='no'>res</span>
-
-<span class='co'># usually however your data is stored in a data.frame</span>
-<span class='co'># and you pass the specific columns directly to the function</span>
-<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"&lt;your data.csv&gt;"</span>, <span class='kw'>stringsAsFactors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='fu'>anthro_prevalence</span>(
-  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>sex</span>,
-  <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>age</span>,
-  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>weight</span>,
-  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='no'>data</span>$<span class='no'>height</span>
-)
-<span class='co'># }</span><div class='input'>
+<span class='no'>res</span></div><div class='output co'>#&gt;                         Group Unweighted N     -3SD      -2SD z-score mean 
+#&gt; 1                         All           91 4.395604  6.593407      1.632857
+#&gt; 2         Age group: 00-05 mo           NA       NA        NA            NA
+#&gt; 3         Age group: 06-11 mo           NA       NA        NA            NA
+#&gt; 4         Age group: 12-23 mo           NA       NA        NA            NA
+#&gt; 5         Age group: 24-35 mo           91 4.395604  6.593407      1.632857
+#&gt; 6         Age group: 36-47 mo           NA       NA        NA            NA
+#&gt; 7         Age group: 48-59 mo           NA       NA        NA            NA
+#&gt; 8                 Sex: Female           44 0.000000  2.272727      2.005000
+#&gt; 9                   Sex: Male           47 8.510638 10.638298      1.284468
+#&gt; 10 Age + sex: 00-05 mo.Female           NA       NA        NA            NA
+#&gt; 11 Age + sex: 06-11 mo.Female           NA       NA        NA            NA
+#&gt; 12 Age + sex: 12-23 mo.Female           NA       NA        NA            NA
+#&gt; 13 Age + sex: 24-35 mo.Female           44 0.000000  2.272727      2.005000
+#&gt; 14 Age + sex: 36-47 mo.Female           NA       NA        NA            NA
+#&gt; 15 Age + sex: 48-59 mo.Female           NA       NA        NA            NA
+#&gt; 16   Age + sex: 00-05 mo.Male           NA       NA        NA            NA
+#&gt; 17   Age + sex: 06-11 mo.Male           NA       NA        NA            NA
+#&gt; 18   Age + sex: 12-23 mo.Male           NA       NA        NA            NA
+#&gt; 19   Age + sex: 24-35 mo.Male           47 8.510638 10.638298      1.284468
+#&gt; 20   Age + sex: 36-47 mo.Male           NA       NA        NA            NA
+#&gt; 21   Age + sex: 48-59 mo.Male           NA       NA        NA            NA</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

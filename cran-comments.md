@@ -10,8 +10,7 @@
 
 * This is a resubmission:
 
-* Description now starts with "Provides"
-* Added a larger example to `anthro_prevalence`
+* `anthro_prevalence` examples are not wrapped in `\dontrun` anymore
 
 ## Reverse dependencies
 

@@ -220,7 +220,6 @@ repeated to match the maximum length of all arguments except
 \code{is_age_in_month} using \code{rep_len}. This happens without warnings.
 }
 \examples{
-\dontrun{
 library(anthro)
 
 # compute the prevalence estimates for 100 random children
@@ -243,16 +242,5 @@ colnames(res) <- c("Group", "Unweighted N", "-3SD", "-2SD", "z-score mean ")
 
 # note that we only generated data for one age group
 res
-
-# usually however your data is stored in a data.frame
-# and you pass the specific columns directly to the function
-data <- read.csv("<your data.csv>", stringsAsFactors = FALSE)
-anthro_prevalence(
-  sex = data$sex,
-  age = data$age,
-  weight = data$weight,
-  lenhei = data$height
-)
-}
 
 }

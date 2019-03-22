@@ -56,7 +56,6 @@
 #' for stratified analysis.
 #'
 #' @examples
-#' \dontrun{
 #' library(anthro)
 #'
 #' # compute the prevalence estimates for 100 random children
@@ -79,17 +78,6 @@
 #'
 #' # note that we only generated data for one age group
 #' res
-#'
-#' # usually however your data is stored in a data.frame
-#' # and you pass the specific columns directly to the function
-#' data <- read.csv("<your data.csv>", stringsAsFactors = FALSE)
-#' anthro_prevalence(
-#'   sex = data$sex,
-#'   age = data$age,
-#'   weight = data$weight,
-#'   lenhei = data$height
-#' )
-#' }
 #'
 #' @return Returns a data.frame with prevalence estimates for the various
 #' groups.

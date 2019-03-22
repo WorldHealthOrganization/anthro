@@ -10,7 +10,7 @@
 
 * This is a resubmission:
 
-* `anthro_prevalence` examples are not wrapped in `\dontrun` anymore
+* `anthro_prevalence` examples are not wrapped in `\dontrun` anymore. Examples takes about 5 seconds on my machine.
 
 ## Reverse dependencies
 

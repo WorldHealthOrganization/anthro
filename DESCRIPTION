@@ -21,7 +21,7 @@ Depends: R (>= 3.2)
 Imports: 
     survey
 Suggests: 
-    testthat, covr
+    testthat
 RoxygenNote: 6.1.0
 Collate: 
     'anthro.R'

@@ -1,4 +1,4 @@
-# 0.9.1.9000
+# 0.9.2
 
 * Removed `covr` from suggests dependencies
 

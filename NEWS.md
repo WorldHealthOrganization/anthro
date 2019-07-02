@@ -1,6 +1,6 @@
 # 0.9.1.9000
 
-* Removed `covr` from suggests depedencies
+* Removed `covr` from suggests dependencies
 
 # anthro 0.9.1
 

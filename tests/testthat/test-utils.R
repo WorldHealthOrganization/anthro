@@ -11,8 +11,8 @@ test_that("standardize_oedema_var trims white spaces", {
 })
 
 test_that("standardize_oedema_var replaces numerics by characters", {
-  expect_equal("y", standardize_oedema_var(1))
-  expect_equal("y", standardize_oedema_var("1"))
-  expect_equal("n", standardize_oedema_var(2))
-  expect_equal("n", standardize_oedema_var("2"))
+  expect_equal("y", standardize_oedema_var(2))
+  expect_equal("y", standardize_oedema_var("2"))
+  expect_equal("n", standardize_oedema_var(1))
+  expect_equal("n", standardize_oedema_var("1"))
 })

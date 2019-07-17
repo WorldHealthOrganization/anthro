@@ -71,8 +71,8 @@
 #' @param subskin A numeric variable containing subscapular skinfold information,
 #'             which must be in millimeters. Subscapular skinfold-for-age z-scores
 #'             are not calculated if subscapular skinfold is missing.
-#' @param oedema The values of this character variable must be "n", "N" or "2"
-#'             for non-oedema, and "y", "Y", "1" for oedema. Although it is highly
+#' @param oedema The values of this character variable must be "n", "N" or "1"
+#'             for non-oedema, and "y", "Y", "2" for oedema. Although it is highly
 #'             recommended that this variable is provided by the survey,
 #'             it is possible to run
 #'             the analysis without specifying this variable. If unspecified,

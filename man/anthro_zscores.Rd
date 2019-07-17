@@ -83,8 +83,8 @@ are not calculated if triceps skinfold is missing.}
 which must be in millimeters. Subscapular skinfold-for-age z-scores
 are not calculated if subscapular skinfold is missing.}
 
-\item{oedema}{The values of this character variable must be "n", "N" or "2"
-for non-oedema, and "y", "Y", "1" for oedema. Although it is highly
+\item{oedema}{The values of this character variable must be "n", "N" or "1"
+for non-oedema, and "y", "Y", "2" for oedema. Although it is highly
 recommended that this variable is provided by the survey,
 it is possible to run
 the analysis without specifying this variable. If unspecified,

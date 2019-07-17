@@ -9,8 +9,8 @@ standardize_sex_var <- function(sex) {
 
 standardize_oedema_var <- function(oedema) {
   oedema <- tolower(trimws(oedema))
-  oedema[oedema %in% "1"] <- "y"
-  oedema[oedema %in% "2"] <- "n"
+  oedema[oedema %in% "1"] <- "n"
+  oedema[oedema %in% "2"] <- "y"
   oedema[!(oedema %in% "y")] <- "n"
   oedema
 }

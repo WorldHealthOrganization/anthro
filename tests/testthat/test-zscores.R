@@ -93,14 +93,14 @@ test_that("oedema is all 'n' by default", {
   expect_equal(res, res2)
 })
 
-test_that("oedema n = 2 and y = 1", {
+test_that("oedema n = 1 and y = 2", {
   res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
+                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
   res2 <- anthro_zscores(sex = 1, age = 100,
                          lenhei = 60, weight = 7, oedema = "n", measure = "l")
   expect_equal(res, res2)
   res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
+                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
   res2 <- anthro_zscores(sex = 1, age = 100,
                          lenhei = 60, weight = 7, oedema = "y", measure = "l")
   expect_equal(res, res2)
@@ -108,12 +108,12 @@ test_that("oedema n = 2 and y = 1", {
 
 test_that("oedema can also be numeric", {
   res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
+                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
   res2 <- anthro_zscores(sex = 1, age = 100,
                          lenhei = 60, weight = 7, measure = "l", oedema = "n")
   expect_equal(res, res2)
   res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
+                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
   res2 <- anthro_zscores(sex = 1, age = 100,
                          lenhei = 60, weight = 7, measure = "l", oedema = "y")
   expect_equal(res, res2)

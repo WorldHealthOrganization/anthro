@@ -228,7 +228,7 @@ res <- anthro_prevalence(
   sex = c(1, 2),
   age = 1000, # days
   weight = rnorm(100, 15, 1),
-  lenhei = rnorm(100, 100, 10),
+  lenhei = rnorm(100, 100, 10)
 )
 
 # Height-for-age

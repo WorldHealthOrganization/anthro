@@ -26,4 +26,3 @@ notifications:
 
 r_binary_packages:
   - covr
-  - survey

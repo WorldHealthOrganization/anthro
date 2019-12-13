@@ -5,7 +5,7 @@
   implementations and in particularly relevant to data points with
   age exactly 24 months. Previously this was converted to 730 days and with
   this release it is converted to 731 days.
-* Removed `covr` from suggests depedencies
+* Removed `covr` from suggests dependencies
 * Fixed a typo in the docs
 
 # anthro 0.9.1

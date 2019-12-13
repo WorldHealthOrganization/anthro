@@ -29,12 +29,13 @@ growthstandards_wfhanthro <- as.data.frame(
 growthstandards_wfhanthro$sex <- as.integer(growthstandards_wfhanthro$sex)
 
 usethis::use_data(growthstandards_weianthro,
-                  growthstandards_lenanthro,
-                  growthstandards_bmianthro,
-                  growthstandards_wflanthro,
-                  growthstandards_wfhanthro,
-                  growthstandards_hcanthro,
-                  growthstandards_acanthro,
-                  growthstandards_tsanthro,
-                  growthstandards_ssanthro,
-                  overwrite = TRUE, internal = TRUE)
+  growthstandards_lenanthro,
+  growthstandards_bmianthro,
+  growthstandards_wflanthro,
+  growthstandards_wfhanthro,
+  growthstandards_hcanthro,
+  growthstandards_acanthro,
+  growthstandards_tsanthro,
+  growthstandards_ssanthro,
+  overwrite = TRUE, internal = TRUE
+)

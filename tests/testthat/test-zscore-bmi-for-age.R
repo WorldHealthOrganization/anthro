@@ -17,14 +17,17 @@ describe("anthro_zscore_bmi_for_age", {
     observed <- anthro_zscore_bmi_for_age(25, 1, 2, "n")
     expect_equal(observed$fbmi, 1L)
     observed <- anthro_zscore_bmi_for_age(10.37, 1, 2, "n",
-                                          flag_threshold = c(-0.1, 0.1))
+      flag_threshold = c(-0.1, 0.1)
+    )
     expect_equal(observed$fbmi, 1L)
   })
   it("does not compute zscores where no growthstandards are present", {
-    observed <- anthro_zscore_bmi_for_age(c(50, 60),
-                                          c(1, 1857),
-                                          c(1, 1),
-                                          c("n", "n"))
+    observed <- anthro_zscore_bmi_for_age(
+      c(50, 60),
+      c(1, 1857),
+      c(1, 1),
+      c("n", "n")
+    )
     expect_true(is.data.frame(observed))
     expect_equal(is.na(observed$zbmi), c(FALSE, TRUE))
     expect_equal(is.na(observed$fbmi), c(FALSE, TRUE))

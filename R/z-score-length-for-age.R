@@ -10,10 +10,11 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_length_for_age <-
-function(lenhei, age_in_days, sex, flag_threshold = 6,
-         growthstandards = growthstandards_lenanthro) {
-  anthro_zscore_adjusted("len", lenhei, age_in_days, sex,
-                         growthstandards, flag_threshold,
-                         allowed_age_range = c(0, 1856),
-                         zscore_fun = compute_zscore)
-}
+  function(lenhei, age_in_days, sex, flag_threshold = 6,
+             growthstandards = growthstandards_lenanthro) {
+    anthro_zscore_adjusted("len", lenhei, age_in_days, sex,
+      growthstandards, flag_threshold,
+      allowed_age_range = c(0, 1856),
+      zscore_fun = compute_zscore
+    )
+  }

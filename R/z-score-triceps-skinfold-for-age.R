@@ -10,9 +10,10 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_triceps_skinfold_for_age <-
-function(triskin, age_in_days, sex, flag_threshold = 5,
-         growthstandards = growthstandards_tsanthro) {
-  anthro_zscore_adjusted("ts", triskin, age_in_days, sex,
-                         growthstandards, flag_threshold,
-                         allowed_age_range = c(91, 1856))
-}
+  function(triskin, age_in_days, sex, flag_threshold = 5,
+             growthstandards = growthstandards_tsanthro) {
+    anthro_zscore_adjusted("ts", triskin, age_in_days, sex,
+      growthstandards, flag_threshold,
+      allowed_age_range = c(91, 1856)
+    )
+  }

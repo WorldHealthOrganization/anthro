@@ -2,14 +2,16 @@ context("prevalence")
 
 describe("anthro_prevalence()", {
   it("fails if any sampling weight is negative", {
-    expect_error(anthro_prevalence(
-      sex = 1,
-      age = 20,
-      weight = 20,
-      lenhei = 20,
-      sw = -1
-    ),
-    "weights")
+    expect_error(
+      anthro_prevalence(
+        sex = 1,
+        age = 20,
+        weight = 20,
+        lenhei = 20,
+        sw = -1
+      ),
+      "weights"
+    )
   })
   it("it fails if no values left for analysis", {
     expect_error(
@@ -21,7 +23,8 @@ describe("anthro_prevalence()", {
         weight = c(18, 15, 10, 15),
         lenhei = c(100, 80, 100, 100)
       ), "rows", all = TRUE),
-      "removed")
+      "removed"
+    )
   })
   it("orders the columns by indicator and cutoff", {
     res <- anthro_prevalence(
@@ -72,9 +75,11 @@ describe("anthro_prevalence()", {
       wealthq = c("Q1", "Q2", "3", "4", "5")
     )
     row_names <- res$Group[grepl(res$Group, pattern = "^Wealth")]
-    expected_rownames <- paste0("Wealth quintile: ", c("Q1: Poorest", "Q2",
-                                                       "Q3", "Q4",
-                                                       "Q5: Richest"))
+    expected_rownames <- paste0("Wealth quintile: ", c(
+      "Q1: Poorest", "Q2",
+      "Q3", "Q4",
+      "Q5: Richest"
+    ))
     expect_true(all(expected_rownames %in% row_names))
     expect_equal(res[22:26, "HAZ_pop"], rep.int(20, 5)) # 20 per quintile
   })
@@ -99,8 +104,10 @@ describe("anthro_prevalence()", {
     )
     row_names <-
       res$Group[grepl(res$Group, pattern = "Male|Female$")]
-    expected_row_names <- c(paste0("Sex: ", c("Female", "Male")),
-                            paste0("Age + sex: 24-35 mo.", c("Female", "Male")))
+    expected_row_names <- c(
+      paste0("Sex: ", c("Female", "Male")),
+      paste0("Age + sex: 24-35 mo.", c("Female", "Male"))
+    )
     expect_true(all(expected_row_names %in% row_names))
   })
   it("warns if rows get excluded for prevalence computation", {

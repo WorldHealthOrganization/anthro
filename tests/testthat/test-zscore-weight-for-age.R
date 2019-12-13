@@ -24,14 +24,17 @@ describe("anthro_zscore_weight_for_age", {
     observed <- anthro_zscore_weight_for_age(10.37, 1, 2, "n")
     expect_equal(observed$fwei, 1L)
     observed <- anthro_zscore_weight_for_age(17, 1522, 2, "n",
-                                             flag_threshold = c(-0.1, 0.1))
+      flag_threshold = c(-0.1, 0.1)
+    )
     expect_equal(observed$fwei, 1L)
   })
   it("does not compute zscores where no growthstandards are present", {
-    observed <- anthro_zscore_weight_for_age(c(50, 60),
-                                             c(1, 1857),
-                                             c(1, 1),
-                                             c("n", "n"))
+    observed <- anthro_zscore_weight_for_age(
+      c(50, 60),
+      c(1, 1857),
+      c(1, 1),
+      c("n", "n")
+    )
     expect_true(is.data.frame(observed))
     expect_equal(is.na(observed$zwei), c(FALSE, TRUE))
     expect_equal(is.na(observed$fwei), c(FALSE, TRUE))
@@ -45,8 +48,10 @@ describe("anthro_zscore_weight_for_age", {
     expect_true(is.na(observed$fwei))
   })
   it("returns NA if weight is <= 0", {
-    observed <- anthro_zscore_weight_for_age(c(0, -1), c(10, 10),
-                                             c(1, 1), c("n", "n"))
+    observed <- anthro_zscore_weight_for_age(
+      c(0, -1), c(10, 10),
+      c(1, 1), c("n", "n")
+    )
     expect_true(all(is.na(observed$zwei)))
     expect_true(all(is.na(observed$fwei)))
     expect_true(is.numeric(observed$zwei))

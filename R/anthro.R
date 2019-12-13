@@ -16,8 +16,10 @@
 #' @aliases anthro package-anthro
 NULL
 
-globalVariables(c("growthstandards_lenanthro",
-                  "growthstandards_weianthro"))
+globalVariables(c(
+  "growthstandards_lenanthro",
+  "growthstandards_weianthro"
+))
 
 # the constant to scale between days and months
 ANTHRO_DAYS_OF_MONTH <- 30.4375

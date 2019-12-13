@@ -23,6 +23,21 @@ age_to_days <- function(age, is_age_in_month) {
   }
 }
 
+#' banker's rounding for 0 digits and positive numerics
+#' i.e. < .5 down, >= .5 up
+round_up <- function(x) {
+  stopifnot(is.numeric(x), all(x >= 0, na.rm = TRUE))
+  if (length(x) == 0) {
+    return(numeric())
+  }
+  x_rounded <- floor(x)
+  rest <- x - x_rounded
+  rounded_up <- rest >= 0.5
+  rounded_up[is.na(rounded_up)] <- FALSE
+  x_rounded[rounded_up] <- x_rounded[rounded_up] + 1
+  x_rounded
+}
+
 age_to_months <- function(age, is_age_in_month) {
   if (is_age_in_month) {
     age

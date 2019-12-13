@@ -16,3 +16,12 @@ test_that("standardize_oedema_var replaces numerics by characters", {
   expect_equal("n", standardize_oedema_var(2))
   expect_equal("n", standardize_oedema_var("2"))
 })
+
+test_that("rounding up works", {
+  expect_equal(round_up(c(NA_real_, 730.49, 730.5)), c(NA_real_, 730, 731))
+  expect_equal(round_up(NA_real_), NA_real_)
+  expect_equal(round_up(73.5), 74)
+  expect_equal(round_up(numeric()), numeric())
+  expect_error(round_up("730"))
+  expect_error(round_up(-1))
+})

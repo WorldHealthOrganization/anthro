@@ -48,13 +48,14 @@ compute_zscore_adjusted <- function(y, m, l, s) {
 apply_zscore_and_growthstandards <- function(zscore_fun, growthstandards,
                                              age_in_days, sex, measure) {
   n <- length(measure)
-  age_in_days <- as.integer(round(age_in_days))
+  age_in_days[!is.na(age_in_days) & age_in_days < 0] <- NA_real_
+  age_in_days <- as.integer(round_up(age_in_days))
   input_df <- data.frame(measure, age_in_days, sex, ordering = seq_len(n))
   merged_df <- merge(input_df,
                      growthstandards,
                      by.x = c("age_in_days", "sex"), by.y = c("age", "sex"),
                      all.x = TRUE, sort = FALSE)
-  merged_df <- merged_df[order(merged_df$ordering), ]
+  merged_df <- merged_df[order(merged_df$ordering), , drop = FALSE]
 
   y <- merged_df[["measure"]]
   m <- merged_df[["m"]]

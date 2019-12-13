@@ -17,7 +17,7 @@ describe("anthro_zscores()", {
     expect_equal(res_months, res_days)
   })
   it("adds bmi to the output data.frame", {
-    expected_bmi <- 20 / ((100 / 100) ^ 2)
+    expected_bmi <- 20 / ((100 / 100)^2)
     res <- anthro_zscores(
       sex = 1L,
       age = 30,
@@ -86,36 +86,56 @@ test_that("age related indicators are now calculated if age is NA", {
 })
 
 test_that("oedema is all 'n' by default", {
-  res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l")
-  res2 <- anthro_zscores(sex = 1, age = 100,
-                         lenhei = 60, weight = 7, oedema = "n", measure = "l")
+  res <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l"
+  )
+  res2 <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, oedema = "n", measure = "l"
+  )
   expect_equal(res, res2)
 })
 
 test_that("oedema n = 2 and y = 1", {
-  res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
-  res2 <- anthro_zscores(sex = 1, age = 100,
-                         lenhei = 60, weight = 7, oedema = "n", measure = "l")
+  res <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "2"
+  )
+  res2 <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, oedema = "n", measure = "l"
+  )
   expect_equal(res, res2)
-  res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
-  res2 <- anthro_zscores(sex = 1, age = 100,
-                         lenhei = 60, weight = 7, oedema = "y", measure = "l")
+  res <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "1"
+  )
+  res2 <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, oedema = "y", measure = "l"
+  )
   expect_equal(res, res2)
 })
 
 test_that("oedema can also be numeric", {
-  res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "2")
-  res2 <- anthro_zscores(sex = 1, age = 100,
-                         lenhei = 60, weight = 7, measure = "l", oedema = "n")
+  res <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "2"
+  )
+  res2 <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "n"
+  )
   expect_equal(res, res2)
-  res <- anthro_zscores(sex = 1, age = 100,
-                        lenhei = 60, weight = 7, measure = "l", oedema = "1")
-  res2 <- anthro_zscores(sex = 1, age = 100,
-                         lenhei = 60, weight = 7, measure = "l", oedema = "y")
+  res <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "1"
+  )
+  res2 <- anthro_zscores(
+    sex = 1, age = 100,
+    lenhei = 60, weight = 7, measure = "l", oedema = "y"
+  )
   expect_equal(res, res2)
 })
 
@@ -142,25 +162,29 @@ test_that("fails if sex is not f, F, m, M, 1, 2, NA", {
 })
 
 test_that("arguments will be recycled", {
-  res <- anthro_zscores(sex = "f",
-                        age = c(100, 500),
-                        is_age_in_month = FALSE,
-                        weight = 1:3 * 10,
-                        lenhei = 1:4 * 40,
-                        measure = rep.int("l", 5),
-                        headc = 1:6 * 10,
-                        armc = 1:7 * 10,
-                        triskin = 1:8 * 10,
-                        subskin = 1:9 * 10,
-                        oedema = rep.int("n", 10))
+  res <- anthro_zscores(
+    sex = "f",
+    age = c(100, 500),
+    is_age_in_month = FALSE,
+    weight = 1:3 * 10,
+    lenhei = 1:4 * 40,
+    measure = rep.int("l", 5),
+    headc = 1:6 * 10,
+    armc = 1:7 * 10,
+    triskin = 1:8 * 10,
+    subskin = 1:9 * 10,
+    oedema = rep.int("n", 10)
+  )
   expect_equal(nrow(res), 10L)
 })
 
 test_that("young children with measured standing will not be adjusted", {
-  res <- anthro_zscores(sex = 1, age = c(8, 9),
-                        is_age_in_month = TRUE,
-                        lenhei = 60,
-                        measure = "h")
+  res <- anthro_zscores(
+    sex = 1, age = c(8, 9),
+    is_age_in_month = TRUE,
+    lenhei = 60,
+    measure = "h"
+  )
   expect_equal(res$clenhei, c(60, 60.7))
   expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
 })
@@ -175,4 +199,14 @@ test_that("zcores are only computed for children younger or equal to 60 months",
     measure = "h"
   )
   expect_true(all(is.na(res[2, -1:-2])))
+})
+
+test_that("height measurements are used for age 24 months", {
+  res <- anthro_zscores(
+    sex = 2,
+    age = 24,
+    is_age_in_month = TRUE,
+    lenhei = 77.5
+  )
+  expect_equivalent(res$zlen, -2.55)
 })

@@ -10,9 +10,10 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_subscapular_skinfold_for_age <-
-function(subskin, age_in_days, sex, flag_threshold = 5,
-         growthstandards = growthstandards_ssanthro) {
-  anthro_zscore_adjusted("ss", subskin, age_in_days, sex,
-                         growthstandards, flag_threshold,
-                         allowed_age_range = c(91, 1856))
-}
+  function(subskin, age_in_days, sex, flag_threshold = 5,
+             growthstandards = growthstandards_ssanthro) {
+    anthro_zscore_adjusted("ss", subskin, age_in_days, sex,
+      growthstandards, flag_threshold,
+      allowed_age_range = c(91, 1856)
+    )
+  }

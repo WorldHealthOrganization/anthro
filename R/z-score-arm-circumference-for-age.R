@@ -10,9 +10,10 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_arm_circumference_for_age <-
-function(armc, age_in_days, sex, flag_threshold = 5,
-         growthstandards = growthstandards_acanthro) {
-  anthro_zscore_adjusted("ac", armc, age_in_days, sex,
-                         growthstandards, flag_threshold,
-                         allowed_age_range = c(91, 1856))
-}
+  function(armc, age_in_days, sex, flag_threshold = 5,
+             growthstandards = growthstandards_acanthro) {
+    anthro_zscore_adjusted("ac", armc, age_in_days, sex,
+      growthstandards, flag_threshold,
+      allowed_age_range = c(91, 1856)
+    )
+  }

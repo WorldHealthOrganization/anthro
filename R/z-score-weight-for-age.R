@@ -10,10 +10,11 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_weight_for_age <-
-function(weight, age_in_days, sex, oedema, flag_threshold = c(-6, 5),
-         growthstandards = growthstandards_weianthro) {
-  anthro_zscore_adjusted("wei", weight, age_in_days, sex,
-                         growthstandards, flag_threshold,
-                         allowed_age_range = c(0, 1856),
-                         !(oedema %in% "y"))
-}
+  function(weight, age_in_days, sex, oedema, flag_threshold = c(-6, 5),
+             growthstandards = growthstandards_weianthro) {
+    anthro_zscore_adjusted("wei", weight, age_in_days, sex,
+      growthstandards, flag_threshold,
+      allowed_age_range = c(0, 1856),
+      !(oedema %in% "y")
+    )
+  }

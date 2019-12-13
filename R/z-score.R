@@ -146,9 +146,13 @@
 #' # or use it with a compute dataset
 #' \dontrun{
 #' your_data_set <- read.csv("<your survey>.csv")
-#' with(your_data_set,
-#'      anthro_zscores(sex = sex, age = age_in_days,
-#'                     weight = weight, lenhei = lenhei))
+#' with(
+#'   your_data_set,
+#'   anthro_zscores(
+#'     sex = sex, age = age_in_days,
+#'     weight = weight, lenhei = lenhei
+#'   )
+#' )
 #' }
 #' @include anthro.R
 #' @include assertions.R
@@ -168,8 +172,11 @@ anthro_zscores <- function(sex,
   assert_length(is_age_in_month, 1L)
   assert_character_or_numeric(sex)
   assert_values_in_set(sex,
-                       allowed = c("1", "2", "m",
-                                   "f", "M", "F", NA_character_))
+    allowed = c(
+      "1", "2", "m",
+      "f", "M", "F", NA_character_
+    )
+  )
   assert_numeric(age)
   assert_numeric(weight)
   assert_numeric(lenhei)
@@ -180,19 +187,22 @@ anthro_zscores <- function(sex,
   assert_numeric(triskin)
   assert_numeric(subskin)
   assert_values_in_set(oedema,
-                       allowed = c("n", "y", "N", "Y", "2", "1", NA_character_))
+    allowed = c("n", "y", "N", "Y", "2", "1", NA_character_)
+  )
 
   # make all input lengths equal
-  max_len <- pmax(length(sex),
-                  length(age),
-                  length(weight),
-                  length(lenhei),
-                  length(measure),
-                  length(headc),
-                  length(armc),
-                  length(triskin),
-                  length(subskin),
-                  length(oedema))
+  max_len <- pmax(
+    length(sex),
+    length(age),
+    length(weight),
+    length(lenhei),
+    length(measure),
+    length(headc),
+    length(armc),
+    length(triskin),
+    length(subskin),
+    length(oedema)
+  )
   sex <- rep_len(sex, length.out = max_len)
   age <- rep_len(age, length.out = max_len)
   weight <- rep_len(weight, length.out = max_len)
@@ -224,14 +234,16 @@ anthro_zscores <- function(sex,
 
   clenhei <- adjust_lenhei(age_in_days, measure, lenhei)
 
-  cbmi <- weight / ( (clenhei / 100) ^ 2)
+  cbmi <- weight / ((clenhei / 100)^2)
   cbind(
     clenhei,
     cbmi,
     anthro_zscore_length_for_age(clenhei, age_in_days, sex),
     anthro_zscore_weight_for_age(weight, age_in_days, sex, oedema),
-    anthro_zscore_weight_for_lenhei(weight, clenhei, measure, age_in_days,
-                                    sex, oedema),
+    anthro_zscore_weight_for_lenhei(
+      weight, clenhei, measure, age_in_days,
+      sex, oedema
+    ),
     anthro_zscore_bmi_for_age(cbmi, age_in_days, sex, oedema),
     anthro_zscore_head_circumference_for_age(headc, age_in_days, sex),
     anthro_zscore_arm_circumference_for_age(armc, age_in_days, sex),

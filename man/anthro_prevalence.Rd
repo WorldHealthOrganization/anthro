@@ -242,5 +242,4 @@ colnames(res) <- c("Group", "Unweighted N", "-3SD", "-2SD", "z-score mean ")
 
 # note that we only generated data for one age group
 res
-
 }

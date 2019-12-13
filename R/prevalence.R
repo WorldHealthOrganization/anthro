@@ -384,17 +384,16 @@ anthro_prevalence <- function(sex,
     c(TRUE, FALSE, FALSE, rep.int(FALSE, length(optional_strata_labels)))
   strata_label <-
     c("Age group", "Sex", "Age + sex", optional_strata_labels)
-  strata_values <-
-    list(
-      age_group,
-      sex,
-      age_sex_interaction,
-      typeres,
-      gregion,
-      wealthq,
-      mothered,
-      othergr
-    )
+  strata_values <- list(
+    age_group,
+    sex,
+    age_sex_interaction,
+    typeres,
+    gregion,
+    wealthq,
+    mothered,
+    othergr
+  )
 
   included_strata <- vapply(
     strata_values,
@@ -415,48 +414,47 @@ anthro_prevalence <- function(sex,
   opts <- options(survey.lonely.psu = "adjust")
   on.exit(options(opts))
 
-  result_per_stratum <-
-    lapply(seq_len(length(strata_values)), function(i) {
-      x <- lapply(seq_len(length(z_lab)), function(j) {
-        compute_prevalence(
-          cutoffs,
-          cutoffs_dir,
-          cutoffs_suffix,
-          zscore_prev = zscores[[z_prev[[j]]]],
-          zscore_summ = zscores[[z_summ[[j]]]],
-          zscore_label = z_lab[[j]],
-          cluster = cluster,
-          strata = strata,
-          sampling_weights = sw,
-          survey_subsets = strata_values[[i]],
-          is_total = strata_compute_total[[i]],
-          strata_label = strata_label[[i]]
-        )
-      })
-      results <- do.call(cbind, x)
-      results <- results[, unique(colnames(results)), drop = FALSE]
-
-      # To these results we need to add two more indicators
-      cbind(
-        results,
-        compute_stunting_wasting(
-          zscores,
-          cluster,
-          strata,
-          sw,
-          survey_subsets = strata_values[[i]],
-          compute_total = strata_compute_total[[i]]
-        ),
-        compute_stunting_overweight(
-          zscores,
-          cluster,
-          strata,
-          sw,
-          survey_subsets = strata_values[[i]],
-          compute_total = strata_compute_total[[i]]
-        )
+  result_per_stratum <- lapply(seq_len(length(strata_values)), function(i) {
+    x <- lapply(seq_len(length(z_lab)), function(j) {
+      compute_prevalence(
+        cutoffs,
+        cutoffs_dir,
+        cutoffs_suffix,
+        zscore_prev = zscores[[z_prev[[j]]]],
+        zscore_summ = zscores[[z_summ[[j]]]],
+        zscore_label = z_lab[[j]],
+        cluster = cluster,
+        strata = strata,
+        sampling_weights = sw,
+        survey_subsets = strata_values[[i]],
+        is_total = strata_compute_total[[i]],
+        strata_label = strata_label[[i]]
       )
     })
+    results <- do.call(cbind, x)
+    results <- results[, unique(colnames(results)), drop = FALSE]
+
+    # To these results we need to add two more indicators
+    cbind(
+      results,
+      compute_stunting_wasting(
+        zscores,
+        cluster,
+        strata,
+        sw,
+        survey_subsets = strata_values[[i]],
+        compute_total = strata_compute_total[[i]]
+      ),
+      compute_stunting_overweight(
+        zscores,
+        cluster,
+        strata,
+        sw,
+        survey_subsets = strata_values[[i]],
+        compute_total = strata_compute_total[[i]]
+      )
+    )
+  })
 
   # now we rbind them together and remove duplicate column names
   results <- do.call(rbind, result_per_stratum)
@@ -626,13 +624,12 @@ compute_combined_indicator <- function(zwfl_aux_flagged,
                                        zscores, cluster,
                                        strata, sw, survey_subsets,
                                        compute_total) {
-  var_prev <-
-    as.integer(with(zscores, ifelse(
-      is.na(zlen) | is.na(zwfl_aux),
-      NA_integer_,
-      ifelse(zlen < -2 &
-        zwfl_aux_flagged(zwfl_aux), 1L, 0L)
-    )))
+  var_prev <- as.integer(with(zscores, ifelse(
+    is.na(zlen) | is.na(zwfl_aux),
+    NA_integer_,
+    ifelse(zlen < -2 &
+      zwfl_aux_flagged(zwfl_aux), 1L, 0L)
+  )))
   survey_data_ha_wh <- data.frame(
     cluster = cluster,
     strata = strata,

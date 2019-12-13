@@ -158,9 +158,13 @@ anthro_zscores(sex = "f", age = c(10, 20, 30), weight = 10)
 # or use it with a compute dataset
 \dontrun{
 your_data_set <- read.csv("<your survey>.csv")
-with(your_data_set,
-     anthro_zscores(sex = sex, age = age_in_days,
-                    weight = weight, lenhei = lenhei))
+with(
+  your_data_set,
+  anthro_zscores(
+    sex = sex, age = age_in_days,
+    weight = weight, lenhei = lenhei
+  )
+)
 }
 }
 \references{

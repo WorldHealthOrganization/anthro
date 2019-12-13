@@ -27,6 +27,7 @@ age_to_days <- function(age, is_age_in_month) {
 
 #' banker's rounding for 0 digits and positive numerics
 #' i.e. < .5 down, >= .5 up
+#' @noRd
 round_up <- function(x) {
   stopifnot(is.numeric(x), all(x >= 0, na.rm = TRUE))
   if (length(x) == 0) {

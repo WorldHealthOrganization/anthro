@@ -218,8 +218,8 @@ anthro_zscores <- function(sex,
   sex <- standardize_sex_var(sex)
 
   # clean measure
-  measure <- tolower(trimws(measure))
-  measure[!(is.na(measure) | measure %in% c("l", "h"))] <- NA_character_
+  cmeasure <- tolower(trimws(measure))
+  cmeasure[!(is.na(cmeasure) | cmeasure %in% c("l", "h"))] <- NA_character_
 
   # clean oedema, we set all oedema not being "y" to "n"
   oedema <- standardize_oedema_var(oedema)
@@ -229,25 +229,30 @@ anthro_zscores <- function(sex,
 
   # we consider a height measure for children younger than 9 months as
   # implausible
-  measure_implausible <- measure == "h" & age_in_months < 9
-  measure[measure_implausible] <- NA_character_
+  measure_implausible <- !is.na(cmeasure) &
+    !is.na(age_in_months) &
+    cmeasure == "h" &
+    age_in_months < 9
+  cmeasure[measure_implausible] <- NA_character_
 
-  clenhei <- adjust_lenhei(age_in_days, measure, lenhei)
+  clenhei <- adjust_lenhei(age_in_days, cmeasure, lenhei)
 
   cbmi <- weight / ((clenhei / 100)^2)
   cbind(
     clenhei,
     cbmi,
+    cmeasure,
     anthro_zscore_length_for_age(clenhei, age_in_days, sex),
     anthro_zscore_weight_for_age(weight, age_in_days, sex, oedema),
     anthro_zscore_weight_for_lenhei(
-      weight, clenhei, measure, age_in_days,
+      weight, clenhei, cmeasure, age_in_days,
       sex, oedema
     ),
     anthro_zscore_bmi_for_age(cbmi, age_in_days, sex, oedema),
     anthro_zscore_head_circumference_for_age(headc, age_in_days, sex),
     anthro_zscore_arm_circumference_for_age(armc, age_in_days, sex),
     anthro_zscore_triceps_skinfold_for_age(triskin, age_in_days, sex),
-    anthro_zscore_subscapular_skinfold_for_age(subskin, age_in_days, sex)
+    anthro_zscore_subscapular_skinfold_for_age(subskin, age_in_days, sex),
+    stringsAsFactors = FALSE
   )
 }

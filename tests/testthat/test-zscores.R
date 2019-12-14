@@ -187,6 +187,7 @@ test_that("young children with measured standing will not be adjusted", {
   )
   expect_equal(res$clenhei, c(60, 60.7))
   expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
+  expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 
 test_that("zcores are only computed for children younger or equal to 60 months", {
@@ -198,7 +199,7 @@ test_that("zcores are only computed for children younger or equal to 60 months",
     weight = 60,
     measure = "h"
   )
-  expect_true(all(is.na(res[2, -1:-2])))
+  expect_true(all(is.na(res[2, -1:-3])))
 })
 
 test_that("height measurements are used for age 24 months", {

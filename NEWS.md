@@ -5,6 +5,8 @@
   implementations and in particularly relevant to data points with
   age exactly 24 months. Previously this was converted to 730 days and with
   this release it is converted to 731 days.
+* The cleaned `measure` variable is now part of the output data.frame of
+  `anthro_zscores`.
 * Removed `covr` from suggests dependencies
 * Fixed a typo in the docs
 

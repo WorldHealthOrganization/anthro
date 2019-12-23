@@ -215,7 +215,7 @@ anthro_zscores <- function(sex,
   oedema <- rep_len(oedema, length.out = max_len)
 
   # clean sex
-  sex <- standardize_sex_var(sex)
+  csex <- standardize_sex_var(sex)
 
   # clean measure
   cmeasure <- tolower(trimws(measure))
@@ -242,17 +242,18 @@ anthro_zscores <- function(sex,
     clenhei,
     cbmi,
     cmeasure,
-    anthro_zscore_length_for_age(clenhei, age_in_days, sex),
-    anthro_zscore_weight_for_age(weight, age_in_days, sex, oedema),
+    csex,
+    anthro_zscore_length_for_age(clenhei, age_in_days, csex),
+    anthro_zscore_weight_for_age(weight, age_in_days, csex, oedema),
     anthro_zscore_weight_for_lenhei(
       weight, clenhei, cmeasure, age_in_days,
-      sex, oedema
+      csex, oedema
     ),
-    anthro_zscore_bmi_for_age(cbmi, age_in_days, sex, oedema),
-    anthro_zscore_head_circumference_for_age(headc, age_in_days, sex),
-    anthro_zscore_arm_circumference_for_age(armc, age_in_days, sex),
-    anthro_zscore_triceps_skinfold_for_age(triskin, age_in_days, sex),
-    anthro_zscore_subscapular_skinfold_for_age(subskin, age_in_days, sex),
+    anthro_zscore_bmi_for_age(cbmi, age_in_days, csex, oedema),
+    anthro_zscore_head_circumference_for_age(headc, age_in_days, csex),
+    anthro_zscore_arm_circumference_for_age(armc, age_in_days, csex),
+    anthro_zscore_triceps_skinfold_for_age(triskin, age_in_days, csex),
+    anthro_zscore_subscapular_skinfold_for_age(subskin, age_in_days, csex),
     stringsAsFactors = FALSE
   )
 }

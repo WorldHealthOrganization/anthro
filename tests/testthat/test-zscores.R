@@ -199,7 +199,7 @@ test_that("zcores are only computed for children younger or equal to 60 months",
     weight = 60,
     measure = "h"
   )
-  expect_true(all(is.na(res[2, -1:-3])))
+  expect_true(all(is.na(res[2, -1:-4])))
 })
 
 test_that("height measurements are used for age 24 months", {
@@ -210,4 +210,16 @@ test_that("height measurements are used for age 24 months", {
     lenhei = 77.5
   )
   expect_equivalent(res$zlen, -2.55)
+})
+
+test_that("cleaned sex variable is part of the output data.frame", {
+  res <- anthro_zscores(
+    sex = c(1, 2, "m", "f", NA_character_),
+    age = 20,
+    is_age_in_month = TRUE,
+    lenhei = 60,
+    weight = 20,
+    measure = "h"
+  )
+  expect_equal(res$csex, c(1L, 2L, 1L, 2L, NA_integer_))
 })

@@ -112,8 +112,8 @@
 <a href="#anthro-092" class="anchor"></a>anthro 0.9.2<small> Unreleased </small>
 </h1>
 <ul>
-<li>Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining the data with the reference values. This is in line with previous implementations and in particularly relevant to data points with age exactly 24 months. Previously this was converted to 730 days and with this release it is converted to 731 days (<a href='https://github.com/dirkschumacher/anthro/issues/17'>#17</a>).</li>
-<li>The cleaned <code>measure</code> variable is now part of the output data.frame of <code>anthro_zscores</code> as <code>cmeasure</code> (<a href='https://github.com/dirkschumacher/anthro/issues/24'>#24</a>).</li>
+<li>Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining the data with the reference values. This is in line with previous implementations and in particularly relevant for data points with age exactly 24 months. Previously the example above was converted to 730 days and with this release it is converted to 731 days (<a href='https://github.com/dirkschumacher/anthro/issues/17'>#17</a>).</li>
+<li>The cleaned <code>measure</code> and <code>sex</code> variables are now part of the output data.frame of <code>anthro_zscores</code> (<a href='https://github.com/dirkschumacher/anthro/issues/20'>#20</a>, <a href='https://github.com/dirkschumacher/anthro/issues/24'>#24</a>).</li>
 <li>Removed <code>covr</code> from suggests dependencies.</li>
 <li>Fixed a typo in the docs (<a href='https://github.com/dirkschumacher/anthro/issues/15'>#15</a>).</li>
 </ul>

@@ -4,13 +4,27 @@
 \alias{anthro_prevalence}
 \title{Compute prevalence estimates}
 \usage{
-anthro_prevalence(sex, age = NA_real_, is_age_in_month = FALSE,
-  weight = NA_real_, lenhei = NA_real_, measure = NA_character_,
-  headc = NA_real_, armc = NA_real_, triskin = NA_real_,
-  subskin = NA_real_, oedema = "n", sw = 1, cluster = 1L,
-  strata = 1L, typeres = NA_character_, gregion = NA_character_,
-  wealthq = NA_character_, mothered = NA_character_,
-  othergr = NA_character_)
+anthro_prevalence(
+  sex,
+  age = NA_real_,
+  is_age_in_month = FALSE,
+  weight = NA_real_,
+  lenhei = NA_real_,
+  measure = NA_character_,
+  headc = NA_real_,
+  armc = NA_real_,
+  triskin = NA_real_,
+  subskin = NA_real_,
+  oedema = "n",
+  sw = 1,
+  cluster = 1L,
+  strata = 1L,
+  typeres = NA_character_,
+  gregion = NA_character_,
+  wealthq = NA_character_,
+  mothered = NA_character_,
+  othergr = NA_character_
+)
 }
 \arguments{
 \item{sex}{A numeric or text variable containing gender information.

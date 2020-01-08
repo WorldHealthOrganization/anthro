@@ -1,4 +1,6 @@
-# anthro 0.9.1.9000
+# anthro (development version)
+
+# anthro 0.9.2
 
 * Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining
   the data with the reference values. This is in line with previous

@@ -4,7 +4,6 @@
 \name{anthro}
 \alias{anthro}
 \alias{package-anthro}
-\alias{anthro-package}
 \title{Compute the WHO Child Growth Standards}
 \description{
 Provides WHO Child Growth Standards (z-scores) with

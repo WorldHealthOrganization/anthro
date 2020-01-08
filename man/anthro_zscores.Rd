@@ -4,10 +4,19 @@
 \alias{anthro_zscores}
 \title{Calculate z-scores for the eight anthropometric indicators}
 \usage{
-anthro_zscores(sex, age = NA_real_, is_age_in_month = FALSE,
-  weight = NA_real_, lenhei = NA_real_, measure = NA_character_,
-  headc = NA_real_, armc = NA_real_, triskin = NA_real_,
-  subskin = NA_real_, oedema = "n")
+anthro_zscores(
+  sex,
+  age = NA_real_,
+  is_age_in_month = FALSE,
+  weight = NA_real_,
+  lenhei = NA_real_,
+  measure = NA_character_,
+  headc = NA_real_,
+  armc = NA_real_,
+  triskin = NA_real_,
+  subskin = NA_real_,
+  oedema = "n"
+)
 }
 \arguments{
 \item{sex}{A numeric or text variable containing gender information.

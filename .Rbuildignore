@@ -3,10 +3,10 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
-^README\.md$
 ^data-raw$
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^codecov\.yml$
 ^docs$
 ^cran-comments\.md$
+pkgdown\.yml$

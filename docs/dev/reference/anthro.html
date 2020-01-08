@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • anthro</title>
+<title>Compute the WHO Child Growth Standards — anthro • anthro</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -32,9 +32,19 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Compute the WHO Child Growth Standards — anthro" />
 
+<meta property="og:description" content="Provides WHO Child Growth Standards (z-scores) with
+confidence intervals and standard errors around the
+prevalence estimates, taking into account complex sample designs.
+More information on the methods is available online:
+&amp;lt;http://www.who.int/childgrowth/standards/en/&amp;gt;.
+Package lifecycle is &quot;maturing&quot; in the tidyverse sense (&amp;lt;https://www.tidyverse.org/lifecycle/&amp;gt;).
+It is aimed to keep the API backward compatible, but changes to the API
+might occur." />
+<meta name="twitter:card" content="summary" />
 
+<meta name="robots" content="noindex">
 
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
@@ -50,7 +60,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -63,7 +73,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.9.2.9000</span>
       </span>
     </div>
 
@@ -103,47 +113,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/dirkschumacher/anthro/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Compute the WHO Child Growth Standards</h1>
+    <small class="dont-index">Source: <a href='https://github.com/dirkschumacher/anthro/blob/master/R/anthro.R'><code>R/anthro.R</code></a></small>
+    <div class="hidden name"><code>anthro.Rd</code></div>
     </div>
 
-    <div id="anthro-development-version" class="section level1">
-<h1 class="page-header">
-<a href="#anthro-development-version" class="anchor"></a>anthro (development version)<small> Unreleased </small>
-</h1>
-</div>
-    <div id="anthro-092" class="section level1">
-<h1 class="page-header">
-<a href="#anthro-092" class="anchor"></a>anthro 0.9.2<small> 2020-01-08 </small>
-</h1>
-<ul>
-<li>Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining the data with the reference values. This is in line with previous implementations and in particularly relevant for data points with age exactly 24 months. Previously the example above was converted to 730 days and with this release it is converted to 731 days (<a href='https://github.com/dirkschumacher/anthro/issues/17'>#17</a>).</li>
-<li>The cleaned <code>measure</code> and <code>sex</code> variables are now part of the output data.frame of <code>anthro_zscores</code> (<a href='https://github.com/dirkschumacher/anthro/issues/20'>#20</a>, <a href='https://github.com/dirkschumacher/anthro/issues/24'>#24</a>).</li>
-<li>Removed <code>covr</code> from suggests dependencies.</li>
-<li>Fixed a typo in the docs (<a href='https://github.com/dirkschumacher/anthro/issues/15'>#15</a>).</li>
-</ul>
-</div>
-    <div id="anthro-091" class="section level1">
-<h1 class="page-header">
-<a href="#anthro-091" class="anchor"></a>anthro 0.9.1<small> 2019-03-23 </small>
-</h1>
-<ul>
-<li>Initial release of the package.</li>
-</ul>
-</div>
-  </div>
+    <div class="ref-description">
+    
+    <p>Provides WHO Child Growth Standards (z-scores) with
+confidence intervals and standard errors around the
+prevalence estimates, taking into account complex sample designs.
+More information on the methods is available online:
+&lt;<a href='http://www.who.int/childgrowth/standards/en/'>http://www.who.int/childgrowth/standards/en/</a>&gt;.</p>
+<p>Package lifecycle is "maturing" in the tidyverse sense (&lt;<a href='https://www.tidyverse.org/lifecycle/'>https://www.tidyverse.org/lifecycle/</a>&gt;).
+It is aimed to keep the API backward compatible, but changes to the API
+might occur.</p>
+    
+    </div>
 
+        
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#anthro-development-version">development version</a></li>
-        <li><a href="#anthro-092">0.9.2</a></li>
-        <li><a href="#anthro-091">0.9.1</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+                </ul>
 
+  </div>
 </div>
 
 

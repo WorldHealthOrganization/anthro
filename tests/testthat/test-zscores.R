@@ -223,3 +223,16 @@ test_that("cleaned sex variable is part of the output data.frame", {
   )
   expect_equal(res$csex, c(1L, 2L, 1L, 2L, NA_integer_))
 })
+
+test_that("clenhei takes the measure argument into account correctly", {
+  res <- anthro_zscores(
+    sex = 2,
+    age = 24,
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", NA_character_)
+  )
+  expect_equal(res$clenhei, c(77.5, 77.5))
+  expect_equal(res$zlen, c(-2.55, -2.55))
+})

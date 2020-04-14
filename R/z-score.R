@@ -127,7 +127,7 @@
 #' repeated to match the maximum length of all arguments except
 #' \code{is_age_in_month} using \code{rep_len}. This happens without warnings.
 #'
-#' Z-scores are only computed for children younger than 60 months (age in months <= 60)
+#' Z-scores are only computed for children younger than 60 months (age in months < 60)
 #'
 #' @references
 #' WHO Multicentre Growth Reference Study Group (2006). WHO Child Growth Standards: Length/height-for-age, weight-for-age, weight-for-length, weight-for-height and body mass index-for-age: Methods and development.

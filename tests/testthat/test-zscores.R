@@ -190,16 +190,17 @@ test_that("young children with measured standing will not be adjusted", {
   expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 
-test_that("zcores are only computed for children younger or equal to 60 months", {
+test_that("zcores are only computed for children younger to 60 months", {
   res <- anthro_zscores(
     sex = 1,
-    age = c(60, 60.1),
+    age = c(59.9, 60, 60.1),
     is_age_in_month = TRUE,
     lenhei = 60,
     weight = 60,
     measure = "h"
   )
-  expect_true(all(is.na(res[2, -1:-4])))
+  expect_true(all(is.na(res[2:3, -1:-4])))
+  expect_false(all(is.na(res[1, -1:-4])))
 })
 
 test_that("height measurements are used for age 24 months", {

@@ -1,5 +1,7 @@
 # anthro (development version)
 
+* Z-scores are now only computed for `age < 60 month` instead of `age <= 60`.
+
 # anthro 0.9.2
 
 * Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining

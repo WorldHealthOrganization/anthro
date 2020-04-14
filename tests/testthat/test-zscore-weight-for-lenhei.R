@@ -27,3 +27,15 @@ test_that("it returns NA if lenhei is <= 0", {
   expect_true(all(is.na(observed$fwfl)))
   expect_true(is.numeric(observed$zwfl))
 })
+
+test_that("it is only computed if age in month < 60", {
+  observed <- anthro_zscore_weight_for_lenhei(
+    weight = c(20, 20),
+    lenhei = c(80, 80),
+    lenhei_unit = c("l", "l"),
+    age_in_days = c(age_to_days(60, TRUE), age_to_days(60, TRUE) - 0.01),
+    sex = c(2, 2),
+    oedema = c("n", "n")
+  )
+  expect_equal(is.na(observed$zwfl), c(TRUE, FALSE))
+})

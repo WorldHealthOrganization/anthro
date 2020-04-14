@@ -195,8 +195,12 @@ test_that("zcores are only computed for children younger to 60 months", {
     sex = 1,
     age = c(59.9, 60, 60.1),
     is_age_in_month = TRUE,
-    lenhei = 60,
-    weight = 60,
+    lenhei = 80,
+    weight = 20,
+    armc = 5,
+    triskin = 3,
+    subskin = 5,
+    headc = 5,
     measure = "h"
   )
   expect_true(all(is.na(res[2:3, -1:-4])))

@@ -25,6 +25,11 @@ age_to_days <- function(age, is_age_in_month) {
   }
 }
 
+age_under_60_month <- function(age_in_days) {
+  age_in_months <- age_to_months(age_in_days, is_age_in_month = FALSE)
+  age_in_months < 60
+}
+
 #' banker's rounding for 0 digits and positive numerics
 #' i.e. < .5 down, >= .5 up
 #' @noRd

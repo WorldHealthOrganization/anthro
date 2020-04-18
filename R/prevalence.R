@@ -644,7 +644,8 @@ compute_prevalence_zscore_summary <- function(survey_data) {
   # It was decided to suppress these warnings
   suppressWarnings({
     vecn_prev <-
-      survey::svyby(~ I(!is.na(var_prev)),
+      survey::svyby(
+        ~I(!is.na(var_prev)),
         ~survey_subsets,
         design,
         survey::svytotal,
@@ -652,7 +653,7 @@ compute_prevalence_zscore_summary <- function(survey_data) {
       )
     vecn_unw_prev <-
       survey::svyby(
-        ~ I(!is.na(var_prev)),
+        ~I(!is.na(var_prev)),
         ~survey_subsets,
         design_unweighted,
         survey::svytotal,

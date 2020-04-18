@@ -56,6 +56,7 @@
 #' for stratified analysis.
 #'
 #' @examples
+#' \dontrun{ # because it takes too long for CRAN checks
 #' library(anthro)
 #'
 #' # compute the prevalence estimates for 100 random children
@@ -78,6 +79,7 @@
 #'
 #' # note that we only generated data for one age group
 #' res
+#' }
 #' @return Returns a data.frame with prevalence estimates for the various
 #' groups.
 #'

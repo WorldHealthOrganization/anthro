@@ -384,7 +384,7 @@ anthro_prevalence <- function(sex,
   strata_label <-
     c("All", "Age group", "Sex", "Age + sex", optional_strata_labels)
   strata_values <- list(
-    rep.int("All", length(age_group)), #all 1 subset for total
+    rep.int("All", length(age_group)), # a strata for total
     age_group,
     sex,
     age_sex_interaction,

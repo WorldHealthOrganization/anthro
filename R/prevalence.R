@@ -484,11 +484,9 @@ compute_prevalence <- function(cutoffs,
   # compute prevalence estimates
   prev_estimate_list <- lapply(seq_len(length(cutoffs)), function(i) {
     cutoffs_suffix <- cutoffs_suffix[[i]]
-    var_prev <-
-      eval(substitute(fun(zscore_prev, y), list(
-        fun = cutoffs_dir[[i]],
-        y = cutoffs[[i]]
-      )))
+    cutoff_fun <- cutoffs_dir[[i]]
+    cutoff <- cutoffs[[i]]
+    var_prev <- cutoff_fun(zscore_prev, cutoff)
     var_prev <- as.integer(ifelse(var_prev, 1L, 0L))
 
     survey_data <- data.frame(

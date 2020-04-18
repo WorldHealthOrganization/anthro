@@ -56,6 +56,7 @@
 #' for stratified analysis.
 #'
 #' @examples
+#' \dontrun{ # because it takes too long for CRAN checks
 #' library(anthro)
 #'
 #' # compute the prevalence estimates for 100 random children
@@ -78,6 +79,7 @@
 #'
 #' # note that we only generated data for one age group
 #' res
+#' }
 #' @return Returns a data.frame with prevalence estimates for the various
 #' groups.
 #'
@@ -380,11 +382,11 @@ anthro_prevalence <- function(sex,
       "Maternal education",
       "Other grouping"
     )
-  strata_compute_total <-
-    c(TRUE, FALSE, FALSE, rep.int(FALSE, length(optional_strata_labels)))
+
   strata_label <-
-    c("Age group", "Sex", "Age + sex", optional_strata_labels)
+    c("All", "Age group", "Sex", "Age + sex", optional_strata_labels)
   strata_values <- list(
+    rep.int("All", length(age_group)), # a strata for total
     age_group,
     sex,
     age_sex_interaction,
@@ -427,7 +429,6 @@ anthro_prevalence <- function(sex,
         strata = strata,
         sampling_weights = sw,
         survey_subsets = strata_values[[i]],
-        is_total = strata_compute_total[[i]],
         strata_label = strata_label[[i]]
       )
     })
@@ -442,16 +443,14 @@ anthro_prevalence <- function(sex,
         cluster,
         strata,
         sw,
-        survey_subsets = strata_values[[i]],
-        compute_total = strata_compute_total[[i]]
+        survey_subsets = strata_values[[i]]
       ),
       compute_stunting_overweight(
         zscores,
         cluster,
         strata,
         sw,
-        survey_subsets = strata_values[[i]],
-        compute_total = strata_compute_total[[i]]
+        survey_subsets = strata_values[[i]]
       )
     )
   })
@@ -473,7 +472,6 @@ compute_prevalence <- function(cutoffs,
                                strata,
                                sampling_weights,
                                survey_subsets,
-                               is_total,
                                strata_label) {
   stopifnot(
     length(cutoffs) == length(cutoffs_dir),
@@ -484,11 +482,9 @@ compute_prevalence <- function(cutoffs,
   # compute prevalence estimates
   prev_estimate_list <- lapply(seq_len(length(cutoffs)), function(i) {
     cutoffs_suffix <- cutoffs_suffix[[i]]
-    var_prev <-
-      eval(substitute(fun(zscore_prev, y), list(
-        fun = cutoffs_dir[[i]],
-        y = cutoffs[[i]]
-      )))
+    cutoff_fun <- cutoffs_dir[[i]]
+    cutoff <- cutoffs[[i]]
+    var_prev <- cutoff_fun(zscore_prev, cutoff)
     var_prev <- as.integer(ifelse(var_prev, 1L, 0L))
 
     survey_data <- data.frame(
@@ -499,9 +495,7 @@ compute_prevalence <- function(cutoffs,
       var_prev = var_prev,
       var_summ = zscore_summ
     )
-    df <- compute_prevalence_zscore_summary(survey_data,
-      compute_total = is_total
-    )
+    df <- compute_prevalence_zscore_summary(survey_data)
     colnames(df) <- c(
       "Group",
       paste0(
@@ -585,22 +579,19 @@ build_survey_design <- function(survey_data) {
 }
 
 compute_stunting_overweight <- function(zscores, cluster,
-                                        strata, sw, survey_subsets,
-                                        compute_total) {
+                                        strata, sw, survey_subsets) {
   relevant_cols <- c("X_r_prev", "X_se_prev", "X_ll_prev", "X_ul_prev")
   new_colnames <- paste0("HA_2_WH2", c("_r", "_se", "_ll", "_ul"))
   compute_combined_indicator(
     zwfl_aux_flagged = function(x) x > 2,
     relevant_cols, new_colnames,
     zscores, cluster,
-    strata, sw, survey_subsets,
-    compute_total
+    strata, sw, survey_subsets
   )
 }
 
 compute_stunting_wasting <- function(zscores, cluster,
-                                     strata, sw, survey_subsets,
-                                     compute_total) {
+                                     strata, sw, survey_subsets) {
   relevant_cols <- c(
     "Z_pop", "Z_unwpop", "X_r_prev", "X_se_prev", "X_ll_prev",
     "X_ul_prev"
@@ -613,8 +604,7 @@ compute_stunting_wasting <- function(zscores, cluster,
     zwfl_aux_flagged = function(x) x < -2,
     relevant_cols, new_colnames,
     zscores, cluster,
-    strata, sw, survey_subsets,
-    compute_total
+    strata, sw, survey_subsets
   )
 }
 
@@ -622,8 +612,7 @@ compute_combined_indicator <- function(zwfl_aux_flagged,
                                        relevant_columns,
                                        new_column_names,
                                        zscores, cluster,
-                                       strata, sw, survey_subsets,
-                                       compute_total) {
+                                       strata, sw, survey_subsets) {
   var_prev <- as.integer(with(zscores, ifelse(
     is.na(zlen) | is.na(zwfl_aux),
     NA_integer_,
@@ -640,153 +629,111 @@ compute_combined_indicator <- function(zwfl_aux_flagged,
     stringsAsFactors = FALSE
   )
   result_df <- compute_prevalence_zscore_summary(
-    survey_data_ha_wh,
-    compute_total = compute_total
+    survey_data_ha_wh
   )
   result_df <- result_df[, relevant_columns, drop = FALSE]
   colnames(result_df) <- new_column_names
   result_df
 }
 
-compute_prevalence_zscore_summary <-
-  function(survey_data, compute_total) {
-    survey_design_list <- build_survey_design(survey_data)
-    design <- survey_design_list$design
-    design_unweighted <- survey_design_list$design_unweighted
+compute_prevalence_zscore_summary <- function(survey_data) {
+  survey_design_list <- build_survey_design(survey_data)
+  design <- survey_design_list$design
+  design_unweighted <- survey_design_list$design_unweighted
 
-    # Sometimes, survey::svyby et al. warn about glm.fit not converged
-    # or "observations with zero weight not used for calculating dispersion"
-    # It was decided to suppress these warnings
-    suppressWarnings({
-      vecn_prev <-
-        survey::svyby(~ I(!is.na(var_prev)),
-          ~survey_subsets,
-          design,
-          survey::svytotal,
-          drop.empty.groups = FALSE
-        )
-      vecn_unw_prev <-
-        survey::svyby(
-          ~ I(!is.na(var_prev)),
-          ~survey_subsets,
-          design_unweighted,
-          survey::svytotal,
-          drop.empty.groups = FALSE
-        )
-      mean_est_prev <-
-        survey::svyby(
-          ~var_prev,
-          ~survey_subsets,
-          design,
-          survey::svymean,
-          na.rm = TRUE,
-          na.rm.all = TRUE,
-          drop.empty.groups = FALSE
-        )
-      mean_est_ci_prev <-
-        survey::svyby(
-          ~var_prev,
-          ~survey_subsets,
-          design,
-          survey::svyciprop,
-          vartype = "ci",
-          df = survey::degf(design),
-          method = "logit",
-          drop.empty.groups = FALSE,
-          na.rm.all = TRUE
-        )[, 3L:4L]
-      mean_est_summ <-
-        survey::svyby(
-          ~var_summ,
-          ~survey_subsets,
-          design,
-          survey::svymean,
-          na.rm = TRUE,
-          na.rm.all = TRUE,
-          drop.empty.groups = FALSE
-        )
-      mean_est_ci_summ <-
-        confint(mean_est_summ, df = survey::degf(design))
-
-      # the survey package's survey::svyvar fails if
-      # there is only one observation with an unexpected error it seems
-      # we catch this error here and set all results to NA
-      mean_est_sd_summ <- tryCatch({
-        survey::svyby(
-          ~var_summ,
-          ~survey_subsets,
-          design,
-          survey::svyvar,
-          na.rm = TRUE,
-          na.rm.all = TRUE,
-          drop.empty.groups = FALSE
-        )
-      }, error = function(er) {
-        data.frame(
-          dummy = rep.int(NA_real_, nrow(mean_est_ci_summ)),
-          result = rep.int(NA_real_, nrow(mean_est_ci_summ))
-        )
-      })
-    })
-
-    df <- data.frame(
-      Group = rownames(mean_est_prev),
-      Z_pop = vecn_prev$`I(!is.na(var_prev))TRUE`,
-      Z_unwpop = vecn_unw_prev$`I(!is.na(var_prev))TRUE`,
-      X_r_prev = mean_est_prev$var_prev * 100,
-      X_se_prev = mean_est_prev$se * 100,
-      X_ll_prev = mean_est_ci_prev$ci_l * 100,
-      X_ul_prev = mean_est_ci_prev$ci_u * 100,
-      X_r_summ = mean_est_summ$var_summ,
-      X_se_summ = survey::SE(mean_est_summ),
-      X_ll_summ = mean_est_ci_summ[, 1L, drop = TRUE],
-      X_ul_summ = mean_est_ci_summ[, 2L, drop = TRUE],
-      X_stdev_summ = sqrt(mean_est_sd_summ[, 2L, drop = TRUE]),
-      stringsAsFactors = FALSE
-    )
-
-    rownames(df) <- NULL
-
-    if (compute_total) {
-      # we add computation for the total as well
-      vecn_prev <- survey::svytotal(~ I(!is.na(var_prev)), design)[2L]
-      vecn_unw_prev <-
-        survey::svytotal(~ I(!is.na(var_prev)), design_unweighted)[2L]
-
-      suppressWarnings({
-        mean_est_prev <-
-          survey::svymean(~var_prev, design, na.rm = TRUE)
-        mean_est_ci_prev <-
-          confint(survey::svyciprop(~var_prev, design,
-            vartype = "ci", method = "logit"
-          ))
-        mean_est_summ <-
-          survey::svymean(~var_summ, design, na.rm = TRUE)
-        mean_est_ci_summ <-
-          confint(mean_est_summ, df = survey::degf(design))
-        mean_est_sd_summ <-
-          survey::svyvar(~var_summ, design, na.rm = TRUE)
-      })
-
-      total_df <- data.frame(
-        Group = "All",
-        Z_pop = vecn_prev,
-        Z_unwpop = vecn_unw_prev,
-        X_r_prev = as.numeric(mean_est_prev) * 100,
-        X_se_prev = as.numeric(survey::SE(mean_est_prev)) * 100,
-        X_ll_prev = mean_est_ci_prev[1L] * 100,
-        X_ul_prev = mean_est_ci_prev[2L] * 100,
-        X_r_summ = as.numeric(mean(mean_est_summ)),
-        X_se_summ = as.numeric(survey::SE(mean_est_summ)),
-        X_ll_summ = mean_est_ci_summ[, 1L, drop = TRUE],
-        X_ul_summ = mean_est_ci_summ[, 2L, drop = TRUE],
-        X_stdev_summ = as.numeric(sqrt(mean(
-          mean_est_sd_summ
-        ))),
-        stringsAsFactors = FALSE
+  # Sometimes, survey::svyby et al. warn about glm.fit not converged
+  # or "observations with zero weight not used for calculating dispersion"
+  # It was decided to suppress these warnings
+  suppressWarnings({
+    vecn_prev <-
+      survey::svyby(
+        ~I(!is.na(var_prev)),
+        ~survey_subsets,
+        design,
+        survey::svytotal,
+        drop.empty.groups = FALSE
       )
-      rownames(total_df) <- NULL
-      df <- rbind(total_df, df)
-    }
-    df
-  }
+    vecn_unw_prev <-
+      survey::svyby(
+        ~I(!is.na(var_prev)),
+        ~survey_subsets,
+        design_unweighted,
+        survey::svytotal,
+        drop.empty.groups = FALSE
+      )
+    mean_est_prev <-
+      survey::svyby(
+        ~var_prev,
+        ~survey_subsets,
+        design,
+        survey::svymean,
+        na.rm = TRUE,
+        na.rm.all = TRUE,
+        drop.empty.groups = FALSE
+      )
+    mean_est_ci_prev <-
+      survey::svyby(
+        ~var_prev,
+        ~survey_subsets,
+        design,
+        survey::svyciprop,
+        vartype = "ci",
+        df = survey::degf(design),
+        method = "logit",
+        drop.empty.groups = FALSE,
+        na.rm.all = TRUE
+      )[, 3L:4L]
+    mean_est_summ <-
+      survey::svyby(
+        ~var_summ,
+        ~survey_subsets,
+        design,
+        survey::svymean,
+        na.rm = TRUE,
+        na.rm.all = TRUE,
+        drop.empty.groups = FALSE
+      )
+    mean_est_ci_summ <-
+      confint(mean_est_summ, df = survey::degf(design))
+
+    # the survey package's survey::svyvar fails if
+    # there is only one observation with an unexpected error it seems
+    # we catch this error here and set all results to NA
+    mean_est_sd_summ <- tryCatch({
+      survey::svyby(
+        ~var_summ,
+        ~survey_subsets,
+        design,
+        survey::svyvar,
+        na.rm = TRUE,
+        na.rm.all = TRUE,
+        drop.empty.groups = FALSE
+      )
+    }, error = function(er) {
+      data.frame(
+        dummy = rep.int(NA_real_, nrow(mean_est_ci_summ)),
+        result = rep.int(NA_real_, nrow(mean_est_ci_summ))
+      )
+    })
+  })
+
+  df <- data.frame(
+    Group = rownames(mean_est_prev),
+    Z_pop = vecn_prev$`I(!is.na(var_prev))TRUE`,
+    Z_unwpop = vecn_unw_prev$`I(!is.na(var_prev))TRUE`,
+    X_r_prev = mean_est_prev$var_prev * 100,
+    X_se_prev = mean_est_prev$se * 100,
+    X_ll_prev = mean_est_ci_prev$ci_l * 100,
+    X_ul_prev = mean_est_ci_prev$ci_u * 100,
+    X_r_summ = mean_est_summ$var_summ,
+    X_se_summ = survey::SE(mean_est_summ),
+    X_ll_summ = mean_est_ci_summ[, 1L, drop = TRUE],
+    X_ul_summ = mean_est_ci_summ[, 2L, drop = TRUE],
+    X_stdev_summ = sqrt(mean_est_sd_summ[, 2L, drop = TRUE]),
+    stringsAsFactors = FALSE
+  )
+
+  rownames(df) <- NULL
+
+  df
+}

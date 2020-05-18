@@ -25,3 +25,7 @@ test_that("rounding up works", {
   expect_error(round_up("730"))
   expect_error(round_up(-1))
 })
+
+test_that("adjusting lenhei uses rounded age in days", {
+  expect_equal(77.5, adjust_lenhei(730.5, "h", 77.5))
+})

@@ -148,7 +148,7 @@ If not all parameter values have equal length, parameter values will be
 repeated to match the maximum length of all arguments except
 \code{is_age_in_month} using \code{rep_len}. This happens without warnings.
 
-Z-scores are only computed for children younger than 60 months (age in months <= 60)
+Z-scores are only computed for children younger than 60 months (age in months < 60)
 }
 \description{
 This function calculates z-scores for the eight anthropometric indicators,

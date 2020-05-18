@@ -190,16 +190,21 @@ test_that("young children with measured standing will not be adjusted", {
   expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 
-test_that("zcores are only computed for children younger or equal to 60 months", {
+test_that("zcores are only computed for children younger to 60 months", {
   res <- anthro_zscores(
     sex = 1,
-    age = c(60, 60.1),
+    age = c(59.9, 60, 60.1),
     is_age_in_month = TRUE,
-    lenhei = 60,
-    weight = 60,
+    lenhei = 80,
+    weight = 20,
+    armc = 5,
+    triskin = 3,
+    subskin = 5,
+    headc = 5,
     measure = "h"
   )
-  expect_true(all(is.na(res[2, -1:-4])))
+  expect_true(all(is.na(res[2:3, -1:-4])))
+  expect_false(all(is.na(res[1, -1:-4])))
 })
 
 test_that("height measurements are used for age 24 months", {
@@ -222,4 +227,17 @@ test_that("cleaned sex variable is part of the output data.frame", {
     measure = "h"
   )
   expect_equal(res$csex, c(1L, 2L, 1L, 2L, NA_integer_))
+})
+
+test_that("clenhei takes the measure argument into account correctly", {
+  res <- anthro_zscores(
+    sex = 2,
+    age = 24,
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", NA_character_)
+  )
+  expect_equal(res$clenhei, c(77.5, 77.5))
+  expect_equal(res$zlen, c(-2.55, -2.55))
 })

@@ -118,6 +118,7 @@ anthro_zscore_weight_for_lenhei <-
 
     valid_zscore <- valid_zscore & !(oedema %in% "y")
     valid_zscore <- valid_zscore & (is.na(age_in_days) | (age_in_days <= 1856))
+    valid_zscore <- valid_zscore & age_under_60_month(age_in_days)
 
     flag_zscore(flag_threshold, "wfl", zscore, valid_zscore)
   }

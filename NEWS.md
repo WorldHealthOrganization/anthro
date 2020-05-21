@@ -1,5 +1,9 @@
 # anthro 0.9.3
 
+## General
+
+* Internal code improvements.
+
 ## Bugfix
 
 * Z-scores are now only computed for `age < 60 months` instead of `age <= 60 months`.

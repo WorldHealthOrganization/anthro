@@ -55,16 +55,16 @@ anthro_zscores(
   weight = c(18, 15, 10, 15),
   lenhei = c(120, 80, 100, 100)
 )
-#>   clenhei    cbmi cmeasure csex  zlen flen  zwei fwei  zwfl fwfl  zbmi
-#> 1     120 12.5000     <NA>    1  7.31    1  2.20    0 -2.39    0 -3.01
-#> 2      80 23.4375     <NA>    2 -3.50    0  0.95    0  4.13    0  4.66
-#> 3     100 10.0000     <NA>    1  1.62    0 -2.76    0 -5.19    1 -5.61
-#> 4     100 15.0000     <NA>    1  1.70    0  0.69    0 -0.29    0 -0.58
-#>   fbmi zhc fhc zac fac zts fts zss fss
-#> 1    0  NA  NA  NA  NA  NA  NA  NA  NA
-#> 2    0  NA  NA  NA  NA  NA  NA  NA  NA
-#> 3    1  NA  NA  NA  NA  NA  NA  NA  NA
-#> 4    0  NA  NA  NA  NA  NA  NA  NA  NA
+#>   clenhei    cbmi cmeasure csex  zlen flen  zwei fwei  zwfl fwfl  zbmi fbmi zhc
+#> 1     120 12.5000     <NA>    1  7.31    1  2.20    0 -2.39    0 -3.01    0  NA
+#> 2      80 23.4375     <NA>    2 -3.50    0  0.95    0  4.13    0  4.66    0  NA
+#> 3     100 10.0000     <NA>    1  1.62    0 -2.76    0 -5.19    1 -5.61    1  NA
+#> 4     100 15.0000     <NA>    1  1.70    0  0.69    0 -0.29    0 -0.58    0  NA
+#>   fhc zac fac zts fts zss fss
+#> 1  NA  NA  NA  NA  NA  NA  NA
+#> 2  NA  NA  NA  NA  NA  NA  NA
+#> 3  NA  NA  NA  NA  NA  NA  NA
+#> 4  NA  NA  NA  NA  NA  NA  NA
 ```
 
 The returned value is a `data.frame` that can further be processed or

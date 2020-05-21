@@ -1,9 +1,13 @@
-# anthro (development version)
+# anthro 0.9.3
+
+## General
+
+* Internal code improvements.
 
 ## Bugfix
 
-* Z-scores are now only computed for `age < 60 month` instead of `age <= 60`.
-* Z-scores for wfl were previously also computed when `age >= 60` months and `<= 1856 days`.
+* Z-scores are now only computed for `age < 60 months` instead of `age <= 60 months`.
+* Z-scores for wfl were previously also computed when `age >= 60 months` and `<= 1856 days`.
 
 # anthro 0.9.2
 

@@ -1,5 +1,5 @@
 ## Test environments
-* local OS X install, R 3.6.2
+* local OS X install, R 4.0.0
 * OS X (on travis-ci), R release
 * ubuntu 12.04 (on travis-ci), R oldrel, devel, release
 * win-builder (devel and release)
@@ -8,7 +8,7 @@
 
 0 errors | 0 warnings | 0 notes
 
-* Potential NOTE: As requested in the last release, `anthro_prevalence` examples are not wrapped in `\dontrun` anymore. These examples usually take about 5 seconds depending on the machine.
+* `anthro_prevalence` examples are wrapped in `\dontrun` as it takes too long to compute for CRAN checks. It was requested to lower the runtime, but that requires more research in how to speed up the code. So I wrapped it in `\dontrun` again for now. Will continue to work on making the code faster.
 
 ## Reverse dependencies
 

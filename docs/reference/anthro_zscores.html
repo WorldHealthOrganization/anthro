@@ -76,7 +76,7 @@ skinfold-for-age based on the WHO Child Growth Standards." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3.9000</span>
       </span>
     </div>
 
@@ -310,16 +310,15 @@ Geneva: World Health Organization; pp 217. (web site: http://www.who.int/childgr
 #&gt; 2  NA  NA  NA  NA  NA  NA
 #&gt; 3  NA  NA  NA  NA  NA  NA</div><div class='input'>
 <span class='co'># or use it with a compute dataset</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>your_data_set</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span>(<span class='st'>"&lt;your survey&gt;.csv"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(
+<span class='co'># \dontrun{</span>
+<span class='no'>your_data_set</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/utils/read.table.html'>read.csv</a></span>(<span class='st'>"&lt;your survey&gt;.csv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file '&lt;your survey&gt;.csv': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(file, "rt"): cannot open the connection</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/with.html'>with</a></span>(
   <span class='no'>your_data_set</span>,
   <span class='fu'>anthro_zscores</span>(
     <span class='kw'>sex</span> <span class='kw'>=</span> <span class='no'>sex</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='no'>age_in_days</span>,
     <span class='kw'>weight</span> <span class='kw'>=</span> <span class='no'>weight</span>, <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='no'>lenhei</span>
   )
-)
-}</div></pre>
+)</div><div class='output co'>#&gt; <span class='error'>Error in with(your_data_set, anthro_zscores(sex = sex, age = age_in_days,     weight = weight, lenhei = lenhei)): object 'your_data_set' not found</span></div><div class='input'># }
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

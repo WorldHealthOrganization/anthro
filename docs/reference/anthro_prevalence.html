@@ -8,23 +8,29 @@
 
 <title>Compute prevalence estimates — anthro_prevalence • anthro</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -32,8 +38,8 @@
 
 
 
-<meta property="og:title" content="Compute prevalence estimates — anthro_prevalence" />
 
+<meta property="og:title" content="Compute prevalence estimates — anthro_prevalence" />
 <meta property="og:description" content="Prevalence estimates according to the WHO recommended standard analysis:
 includes prevalence estimates with corresponding standard errors
 and confidence intervals, and z-score summary statistics
@@ -43,7 +49,7 @@ levels for all available factors (age, sex, type of residence,
 geographical regions, wealth quintiles, mother education and one
 additional factor the user is interested in and for
 which data are available)." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,7 +66,7 @@ which data are available)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +80,7 @@ which data are available)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3</span>
       </span>
     </div>
 
@@ -93,10 +99,9 @@ which data are available)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/dirkschumacher/anthro">
+  <a href="https://github.com/dirkschumacher/anthro/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -120,7 +125,6 @@ which data are available)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Prevalence estimates according to the WHO recommended standard analysis:
 includes prevalence estimates with corresponding standard errors
 and confidence intervals, and z-score summary statistics
@@ -130,7 +134,6 @@ levels for all available factors (age, sex, type of residence,
 geographical regions, wealth quintiles, mother education and one
 additional factor the user is interested in and for
 which data are available).</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>anthro_prevalence</span>(
@@ -154,7 +157,7 @@ which data are available).</p>
   <span class='kw'>mothered</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
   <span class='kw'>othergr</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -315,7 +318,7 @@ attained by the mother</p></td>
 for stratified analysis.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Returns a data.frame with prevalence estimates for the various
@@ -331,7 +334,7 @@ additional factor the user is interested in and for which
 data are available).</p>
 <p>The resulting columns are coded with a <em>prefix</em>,
 <em>a prevalence indicator</em> and <em>a suffix</em>:</p>
-<p><strong>Prefix:</strong></p><dl class='dl-horizontal'>
+<p><strong>Prefix:</strong></p><dl'>
  <dt>HA</dt><dd><p>Height-for-age</p></dd>
  <dt>WA</dt><dd><p>Weight-for-age</p></dd>
  <dt>WA_2</dt><dd><p>Underweight</p></dd>
@@ -341,7 +344,7 @@ data are available).</p>
 
 </dl>
 
-<p><strong>Prevalence indicator:</strong></p><dl class='dl-horizontal'>
+<p><strong>Prevalence indicator:</strong></p><dl'>
  <dt>_3</dt><dd><p>Prevalence corresponding to &lt; -3 SD</p></dd>
  <dt>_2</dt><dd><p>Prevalence corresponding to &lt; -2 SD</p></dd>
  <dt>_1</dt><dd><p>Prevalence corresponding to &lt; -1 SD</p></dd>
@@ -351,7 +354,7 @@ data are available).</p>
 
 </dl>
 
-<p><strong>Suffix:</strong></p><dl class='dl-horizontal'>
+<p><strong>Suffix:</strong></p><dl'>
  <dt>_pop</dt><dd><p>Weighted sample size</p></dd>
  <dt>_unwpop</dt><dd><p>Unweighted sample size</p></dd>
  <dt>_r</dt><dd><p>Mean/prevalence</p></dd>
@@ -363,7 +366,7 @@ data are available).</p>
 </dl>
 
 
-<p><strong>For example:</strong></p><dl class='dl-horizontal'>
+<p><strong>For example:</strong></p><dl'>
   <dt>WHZ_pop</dt><dd><p>Weight-for-height weighted sample size</p></dd>
   <dt>HA_r</dt><dd><p>Height-for-age z-score mean</p></dd>
   <dt>WA_stdev</dt><dd><p>Weight-for-age z-score Standard Deviation</p></dd>
@@ -378,7 +381,6 @@ data are available).</p>
 
 </dl>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>In this function, all available (non-missing and non-flagged) z-score values
@@ -389,10 +391,10 @@ estimation (standard analysis).</p>
 <p>If not all parameter values have equal length, parameter values will be
 repeated to match the maximum length of all arguments except
 <code>is_age_in_month</code> using <code>rep_len</code>. This happens without warnings.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>anthro</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>)  <span class='co'># because it takes too long for CRAN checks</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>anthro</span>)
 
 <span class='co'># compute the prevalence estimates for 100 random children</span>
 <span class='co'># with weight around 15kg and height around 100cm</span>
@@ -434,20 +436,13 @@ repeated to match the maximum length of all arguments except
 #&gt; 18   Age + sex: 12-23 mo.Male           NA       NA        NA            NA
 #&gt; 19   Age + sex: 24-35 mo.Male           47 8.510638 10.638298      1.284468
 #&gt; 20   Age + sex: 36-47 mo.Male           NA       NA        NA            NA
-#&gt; 21   Age + sex: 48-59 mo.Male           NA       NA        NA            NA</div></pre>
+#&gt; 21   Age + sex: 48-59 mo.Male           NA       NA        NA            NA</div><div class='input'>
+</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -458,7 +453,7 @@ repeated to match the maximum length of all arguments except
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -113,16 +113,17 @@ adjust_lenhei <- function(age_in_days, measure, lenhei) {
 }
 
 anthro_zscore_adjusted <-
-  function(name, measure, age_in_days, sex, growthstandards, flag_threshold,
-             allowed_age_range = c(0, 1856),
-             zscore_is_valid = rep.int(TRUE, length(measure)),
-             zscore_fun = compute_zscore_adjusted) {
+  function(name, measure, age_in_days, age_in_months, sex, growthstandards, flag_threshold,
+           allowed_age_range = c(0, 1856),
+           zscore_is_valid = rep.int(TRUE, length(measure)),
+           zscore_fun = compute_zscore_adjusted) {
     stopifnot(is.character(name), length(name) == 1L, !is.na(name))
     stopifnot(is.numeric(measure))
     stopifnot(
       is.numeric(allowed_age_range), length(allowed_age_range) == 2L,
       !any(is.na(allowed_age_range))
     )
+    stopifnot(is.numeric(age_in_months))
     stopifnot(
       is.logical(zscore_is_valid),
       length(zscore_is_valid) == length(measure)
@@ -145,7 +146,7 @@ anthro_zscore_adjusted <-
 
     # we only compute zscores for children age < 60 months
     # the age in months is unrouned
-    valid_age <- age_under_60_month(age_in_days)
+    valid_age <- age_in_months < 60
 
     # at last we set certain zscores to NA
     valid_zscore <- !is.na(age_in_days) &

@@ -246,3 +246,16 @@ test_that("bug20190222: it does not crash if too few elements are in a group", {
     )
   )
 })
+
+test_that("Rounded values for age_in_days are used if age in months is provided", {
+  expect_silent(
+    res <- anthro_prevalence(
+      sex = c(1, 1, 1, 1, 1, 2),
+      age = c(59.9, 59.9, 59.92, 59.99, 59.992, 59.992),
+      is_age_in_month = TRUE,
+      weight = c(18, 15, 10, 15, 15, 15),
+      lenhei = c(100, 80, 100, 100, 100, 100)
+    )
+  )
+  expect_equal(res[1, 2], 5)
+})

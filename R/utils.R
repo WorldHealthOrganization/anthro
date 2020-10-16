@@ -18,16 +18,13 @@ standardize_oedema_var <- function(oedema) {
 }
 
 age_to_days <- function(age, is_age_in_month) {
-  if (is_age_in_month) {
+  # age in days is always treated as rounded integers
+  res <- if (is_age_in_month) {
     age * ANTHRO_DAYS_OF_MONTH
   } else {
     age
   }
-}
-
-age_under_60_month <- function(age_in_days) {
-  age_in_months <- age_to_months(age_in_days, is_age_in_month = FALSE)
-  age_in_months < 60
+  as.integer(round_up(res))
 }
 
 #' banker's rounding for 0 digits and positive numerics

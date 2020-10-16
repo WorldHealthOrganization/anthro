@@ -1,5 +1,18 @@
 # anthro (development version)
 
+## General
+
+* Handling of age information is improved and loss of information from
+  converting from age in days to age in months or vice verse is reduced.
+* Some code improvements.
+
+## Bugfix
+
+* Fixed a bug where, observations where erroneously removed from prevalence
+  computation. This happens if age in months was supplied, then values
+  `> 59.992` months were considered `> 1826` days. Now anything above
+  `60.009` months is considered `> 1826` days and thus excluded.
+
 # anthro 0.9.3
 
 ## General

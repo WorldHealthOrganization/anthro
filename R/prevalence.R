@@ -56,7 +56,8 @@
 #' for stratified analysis.
 #'
 #' @examples
-#' \dontrun{ # because it takes too long for CRAN checks
+#' \dontrun{
+#' # because it takes too long for CRAN checks
 #' library(anthro)
 #'
 #' # compute the prevalence estimates for 100 random children
@@ -234,7 +235,7 @@ anthro_prevalence <- function(sex,
   stopifnot(nrow(zscores) == length(sex))
 
   age_in_days <- age_to_days(age, is_age_in_month = is_age_in_month)
-  age_in_months <- age_in_days / ANTHRO_DAYS_OF_MONTH
+  age_in_months <- age_to_months(age, is_age_in_month = is_age_in_month)
 
   oedema <- standardize_oedema_var(oedema)
 
@@ -647,7 +648,7 @@ compute_prevalence_zscore_summary <- function(survey_data) {
   suppressWarnings({
     vecn_prev <-
       survey::svyby(
-        ~I(!is.na(var_prev)),
+        ~ I(!is.na(var_prev)),
         ~survey_subsets,
         design,
         survey::svytotal,
@@ -655,7 +656,7 @@ compute_prevalence_zscore_summary <- function(survey_data) {
       )
     vecn_unw_prev <-
       survey::svyby(
-        ~I(!is.na(var_prev)),
+        ~ I(!is.na(var_prev)),
         ~survey_subsets,
         design_unweighted,
         survey::svytotal,
@@ -699,22 +700,25 @@ compute_prevalence_zscore_summary <- function(survey_data) {
     # the survey package's survey::svyvar fails if
     # there is only one observation with an unexpected error it seems
     # we catch this error here and set all results to NA
-    mean_est_sd_summ <- tryCatch({
-      survey::svyby(
-        ~var_summ,
-        ~survey_subsets,
-        design,
-        survey::svyvar,
-        na.rm = TRUE,
-        na.rm.all = TRUE,
-        drop.empty.groups = FALSE
-      )
-    }, error = function(er) {
-      data.frame(
-        dummy = rep.int(NA_real_, nrow(mean_est_ci_summ)),
-        result = rep.int(NA_real_, nrow(mean_est_ci_summ))
-      )
-    })
+    mean_est_sd_summ <- tryCatch(
+      {
+        survey::svyby(
+          ~var_summ,
+          ~survey_subsets,
+          design,
+          survey::svyvar,
+          na.rm = TRUE,
+          na.rm.all = TRUE,
+          drop.empty.groups = FALSE
+        )
+      },
+      error = function(er) {
+        data.frame(
+          dummy = rep.int(NA_real_, nrow(mean_est_ci_summ)),
+          result = rep.int(NA_real_, nrow(mean_est_ci_summ))
+        )
+      }
+    )
   })
 
   df <- data.frame(

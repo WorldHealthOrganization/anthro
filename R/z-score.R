@@ -243,17 +243,59 @@ anthro_zscores <- function(sex,
     cbmi,
     cmeasure,
     csex,
-    anthro_zscore_length_for_age(clenhei, age_in_days, csex),
-    anthro_zscore_weight_for_age(weight, age_in_days, csex, oedema),
-    anthro_zscore_weight_for_lenhei(
-      weight, clenhei, cmeasure, age_in_days,
-      csex, oedema
+    anthro_zscore_length_for_age(
+      lenhei = clenhei,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex
     ),
-    anthro_zscore_bmi_for_age(cbmi, age_in_days, csex, oedema),
-    anthro_zscore_head_circumference_for_age(headc, age_in_days, csex),
-    anthro_zscore_arm_circumference_for_age(armc, age_in_days, csex),
-    anthro_zscore_triceps_skinfold_for_age(triskin, age_in_days, csex),
-    anthro_zscore_subscapular_skinfold_for_age(subskin, age_in_days, csex),
+    anthro_zscore_weight_for_age(
+      weight = weight,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex,
+      oedema = oedema
+    ),
+    anthro_zscore_weight_for_lenhei(
+      weight = weight,
+      lenhei = clenhei,
+      lenhei_unit = cmeasure,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex,
+      oedema = oedema
+    ),
+    anthro_zscore_bmi_for_age(
+      bmi = cbmi,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex,
+      oedema = oedema
+    ),
+    anthro_zscore_head_circumference_for_age(
+      headc,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex
+    ),
+    anthro_zscore_arm_circumference_for_age(
+      armc = armc,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex
+    ),
+    anthro_zscore_triceps_skinfold_for_age(
+      triskin = triskin,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex
+    ),
+    anthro_zscore_subscapular_skinfold_for_age(
+      subskin = subskin,
+      age_in_days = age_in_days,
+      age_in_months = age_in_months,
+      sex = csex
+    ),
     stringsAsFactors = FALSE
   )
 }

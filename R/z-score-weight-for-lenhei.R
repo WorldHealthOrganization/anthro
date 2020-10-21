@@ -4,6 +4,7 @@
 #' @param length_measure numeric
 #' @param length_unit character
 #' @param age_in_days integer, the age in days.
+#' @param age_in_months numeric, the age in months.
 #' @param sex integer, the sex where 1 is male and 2 is female
 #' @param flag_threshold numeric, a length 1 threshold.
 #'        If the absolute value of the z-score is greater than
@@ -14,12 +15,13 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_weight_for_lenhei <-
-  function(weight, lenhei, lenhei_unit, age_in_days, sex, oedema,
-             flag_threshold = 5, growthstandards_wfl = growthstandards_wflanthro,
-             growthstandards_wfh = growthstandards_wfhanthro) {
+  function(weight, lenhei, lenhei_unit, age_in_days, age_in_months, sex, oedema,
+           flag_threshold = 5, growthstandards_wfl = growthstandards_wflanthro,
+           growthstandards_wfh = growthstandards_wfhanthro) {
     stopifnot(is.numeric(weight))
     stopifnot(is.numeric(weight))
     stopifnot(is.character(oedema) && all(oedema %in% c("y", "n")))
+    stopifnot(is.numeric(age_in_months))
     assert_valid_sex(sex)
     age_in_days <- assert_valid_age_in_days(age_in_days)
     assert_growthstandards(growthstandards_wfl)
@@ -118,7 +120,7 @@ anthro_zscore_weight_for_lenhei <-
 
     valid_zscore <- valid_zscore & !(oedema %in% "y")
     valid_zscore <- valid_zscore & (is.na(age_in_days) | (age_in_days <= 1856))
-    valid_zscore <- valid_zscore & age_under_60_month(age_in_days)
+    valid_zscore <- valid_zscore & age_in_months < 60
 
     flag_zscore(flag_threshold, "wfl", zscore, valid_zscore)
   }

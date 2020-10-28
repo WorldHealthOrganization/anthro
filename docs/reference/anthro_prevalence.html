@@ -80,7 +80,7 @@ which data are available)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
       </span>
     </div>
 
@@ -136,27 +136,27 @@ additional factor the user is interested in and for
 which data are available).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>anthro_prevalence</span>(
-  <span class='no'>sex</span>,
-  <span class='kw'>age</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>is_age_in_month</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>measure</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>headc</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>armc</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>triskin</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>subskin</span> <span class='kw'>=</span> <span class='fl'>NA_real_</span>,
-  <span class='kw'>oedema</span> <span class='kw'>=</span> <span class='st'>"n"</span>,
-  <span class='kw'>sw</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>cluster</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>strata</span> <span class='kw'>=</span> <span class='fl'>1L</span>,
-  <span class='kw'>typeres</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>gregion</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>wealthq</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>mothered</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>,
-  <span class='kw'>othergr</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>
-)</pre>
+    <pre class="usage"><span class='fu'>anthro_prevalence</span><span class='op'>(</span>
+  <span class='va'>sex</span>,
+  age <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  is_age_in_month <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  weight <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  lenhei <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  measure <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  headc <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  armc <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  triskin <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  subskin <span class='op'>=</span> <span class='cn'>NA_real_</span>,
+  oedema <span class='op'>=</span> <span class='st'>"n"</span>,
+  sw <span class='op'>=</span> <span class='fl'>1</span>,
+  cluster <span class='op'>=</span> <span class='fl'>1L</span>,
+  strata <span class='op'>=</span> <span class='fl'>1L</span>,
+  typeres <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  gregion <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  wealthq <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  mothered <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  othergr <span class='op'>=</span> <span class='cn'>NA_character_</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -334,7 +334,7 @@ additional factor the user is interested in and for which
 data are available).</p>
 <p>The resulting columns are coded with a <em>prefix</em>,
 <em>a prevalence indicator</em> and <em>a suffix</em>:</p>
-<p><strong>Prefix:</strong></p><dl'>
+<p><strong>Prefix:</strong></p><dl>
  <dt>HA</dt><dd><p>Height-for-age</p></dd>
  <dt>WA</dt><dd><p>Weight-for-age</p></dd>
  <dt>WA_2</dt><dd><p>Underweight</p></dd>
@@ -344,7 +344,7 @@ data are available).</p>
 
 </dl>
 
-<p><strong>Prevalence indicator:</strong></p><dl'>
+<p><strong>Prevalence indicator:</strong></p><dl>
  <dt>_3</dt><dd><p>Prevalence corresponding to &lt; -3 SD</p></dd>
  <dt>_2</dt><dd><p>Prevalence corresponding to &lt; -2 SD</p></dd>
  <dt>_1</dt><dd><p>Prevalence corresponding to &lt; -1 SD</p></dd>
@@ -354,7 +354,7 @@ data are available).</p>
 
 </dl>
 
-<p><strong>Suffix:</strong></p><dl'>
+<p><strong>Suffix:</strong></p><dl>
  <dt>_pop</dt><dd><p>Weighted sample size</p></dd>
  <dt>_unwpop</dt><dd><p>Unweighted sample size</p></dd>
  <dt>_r</dt><dd><p>Mean/prevalence</p></dd>
@@ -366,7 +366,7 @@ data are available).</p>
 </dl>
 
 
-<p><strong>For example:</strong></p><dl'>
+<p><strong>For example:</strong></p><dl>
   <dt>WHZ_pop</dt><dd><p>Weight-for-height weighted sample size</p></dd>
   <dt>HA_r</dt><dd><p>Height-for-age z-score mean</p></dd>
   <dt>WA_stdev</dt><dd><p>Weight-for-age z-score Standard Deviation</p></dd>
@@ -393,50 +393,31 @@ repeated to match the maximum length of all arguments except
 <code>is_age_in_month</code> using <code>rep_len</code>. This happens without warnings.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'> <span class='co'># because it takes too long for CRAN checks</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>anthro</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># because it takes too long for CRAN checks</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/dirkschumacher/anthro'>anthro</a></span><span class='op'>)</span>
 
 <span class='co'># compute the prevalence estimates for 100 random children</span>
 <span class='co'># with weight around 15kg and height around 100cm</span>
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='fu'>anthro_prevalence</span>(
-  <span class='kw'>sex</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
-  <span class='kw'>age</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='co'># days</span>
-  <span class='kw'>weight</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>15</span>, <span class='fl'>1</span>),
-  <span class='kw'>lenhei</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>100</span>, <span class='fl'>100</span>, <span class='fl'>10</span>)
-)
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>anthro_prevalence</span><span class='op'>(</span>
+  sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
+  age <span class='op'>=</span> <span class='fl'>1000</span>, <span class='co'># days</span>
+  weight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>15</span>, <span class='fl'>1</span><span class='op'>)</span>,
+  lenhei <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>100</span>, <span class='fl'>10</span><span class='op'>)</span>
+<span class='op'>)</span>
 
 <span class='co'># Height-for-age</span>
 <span class='co'># We extract prevalence estimates for &lt;-3SD, &lt;-2SD (Stunting)</span>
 <span class='co'># and the z-score mean</span>
-<span class='no'>col_names</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Group"</span>, <span class='st'>"HAZ_unwpop"</span>, <span class='st'>"HA_3_r"</span>, <span class='st'>"HA_2_r"</span>, <span class='st'>"HA_r"</span>)
-<span class='no'>res</span> <span class='kw'>&lt;-</span> <span class='no'>res</span>[, <span class='no'>col_names</span>]
+<span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"HAZ_unwpop"</span>, <span class='st'>"HA_3_r"</span>, <span class='st'>"HA_2_r"</span>, <span class='st'>"HA_r"</span><span class='op'>)</span>
+<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='va'>res</span><span class='op'>[</span>, <span class='va'>col_names</span><span class='op'>]</span>
 
 <span class='co'># rename the columns</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>res</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span><span class='op'>)</span>
 
 <span class='co'># note that we only generated data for one age group</span>
-<span class='no'>res</span></div><div class='output co'>#&gt;                         Group Unweighted N     -3SD      -2SD z-score mean 
-#&gt; 1                         All           91 4.395604  6.593407      1.632857
-#&gt; 2         Age group: 00-05 mo           NA       NA        NA            NA
-#&gt; 3         Age group: 06-11 mo           NA       NA        NA            NA
-#&gt; 4         Age group: 12-23 mo           NA       NA        NA            NA
-#&gt; 5         Age group: 24-35 mo           91 4.395604  6.593407      1.632857
-#&gt; 6         Age group: 36-47 mo           NA       NA        NA            NA
-#&gt; 7         Age group: 48-59 mo           NA       NA        NA            NA
-#&gt; 8                 Sex: Female           44 0.000000  2.272727      2.005000
-#&gt; 9                   Sex: Male           47 8.510638 10.638298      1.284468
-#&gt; 10 Age + sex: 00-05 mo.Female           NA       NA        NA            NA
-#&gt; 11 Age + sex: 06-11 mo.Female           NA       NA        NA            NA
-#&gt; 12 Age + sex: 12-23 mo.Female           NA       NA        NA            NA
-#&gt; 13 Age + sex: 24-35 mo.Female           44 0.000000  2.272727      2.005000
-#&gt; 14 Age + sex: 36-47 mo.Female           NA       NA        NA            NA
-#&gt; 15 Age + sex: 48-59 mo.Female           NA       NA        NA            NA
-#&gt; 16   Age + sex: 00-05 mo.Male           NA       NA        NA            NA
-#&gt; 17   Age + sex: 06-11 mo.Male           NA       NA        NA            NA
-#&gt; 18   Age + sex: 12-23 mo.Male           NA       NA        NA            NA
-#&gt; 19   Age + sex: 24-35 mo.Male           47 8.510638 10.638298      1.284468
-#&gt; 20   Age + sex: 36-47 mo.Male           NA       NA        NA            NA
-#&gt; 21   Age + sex: 48-59 mo.Male           NA       NA        NA            NA</div><div class='input'>
+<span class='va'>res</span>
+<span class='op'>}</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -453,7 +434,7 @@ repeated to match the maximum length of all arguments except
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

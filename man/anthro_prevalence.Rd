@@ -234,7 +234,8 @@ repeated to match the maximum length of all arguments except
 \code{is_age_in_month} using \code{rep_len}. This happens without warnings.
 }
 \examples{
-\dontrun{ # because it takes too long for CRAN checks
+\dontrun{
+# because it takes too long for CRAN checks
 library(anthro)
 
 # compute the prevalence estimates for 100 random children

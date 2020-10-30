@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.3.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
       </span>
     </div>
 
@@ -114,25 +114,40 @@
       <small>Source: <a href='https://github.com/dirkschumacher/anthro/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="anthro-development-version" class="section level1">
-<h1 class="page-header" data-toc-text="development version">
-<a href="#anthro-development-version" class="anchor"></a>anthro (development version)<small> Unreleased </small>
-</h1>
-</div>
-    <div id="anthro-093" class="section level1">
-<h1 class="page-header" data-toc-text="0.9.3">
-<a href="#anthro-093" class="anchor"></a>anthro 0.9.3<small> 2020-05-21 </small>
+    <div id="anthro-094" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.4">
+<a href="#anthro-094" class="anchor"></a>anthro 0.9.4<small> Unreleased </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general" class="anchor"></a>General</h2>
 <ul>
-<li>Internal code improvements.</li>
+<li>Handling of age information is improved and loss of information from converting from age in days to age in months or vice verse is reduced.</li>
+<li>Some code improvements.</li>
 </ul>
 </div>
 <div id="bugfix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bugfix" class="anchor"></a>Bugfix</h2>
+<ul>
+<li>Fixed a bug where, observations where erroneously removed from prevalence computation. This happens if age in months was supplied, then values <code>&gt; 59.992</code> months were considered <code>&gt; 1826</code> days. Now anything above <code>60.009</code> months is considered <code>&gt; 1826</code> days and thus excluded.</li>
+</ul>
+</div>
+</div>
+    <div id="anthro-093" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.3">
+<a href="#anthro-093" class="anchor"></a>anthro 0.9.3<small> 2020-05-21 </small>
+</h1>
+<div id="general-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-1" class="anchor"></a>General</h2>
+<ul>
+<li>Internal code improvements.</li>
+</ul>
+</div>
+<div id="bugfix-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfix-1" class="anchor"></a>Bugfix</h2>
 <ul>
 <li>Z-scores are now only computed for <code>age &lt; 60 months</code> instead of <code>age &lt;= 60 months</code>.</li>
 <li>Z-scores for wfl were previously also computed when <code>age &gt;= 60 months</code> and <code>&lt;= 1856 days</code>.</li>
@@ -175,7 +190,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

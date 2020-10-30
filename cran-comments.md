@@ -8,4 +8,6 @@
 
 0 errors | 0 warnings | 0 notes
 
+This is a resubmission:
+
 * Fixed the URL note regarding a non-https link

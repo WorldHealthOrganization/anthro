@@ -8,6 +8,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-## Reverse dependencies
-
-There are no reverse dependencies.
+* Fixed the URL note regarding a non-https link

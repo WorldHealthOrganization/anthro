@@ -1,13 +1,13 @@
 
-[![Travis build
-status](https://travis-ci.org/dirkschumacher/anthro.svg?branch=master)](https://travis-ci.org/dirkschumacher/anthro)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro?branch=master&svg=true)](https://ci.appveyor.com/project/dirkschumacher/anthro)
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/dirkschumacher/anthro/workflows/R-CMD-check/badge.svg)](https://github.com/dirkschumacher/anthro/actions)
 [![Coverage
 status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
 
 # Anthro
 

@@ -17,8 +17,8 @@ anthro_prevalence(
   subskin = NA_real_,
   oedema = "n",
   sw = 1,
-  cluster = 1L,
-  strata = 1L,
+  cluster = NULL,
+  strata = NULL,
   typeres = NA_character_,
   gregion = NA_character_,
   wealthq = NA_character_,
@@ -118,9 +118,12 @@ If unspecified, the all 1 vector is used, i.e. where all records
 have equal sampling weights, and un-weighted analysis is performed.
 Negative values are not allowed.}
 
-\item{cluster}{An optional integer vector representing clusters}
+\item{cluster}{An optional integer vector representing clusters. If the value
+is NULL this is treated as a survey without a cluster. This is also the case
+if all values are equal, then we assume there is also no cluster.}
 
-\item{strata}{An optional integer vector representing strata}
+\item{strata}{An optional integer vector representing strata. Pass NULL to
+indicate that there are no strata.}
 
 \item{typeres}{An optional integer or character vector representing a type of
 residence.
@@ -228,6 +231,8 @@ estimation (standard analysis).
 
 Note: the function temporarily sets the \code{survey} option
 \code{survey.lonely.psu} to "adjust" and then restores the original values.
+The function is a wrapper around the \code{survey} package to compute
+estimates for the different groups (e.g. by age or sex).
 
 If not all parameter values have equal length, parameter values will be
 repeated to match the maximum length of all arguments except

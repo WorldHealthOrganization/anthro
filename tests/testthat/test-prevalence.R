@@ -13,7 +13,7 @@ describe("anthro_prevalence()", {
       "weights"
     )
   })
-  it("it fails if no values left for analysis", {
+  it("fails if no values left for analysis", {
     expect_error(
       expect_warning(anthro_prevalence(
         sex = c(1, 2, 2, 1),
@@ -39,6 +39,15 @@ describe("anthro_prevalence()", {
     expect_equal(col_names[8L], c("HA_2_r"))
     expect_equal(col_names[28L], c("HA_r"))
     expect_equal(col_names[33L], c("WAZ_pop"))
+  })
+  it("returns the group as a character vector", {
+    res <- anthro_prevalence(
+      sex = c(1, 2, 2, 1),
+      age = c(1001, 1000, 1010, 1000),
+      weight = c(18, 15, 10, 15),
+      lenhei = c(100, 80, 100, 100)
+    )
+    expect_true(is.character(res$Group))
   })
   it("warns if wealthq is not NA,1,2,3,4,5 or Q1:Q5", {
     expect_warning(
@@ -204,24 +213,34 @@ describe("anthro_prevalence()", {
         sex = 1,
         age = c(25, 26),
         is_age_in_month = TRUE,
-        weight = 1:3 * 10,
-        lenhei = 1:4 * 40,
-        measure = rep.int("l", 5),
-        headc = 1:6 * 10,
-        armc = 1:7 * 10,
+        weight = 1:64 * 10,
+        lenhei = 1:64 * 40,
+        measure = rep.int("l", 8),
+        headc = 1:16 * 10,
+        armc = 1:8 * 10,
         triskin = 1:8 * 10,
-        subskin = 1:9 * 10,
-        oedema = rep.int("n", 10),
+        subskin = 1:4 * 10,
+        oedema = rep.int("n", 8),
         sw = 0.5,
-        cluster = rep.int(1, 12),
-        strata = rep.int(1, 13),
-        typeres = rep.int("Rural", 14),
-        gregion = rep.int(1, 15),
-        wealthq = rep.int(1, 16),
-        mothered = rep.int("Primary", 17),
-        othergr = rep.int("a", 18)
+        cluster = rep.int(1, 32),
+        strata = rep.int(1, 8),
+        typeres = rep.int("Rural", 2),
+        gregion = rep.int(1, 4),
+        wealthq = rep.int(1, 8),
+        mothered = rep.int("Primary", 8),
+        othergr = rep.int("a", 2)
       )
     })
+  })
+  it("has the correct backwards compatible suffix for pop/unwpop", {
+    res <- anthro_prevalence(
+      sex = c(1, 2, 2, 1, 1),
+      age = c(1001, 1000, 1010, 1000, 1000),
+      weight = c(18, 15, 10, 15, 15),
+      lenhei = c(100, 80, 100, 100, 100)
+    )
+    expect_true(all(!(c("HA_2_WH2_pop", "HA_2_WH2_unwpop") %in% colnames(res))))
+    expect_true(all(c("HA_2_WH_2_pop", "HA_2_WH_2_unwpop") %in% colnames(res)))
   })
 })
 
@@ -258,4 +277,16 @@ test_that("Rounded values for age_in_days are used if age in months is provided"
     )
   )
   expect_equal(res[1, 2], 5)
+})
+
+test_that("Prevalence computation does not fail if all zscores are NA", {
+  expect_silent(
+    anthro_prevalence(
+      sex = c(1, 1, 1, 1, 1, 2),
+      age = 30,
+      is_age_in_month = TRUE,
+      weight = 500,
+      lenhei = 700
+    )
+  )
 })

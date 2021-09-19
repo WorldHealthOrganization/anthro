@@ -1,5 +1,5 @@
 Package: anthro
-Version: 0.9.4.9000
+Version: 0.9.4.9001
 Title: Computation of the WHO Child Growth Standards
 Description: Provides WHO Child Growth Standards (z-scores) with
              confidence intervals and standard errors around the
@@ -22,13 +22,14 @@ Imports:
     survey
 Suggests: 
     testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Collate: 
     'anthro.R'
+    'utils.R'
     'assertions.R'
     'prevalence.R'
-    'utils.R'
     'z-score-helper.R'
+    'api.R'
     'z-score-arm-circumference-for-age.R'
     'z-score-bmi-for-age.R'
     'z-score-head-circumference-for-age.R'

@@ -1,5 +1,14 @@
 # anthro (development version)
 
+## General
+
+* Improved prevalence computation code, it now consumes slightly less time and
+  is better organized. In addition test-coverage and documentation is improved.
+* Cluster/strata values in `anthro_prevalence` now support an explicit `NULL`
+  value to better control for (missing) cluster/strata information.
+* New API functions are exported, mainly useful to use complicated portions
+  of the logic in other packages, not meant for end-users.
+
 # anthro 0.9.4
 
 ## General

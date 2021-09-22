@@ -11,10 +11,6 @@ anthro_prevalence(
   weight = NA_real_,
   lenhei = NA_real_,
   measure = NA_character_,
-  headc = NA_real_,
-  armc = NA_real_,
-  triskin = NA_real_,
-  subskin = NA_real_,
   oedema = "n",
   sw = NULL,
   cluster = NULL,
@@ -83,22 +79,6 @@ following algorithm:
       measurement < 87 cm and standing height
       if measurement >= 87 cm.
 }}
-
-\item{headc}{A numeric variable containing head circumference information,
-which must be in centimeters. Head circumference-for-age
-z-scores are not calculated if head circumference is missing.}
-
-\item{armc}{A numeric variable containing arm circumference information,
-which must be in centimeters. Arm circumference-for-age z-scores
-are not calculated if arm circumference is missing.}
-
-\item{triskin}{A numeric variable containing triceps skinfold information,
-which must be in millimeters. Triceps skinfold-for-age z-scores
-are not calculated if triceps skinfold is missing.}
-
-\item{subskin}{A numeric variable containing subscapular skinfold information,
-which must be in millimeters. Subscapular skinfold-for-age z-scores
-are not calculated if subscapular skinfold is missing.}
 
 \item{oedema}{The values of this character variable must be "n", "N" or "2"
 for non-oedema, and "y", "Y", "1" for oedema. Although it is highly

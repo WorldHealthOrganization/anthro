@@ -10,6 +10,8 @@
   of the logic in other packages, not meant for end-users.
 * `nest = TRUE` is now set for the survey designs in `anthro_prevalence`. See
   the documentation of `survey::svydesign` for more information.
+* Removed `headc`, `armc`, `triskin` and `subskin` from parameters of
+  `anthro_prevalence` as they were not used for the final output.
 
 # anthro 0.9.4
 

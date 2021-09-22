@@ -286,3 +286,50 @@ test_that("Prevalence computation does not fail if all zscores are NA", {
     )
   )
 })
+
+test_that("Cluster/strata/sw information is passed correctly to survey", {
+  set.seed(1)
+  data <- data.frame(
+    sex = sample(1:2, 100, replace = TRUE),
+    age = sample(0:50, 100, replace = TRUE),
+    weight = pmax(rnorm(100, 20, 10), 1),
+    lenhei = pmax(rnorm(100, 80, 20), 30),
+    cluster = 1:100 %% 3
+  )
+  data$strata <- as.integer(data$age > 20)
+  data$sw <- runif(nrow(data)) / nrow(data)
+  res <- anthro_prevalence(
+    data$sex,
+    data$age,
+    is_age_in_month = TRUE,
+    weight = data$weight,
+    lenhei = data$lenhei,
+    cluster = data$cluster,
+    strata = data$strata,
+    sw = data$sw
+  )
+  zscores <- anthro_zscores(
+    data$sex,
+    data$age,
+    is_age_in_month = TRUE,
+    weight = data$weight,
+    lenhei = data$lenhei
+  )
+  zscores <- cbind(zscores, data)
+  zscores$zlen <- ifelse(zscores$flen == 1, NA_real_, zscores$zlen)
+  design <- survey::svydesign(
+    id = ~cluster, data = zscores, nest = TRUE, weights = ~sw, strata = ~strata
+  )
+  expected <- survey::svyby(~zlen, ~sex, design, survey::svymean,
+    na.rm = TRUE,
+    na.rm.all = TRUE,
+    drop.empty.groups = FALSE
+  )
+  observed <- res[c(8, 9), c("Group", "HA_r", "HA_se")]
+  expect_equal(
+    observed$HA_r, rev(expected$zlen)
+  )
+  expect_equal(
+    observed$HA_se, rev(expected$se)
+  )
+})

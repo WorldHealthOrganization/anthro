@@ -150,6 +150,8 @@
 #' @include anthro.R
 #' @include assertions.R
 #' @importFrom stats confint
+#' @importFrom stats as.formula
+#' @importFrom stats setNames
 #' @export
 anthro_prevalence <- function(sex,
                               age = NA_real_,

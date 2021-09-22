@@ -628,7 +628,6 @@ prev_zscore_flagged_column <- function(indicator) {
 
 create_zscore_auxiliary_columns <- function(dataframe) {
   oedema <- dataframe[["oedema"]]
-  # TODO: might need to make it configurable
   relevant_cols <- intersect(c("zwei", "zwfl", "zbmi"), colnames(dataframe))
   for (col in relevant_cols) {
     dataframe[[col]][oedema %in% "y"] <- NA_real_

@@ -16,7 +16,7 @@ anthro_prevalence(
   triskin = NA_real_,
   subskin = NA_real_,
   oedema = "n",
-  sw = 1,
+  sw = NULL,
   cluster = NULL,
   strata = NULL,
   typeres = NA_character_,
@@ -114,9 +114,7 @@ indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
 
 \item{sw}{An optional numeric vector containing the sampling weights.
-If unspecified, the all 1 vector is used, i.e. where all records
-have equal sampling weights, and un-weighted analysis is performed.
-Negative values are not allowed.}
+If NULL, no sampling weights are used.}
 
 \item{cluster}{An optional integer vector representing clusters. If the value
 is NULL this is treated as a survey without a cluster. This is also the case

@@ -26,9 +26,7 @@
 #' @inheritParams anthro_zscores
 #'
 #' @param sw An optional numeric vector containing the sampling weights.
-#' If unspecified, the all 1 vector is used, i.e. where all records
-#' have equal sampling weights, and un-weighted analysis is performed.
-#' Negative values are not allowed.
+#' If NULL, no sampling weights are used.
 #'
 #' @param cluster An optional integer vector representing clusters. If the value
 #' is NULL this is treated as a survey without a cluster. This is also the case
@@ -164,7 +162,7 @@ anthro_prevalence <- function(sex,
                               triskin = NA_real_,
                               subskin = NA_real_,
                               oedema = "n",
-                              sw = 1,
+                              sw = NULL,
                               cluster = NULL,
                               strata = NULL,
                               typeres = NA_character_,
@@ -181,7 +179,7 @@ anthro_prevalence <- function(sex,
   assert_character_or_numeric(othergr)
   is.null(cluster) || assert_numeric(cluster)
   is.null(strata) || assert_numeric(strata)
-  assert_numeric(sw)
+  is.null(sw) || assert_numeric(sw)
 
   # make all input lengths equal
 
@@ -196,7 +194,6 @@ anthro_prevalence <- function(sex,
     triskin,
     subskin,
     oedema,
-    sw,
     typeres,
     gregion,
     wealthq,
@@ -208,6 +205,9 @@ anthro_prevalence <- function(sex,
   }
   if (!is.null(strata)) {
     input[["strata"]] <- strata
+  }
+  if (!is.null(sw)) {
+    input[["sw"]] <- sw
   }
 
   # zscore data
@@ -349,8 +349,7 @@ anthro_prevalence <- function(sex,
       wealthq = input[["wealthq"]],
       mothered = input[["mothered"]],
       othergr = input[["othergr"]],
-      oedema = input[["oedema"]],
-      sampling_weights = sw
+      oedema = input[["oedema"]]
     )
   )
   if (!is.null(input[["cluster"]])) {
@@ -358,6 +357,9 @@ anthro_prevalence <- function(sex,
   }
   if (!is.null(input[["strata"]])) {
     prev_data[["strata"]] <- input[["strata"]]
+  }
+  if (!is.null(input[["sw"]])) {
+    prev_data[["sampling_weights"]] <- input[["sw"]]
   }
 
   # Before we compute all prevalence indicators we temporarily set a
@@ -401,12 +403,12 @@ compute_prevalence_of_zscores <- function(data,
                                           survey_subsets) {
   stopifnot(
     is.data.frame(data),
-    all(c("sampling_weights", "oedema") %in% colnames(data)),
+    all(c("oedema") %in% colnames(data)),
     is.list(zscores_to_compute),
     all(vapply(zscores_to_compute, function(x) {
       is.list(x) && length(x) == 4L
     }, logical(1L))),
-    is.numeric(data[["sampling_weights"]]),
+    is.null(data[["sampling_weights"]]) || is.numeric(data[["sampling_weights"]]),
     is.list(survey_subsets),
     is.character(names(survey_subsets))
     # all(vapply(survey_subsets, function(x) {
@@ -414,7 +416,7 @@ compute_prevalence_of_zscores <- function(data,
     # }, logical(1L)))
   )
 
-  if (any(data[["sampling_weights"]] < 0, na.rm = TRUE)) {
+  if (!is.null(data[["sampling_weights"]]) && any(data[["sampling_weights"]] < 0, na.rm = TRUE)) {
     stop(
       "Negative sampling weights are not allowed.",
       call. = FALSE
@@ -452,7 +454,7 @@ compute_prevalence_of_zscores <- function(data,
   }
 
   # set all sw that are NA to 0
-  if (anyNA(data[["sampling_weights"]])) {
+  if (!is.null(data[["sampling_weights"]]) && anyNA(data[["sampling_weights"]])) {
     sw <- data[["sampling_weights"]]
     na_sw <- is.na(sw)
     sw[na_sw] <- 0
@@ -498,6 +500,7 @@ generate_cutoffs <- function(data_column) {
 build_survey_design <- function(survey_data) {
   has_cluster_info <- !is.null(survey_data[["cluster"]])
   has_strata_info <- !is.null(survey_data[["strata"]])
+  has_sampling_weights <- !is.null(survey_data[["sampling_weights"]])
   just_one_cluster <- has_cluster_info && length(unique(survey_data[["cluster"]])) == 1L
   any_strata_na <- anyNA(survey_data[["strata"]])
   stopifnot(!any_strata_na)
@@ -509,20 +512,23 @@ build_survey_design <- function(survey_data) {
   strata_formula <- if (has_strata_info) {
     ~strata
   }
-  design <-
-    survey::svydesign(
+  sampling_weights_formula <- if (has_sampling_weights) {
+    ~sampling_weights
+  }
+  design <- survey::svydesign(
       ids = cluster_formula,
       strata = strata_formula,
-      weights = ~sampling_weights,
-      data = survey_data
-    )
-  design_unweighted <-
-    survey::svydesign(
+      weights = sampling_weights_formula,
+      data = survey_data,
+      nest = TRUE
+  )
+  design_unweighted <- survey::svydesign(
       ids = cluster_formula,
       strata = strata_formula,
       weights = NULL,
-      data = survey_data
-    )
+      data = survey_data,
+      nest = TRUE
+  )
   list(
     design = design,
     design_unweighted = design_unweighted

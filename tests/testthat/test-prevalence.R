@@ -320,6 +320,9 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   design <- survey::svydesign(
     id = ~cluster, data = zscores, nest = TRUE, weights = ~sw, strata = ~strata
   )
+  design_unweighted <- survey::svydesign(
+    id = ~cluster, data = zscores, nest = TRUE, weights = NULL, strata = ~strata
+  )
   expected <- survey::svyby(~zlen, ~sex, design, survey::svymean,
     na.rm = TRUE,
     na.rm.all = TRUE,
@@ -331,5 +334,26 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   )
   expect_equal(
     observed$HA_se, rev(expected$se)
+  )
+  expected_total_weighted <- survey::svytotal(
+    ~ I(!is.na(zlen)),
+    design,
+    na.rm = TRUE,
+    na.rm.all = TRUE,
+    drop.empty.groups = FALSE
+  )
+  expected_total_unweighted <- survey::svytotal(
+    ~ I(!is.na(zlen)),
+    design_unweighted,
+    na.rm = TRUE,
+    na.rm.all = TRUE,
+    drop.empty.groups = FALSE
+  )
+  observed <- res[1, 2:3, drop = TRUE]
+  expect_equal(
+    observed$HAZ_pop, as.numeric(expected_total_weighted[2])
+  )
+  expect_equal(
+    observed$HAZ_unwpop, as.numeric(expected_total_unweighted[2])
   )
 })

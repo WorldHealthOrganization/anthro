@@ -9,9 +9,21 @@ anthro_api_compute_prevalence(data, zscores_to_compute, survey_subsets)
 \arguments{
 \item{data}{a data frame containing the underlying data}
 
-\item{zscores_to_compute}{a list of zscore indicators that should be computed.}
+\item{zscores_to_compute}{a list of zscore indicators that should be computed.
+The list needs to have 4 named values:
+\describe{
+  \item{name}{The name or abbreviation of the indicator.
+  This will appear in the column names of the output.}
+  \item{column}{The column name without the 'z' of the zscore that shall be
+  used.}
+  \item{with_cutoffs}{TRUE iff cutoffs for the indicator shall be computed.}
+  \item{prevalence_column}{The column for the prevalence. Often it is the
+  same as the zscore column.}
+}}
 
-\item{survey_subsets}{subsets for which the prevalence values should be computed.}
+\item{survey_subsets}{subsets for which the prevalence values should be
+computed. It is a named list of characters, where the values correspond
+to columns and the names to labels in the output.}
 }
 \description{
 Compute prevalence of zscores

@@ -18,3 +18,11 @@ anthro_api_compute_zscore_adjusted(y, m, l, s)
 \description{
 Helper function to compute the adjusted zscore
 }
+\note{
+This function is meant to be used by other anthro related packages.
+It is not advised to use this in you own packages or analysis. If you must
+use it, prepare for potential breaking changes in the future.
+}
+\references{
+http://www.who.int/childgrowth/standards/Chap_7.pdf
+}

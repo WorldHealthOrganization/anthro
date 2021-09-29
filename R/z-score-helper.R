@@ -6,7 +6,7 @@
 #' @param s s
 #'
 #' @references
-#' http://www.who.int/childgrowth/standards/Chap_7.pdf?ua=1
+#' http://www.who.int/childgrowth/standards/Chap_7.pdf
 #'
 #' @noRd
 compute_zscore <- function(y, m, l, s) {
@@ -22,7 +22,7 @@ compute_zscore <- function(y, m, l, s) {
 #' @param s s
 #'
 #' @references
-#' http://www.who.int/childgrowth/standards/Chap_7.pdf?ua=1
+#' http://www.who.int/childgrowth/standards/Chap_7.pdf
 #'
 #' @noRd
 compute_zscore_adjusted <- function(y, m, l, s) {

@@ -448,7 +448,8 @@ compute_prevalence_of_zscores <- function(data,
   }
 
   # set all sw that are NA to 0
-  if (!is.null(data[["sampling_weights"]]) && anyNA(data[["sampling_weights"]])) {
+  if (!is.null(data[["sampling_weights"]]) &&
+      anyNA(data[["sampling_weights"]])) {
     sw <- data[["sampling_weights"]]
     na_sw <- is.na(sw)
     sw[na_sw] <- 0

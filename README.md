@@ -87,7 +87,7 @@ To look at all parameters, type `?anthro_zscores`.
 
 ### Prevalence estimates
 
-The prevalence estimates are similiar to `anthro_zscores`: again they
+The prevalence estimates are similar to `anthro_zscores`: again they
 take vectors instead of a data frame and column names for the
 aforementioned reasons.
 

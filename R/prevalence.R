@@ -366,19 +366,19 @@ anthro_prevalence <- function(sex,
     zscores_to_compute = list(
       list(
         name = "HA", column = "len",
-        with_cutoffs = TRUE, prevalence_column = "zlen"
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = FALSE
       ),
       list(
         name = "WA", column = "wei",
-        with_cutoffs = TRUE, prevalence_column = "zwei_aux"
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       ),
       list(
         name = "BMI", column = "bmi",
-        with_cutoffs = TRUE, prevalence_column = "zbmi_aux"
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       ),
       list(
         name = "WH", column = "wfl",
-        with_cutoffs = TRUE, prevalence_column = "zwfl_aux"
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       )
     ),
     survey_subsets = setNames(strata_cols[included_strata], strata_label)
@@ -400,14 +400,11 @@ compute_prevalence_of_zscores <- function(data,
     all(c("oedema") %in% colnames(data)),
     is.list(zscores_to_compute),
     all(vapply(zscores_to_compute, function(x) {
-      is.list(x) && length(x) == 4L
+      is.list(x) && length(x) == 4
     }, logical(1L))),
     is.null(data[["sampling_weights"]]) || is.numeric(data[["sampling_weights"]]),
     is.list(survey_subsets),
     is.character(names(survey_subsets))
-    # all(vapply(survey_subsets, function(x) {
-    #  is.list(x) && length(x) == 2L
-    # }, logical(1L)))
   )
 
   if (!is.null(data[["sampling_weights"]]) && any(data[["sampling_weights"]] < 0, na.rm = TRUE)) {
@@ -419,7 +416,7 @@ compute_prevalence_of_zscores <- function(data,
 
   zscores_to_compute <- lapply(zscores_to_compute, function(indicator) {
     if (isTRUE(indicator$with_cutoffs)) {
-      indicator$cutoffs <- generate_cutoffs(indicator$prevalence_column)
+      indicator$cutoffs <- generate_cutoffs(prev_prevalence_column_name(indicator))
     }
     indicator
   })
@@ -464,7 +461,7 @@ compute_prevalence_of_zscores <- function(data,
   }
 
   res <- set_flagged_zscores_to_NA(zscores_to_compute, data)
-  res <- create_zscore_auxiliary_columns(res)
+  res <- create_zscore_auxiliary_columns(zscores_to_compute, res)
   res <- create_cutoff_columns_for_each_zscore(zscores_to_compute, res)
   survey_design <- build_survey_design(res)
 
@@ -535,14 +532,13 @@ compute_prevalence_stunting_wasting <- function(survey_design, subset_col_name) 
     name = "HA_2_WH_2",
     column = "len_zwfl_aux_stunting_wasting",
     cutoffs = list(),
-    zscore_column = "zlen_zwfl_aux_stunting_overweight",
     prevalence_column = "zlen_zwfl_aux_stunting_wasting"
   )
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
       survey_design$design, indicator$name,
-      subset_col_name, indicator$prevalence_column
+      subset_col_name, prev_prevalence_column_name(indicator)
     )
   )
 }
@@ -552,14 +548,13 @@ compute_prevalence_stunting_overweight <- function(survey_design, subset_col_nam
     name = "HA_2_WH2",
     column = "len_zwfl_aux_stunting_overweight",
     cutoffs = list(),
-    zscore_column = "zlen_zwfl_aux_stunting_overweight",
-    prevalence_column = "zlen_zwfl_aux_stunting_overweight"
+    zscore_column = "zlen_zwfl_aux_stunting_overweight"
   )
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
       survey_design$design, indicator$name,
-      subset_col_name, indicator$prevalence_column
+      subset_col_name, prev_prevalence_column_name(indicator)
     )
   )
 }
@@ -623,13 +618,27 @@ prev_zscore_flagged_column <- function(indicator) {
   paste0("f", indicator[["column"]])
 }
 
-create_zscore_auxiliary_columns <- function(dataframe) {
+prev_prevalence_column_name <- function(indicator) {
+  if (isTRUE(indicator$with_auxiliary_zscore_column)) {
+    paste0(prev_zscore_value_column(indicator), "_aux")
+  } else {
+    prev_zscore_value_column(indicator)
+  }
+}
+
+create_zscore_auxiliary_columns <- function(zscores_to_compute, dataframe) {
   oedema <- dataframe[["oedema"]]
-  relevant_cols <- intersect(c("zwei", "zwfl", "zbmi"), colnames(dataframe))
-  for (col in relevant_cols) {
+  aux_indicators <- Filter(function(x) isTRUE(x$with_auxiliary_zscore_column),
+                           zscores_to_compute)
+  aux_cols <- vapply(aux_indicators, prev_zscore_value_column, character(1))
+  stopifnot(all(aux_cols %in% colnames(dataframe)))
+  for (indicator in aux_indicators) {
+    col <- prev_zscore_value_column(indicator)
+    aux_col <- prev_prevalence_column_name(indicator)
     dataframe[[col]][oedema %in% "y"] <- NA_real_
-    dataframe[[paste0(col, "_aux")]] <-
-      as.numeric(ifelse(oedema %in% "y", -3.1, dataframe[[col]]))
+    dataframe[[aux_col]] <- as.numeric(
+      ifelse(oedema %in% "y", -3.1, dataframe[[col]])
+    )
   }
   has_zlen_and_wfl <- all(c("zlen", "zwfl_aux") %in% colnames(dataframe))
   if (has_zlen_and_wfl) {
@@ -682,7 +691,7 @@ create_cutoff_columns_for_each_zscore <- function(indicators, dataframe) {
 
 compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_name) {
   indicator_name <- indicator$name
-  expr_name <- paste0("I(!is.na(", indicator$prevalence_column, "))")
+  expr_name <- paste0("I(!is.na(", prev_prevalence_column_name(indicator), "))")
   prev_formula <- as.formula(paste0("~", expr_name))
   subset_formula <- as.formula(paste0("~", subset_col_name))
   prev <- svyby(

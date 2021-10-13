@@ -571,6 +571,8 @@ compute_prevalence_for_each_subset_and_indicator <- function(subset_col_names,
   has_zlen_and_wfl <- all(
     c("zlen", "zwfl_aux") %in% colnames(survey_design$design$variables)
   )
+  # This double apply could be moved down to the survey package as it
+  # also supports calculating multiple values at once.
   subset_results <- mapply(function(subset_col_name, label) {
     indicator_results <- lapply(indicators, function(indicator) {
       # some svyby calls produce glm.fit warnings.
@@ -742,7 +744,7 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
   all_na <- all(is.na(survey_design$variables[[prev_col_name]]))
 
   res <- if (all_na) {
-    data.frame( #TODO: add test for that
+    data.frame(
       Group = as.character(unique(survey_design$variables[[subset_col_name]])),
       r = NA_real_,
       se = NA_real_,

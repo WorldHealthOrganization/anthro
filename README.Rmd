@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 The `anthro` package allows you to perform comprehensive analysis of anthropometric survey data based on the [method](https://www.who.int/childgrowth/standards/en/) developed by the Department of Nutrition for Health and Development at the World Health Organization.
 
-The package is modelled after the [R macros](https://www.who.int/childgrowth/software/en/) provided by WHO. The package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case
+The package is modeled after the [R macros](https://www.who.int/childgrowth/software/en/) provided by WHO. The package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case
 
 ## Installation
 

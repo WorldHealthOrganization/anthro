@@ -489,6 +489,7 @@ generate_cutoffs <- function(data_column) {
   })
 }
 
+#' @importFrom survey svydesign
 build_survey_design <- function(survey_data) {
   has_cluster_info <- !is.null(survey_data[["cluster"]])
   has_strata_info <- !is.null(survey_data[["strata"]])
@@ -507,14 +508,14 @@ build_survey_design <- function(survey_data) {
   sampling_weights_formula <- if (has_sampling_weights) {
     ~sampling_weights
   }
-  design <- survey::svydesign(
+  design <- svydesign(
       ids = cluster_formula,
       strata = strata_formula,
       weights = sampling_weights_formula,
       data = survey_data,
       nest = TRUE
   )
-  design_unweighted <- survey::svydesign(
+  design_unweighted <- svydesign(
       ids = cluster_formula,
       strata = strata_formula,
       weights = NULL,

@@ -400,7 +400,7 @@ compute_prevalence_of_zscores <- function(data,
     all(c("oedema") %in% colnames(data)),
     is.list(zscores_to_compute),
     all(vapply(zscores_to_compute, function(x) {
-      is.list(x) && length(x) == 4
+      is.list(x)
     }, logical(1L))),
     is.null(data[["sampling_weights"]]) || is.numeric(data[["sampling_weights"]]),
     is.list(survey_subsets),
@@ -644,9 +644,14 @@ create_zscore_auxiliary_columns <- function(zscores_to_compute, dataframe) {
   for (indicator in aux_indicators) {
     col <- prev_zscore_value_column(indicator)
     aux_col <- prev_prevalence_column_name(indicator)
-    dataframe[[col]][oedema %in% "y"] <- NA_real_
+    condition <- if (is.function(indicator$auxiliary_zscore_condition)) {
+      indicator$auxiliary_zscore_condition(dataframe)
+    } else {
+      oedema %in% "y"
+    }
+    dataframe[[col]][condition] <- NA_real_
     dataframe[[aux_col]] <- as.numeric(
-      ifelse(oedema %in% "y", -3.1, dataframe[[col]])
+      ifelse(condition, -3.1, dataframe[[col]])
     )
   }
   has_zlen_and_wfl <- all(c("zlen", "zwfl_aux") %in% colnames(dataframe))

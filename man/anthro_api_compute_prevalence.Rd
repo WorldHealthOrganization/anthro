@@ -17,8 +17,10 @@ The list needs to have 4 named values:
   \item{column}{The column name without the 'z' of the zscore that shall be
   used.}
   \item{with_cutoffs}{TRUE iff cutoffs for the indicator shall be computed.}
-  \item{with_auxiliary_zscore_column}{TRUE iff zscore should be set to
+  \item{with_auxiliary_zscore_column}{TRUE iff z-score should be set to
   -3.1 if \code{oedema = "y"} for prevalence estimates.}
+  \item{auxiliary_zscore_condition}{optional function to define a special
+  condition when the z-score should be set to -3.1}
 }}
 
 \item{survey_subsets}{subsets for which the prevalence values should be

@@ -50,9 +50,6 @@ anthro_api_compute_zscore_adjusted <- compute_zscore_adjusted
 #'   \item{with_cutoffs}{TRUE iff cutoffs for the indicator shall be computed.}
 #'   \item{with_auxiliary_zscore_column}{TRUE iff zscore should be set to
 #'   -3.1 if \code{oedema = "y"} for prevalence estimates.}
-#'   \item{add_legacy_pop_suffix}{For backwards compatibility reasons, there
-#'   is a "Z" suffix in most of the \code{_pop/unwpop} columns. This option
-#'   adds the "Z" to the column name.}
 #' }
 #' @param survey_subsets subsets for which the prevalence values should be
 #' computed. It is a named list of characters, where the values correspond

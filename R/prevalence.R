@@ -366,23 +366,19 @@ anthro_prevalence <- function(sex,
     zscores_to_compute = list(
       list(
         name = "HA", column = "len",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = FALSE,
-        add_legacy_pop_suffix = TRUE
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = FALSE
       ),
       list(
         name = "WA", column = "wei",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE,
-        add_legacy_pop_suffix = TRUE
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       ),
       list(
         name = "BMI", column = "bmi",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE,
-        add_legacy_pop_suffix = TRUE
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       ),
       list(
         name = "WH", column = "wfl",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE,
-        add_legacy_pop_suffix = TRUE
+        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
       )
     ),
     survey_subsets = setNames(strata_cols[included_strata], strata_label)
@@ -404,7 +400,7 @@ compute_prevalence_of_zscores <- function(data,
     all(c("oedema") %in% colnames(data)),
     is.list(zscores_to_compute),
     all(vapply(zscores_to_compute, function(x) {
-      is.list(x) && length(x) %in% c(4, 5)
+      is.list(x) && length(x) == 4
     }, logical(1L))),
     is.null(data[["sampling_weights"]]) || is.numeric(data[["sampling_weights"]]),
     is.list(survey_subsets),
@@ -726,10 +722,10 @@ compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_
   )
   # due to backwards compatibility, columns HA_2_WH_2 and HA_2_WH2 will not
   # have a suffix Z for now
-  suffix <- if (isTRUE(indicator$add_legacy_pop_suffix)) {
-    c("Z_pop", "Z_unwpop")
-  } else {
+  suffix <- if (indicator_name %in% c("HA_2_WH_2", "HA_2_WH2")) {
     c("_pop", "_unwpop")
+  } else {
+    c("Z_pop", "Z_unwpop")
   }
   colnames(res) <- c("Group", paste0(indicator_name, suffix))
   # only HA_2_WH_2 has pop and unwpop columns, but not HA_2_WH2

@@ -786,7 +786,8 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
       df = degf(survey_design),
       method = "logit",
       drop.empty.groups = FALSE,
-      na.rm.all = TRUE
+      na.rm.all = TRUE,
+      level = 0.95
     )[, 3L:4L]
     data.frame(
       Group = as.character(mean_est_prev[[subset_col_name]]),
@@ -833,7 +834,10 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       na.rm.all = TRUE,
       drop.empty.groups = FALSE
     )
-    mean_est_ci_summary <- confint(mean_est_summary, df = degf(survey_design))
+    mean_est_ci_summary <- confint(
+      mean_est_summary, df = degf(survey_design),
+      level = 0.95
+    )
 
     # the survey package's survey::svyvar fails if
     # there is only one observation with an unexpected error it seems

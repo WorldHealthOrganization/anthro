@@ -12,6 +12,8 @@
   the documentation of `survey::svydesign` for more information.
 * Removed `headc`, `armc`, `triskin` and `subskin` from parameters of
   `anthro_prevalence` as they were not used for the final output.
+* `_pop/unwpop` values in prevalence calculation are now 0 instead of NA if no
+  values are present for that group.
 
 # anthro 0.9.4
 

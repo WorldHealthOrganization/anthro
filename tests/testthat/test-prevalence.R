@@ -205,7 +205,13 @@ describe("anthro_prevalence()", {
     )
     expect_equal(length(res[, 1]), 21)
     expect_true(any(grepl(x = res[, 1], pattern = "Female")))
-    expect_true(all(is.na(res[res$Group == "Sex: Female", -1])))
+    res_f <- res[res$Group == "Sex: Female", -1]
+    expect_true(all(
+      is.na(res_f[, !grepl("pop$", colnames(res_f))])
+    ))
+    expect_true(all(
+      res_f[, grepl("pop$", colnames(res_f))] == 0
+    ))
   })
   it("recycles arguments", {
     expect_silent({
@@ -356,4 +362,20 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   expect_equal(
     observed$HAZ_unwpop, as.numeric(expected_total_unweighted[2])
   )
+})
+
+test_that("pop/unwpop are 0 if no values in that group", {
+  res <- anthro_prevalence(
+    sex = c(1, 1, 2, 2, 1, 2),
+    age = 30,
+    is_age_in_month = TRUE,
+    weight = 10000,
+    lenhei = 700
+  )
+  expect_equal(res$HAZ_pop, rep.int(0, nrow(res)))
+  expect_equal(res$HAZ_unwpop, rep.int(0, nrow(res)))
+  expect_equal(res$WAZ_pop, rep.int(0, nrow(res)))
+  expect_equal(res$WAZ_unwpop, rep.int(0, nrow(res)))
+  expect_equal(res$BMIZ_pop, rep.int(0, nrow(res)))
+  expect_equal(res$BMIZ_pop, rep.int(0, nrow(res)))
 })

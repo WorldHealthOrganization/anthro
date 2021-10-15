@@ -599,9 +599,17 @@ compute_prevalence_for_each_subset_and_indicator <- function(subset_col_names,
       }
     })
 
+    # now we merge everything into one df
+    # we assume the first indicator results DF has all levels of the Group
+    # then we merge everything and after that we have to restore the original
+    # ordering of the levels (they get lost by the `merge` calls (sometimes))
+    original_group_ordering <- indicator_results[[1]][["Group"]]
     res <- Reduce(function(acc, el) {
       merge(acc, el, by = "Group", sort = FALSE, all = TRUE)
     }, indicator_results)
+    stopifnot(setequal(res[["Group"]], original_group_ordering))
+    res <- res[match(original_group_ordering, res[["Group"]]), , drop = FALSE]
+
     if (label != "All") {
       res[["Group"]] <- paste0(label, ": ", res[["Group"]])
     }
@@ -711,6 +719,11 @@ compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_
   )
   pop_weighted <- prev[[paste0(expr_name, "TRUE")]]
   pop_unweighted <- unweighted_prev[[paste0(expr_name, "TRUE")]]
+
+  # syby returns NA for empty levels. We set the count to 0 for these.
+  pop_weighted[is.na(pop_weighted)] <- 0
+  pop_unweighted[is.na(pop_unweighted)] <- 0
+
   stopifnot( # check that subsets come in the right order
     all(prev[[subset_col_name]] == unweighted_prev[[subset_col_name]])
   )
@@ -720,6 +733,7 @@ compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_
     unwpop = pop_unweighted,
     stringsAsFactors = FALSE
   )
+
   # due to backwards compatibility, columns HA_2_WH_2 and HA_2_WH2 will not
   # have a suffix Z for now
   suffix <- if (indicator_name %in% c("HA_2_WH_2", "HA_2_WH2")) {

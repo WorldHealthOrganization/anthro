@@ -179,8 +179,7 @@ anthro_prevalence <- function(sex,
   is.null(strata) || assert_numeric(strata)
   is.null(sw) || assert_numeric(sw)
 
-  # make all input lengths equal
-
+  # make all input lengths equal by constructing a data.frame
   input <- data.frame(
     sex,
     age,

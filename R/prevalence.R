@@ -220,7 +220,6 @@ anthro_prevalence <- function(sex,
   input[["age_in_days"]] <- age_to_days(input[["age"]], is_age_in_month = is_age_in_month)
   input[["age_in_months"]] <- age_to_months(input[["age"]], is_age_in_month = is_age_in_month)
 
-  oedema <- standardize_oedema_var(oedema)
   input[["oedema"]] <- standardize_oedema_var(input[["oedema"]])
 
   # we compute the age group with full precision

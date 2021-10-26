@@ -855,26 +855,29 @@ compute_prevalence_zscore_summaries <- function(survey_design,
     # the survey package's survey::svyvar fails if
     # there is only one observation with an unexpected error it seems
     # we catch this error here and set all results to NA
-    mean_est_sd_summary <- tryCatch(
-      {
-        svyby(
-          zscore_formula,
-          subset_formula,
-          survey_design,
-          svyvar,
-          na.rm = TRUE,
-          na.rm.all = TRUE,
-          drop.empty.groups = FALSE
-        )
-      },
-      error = function(er) {
-        data.frame(
-          dummy = rep.int(NA_real_, nrow(mean_est_ci_summary)),
-          result = rep.int(NA_real_, nrow(mean_est_ci_summary))
-        )
+    robust_svyvar <- function(x, design, na.rm = FALSE, ...) {
+      # when there is only one observation in the substet, svyvar returns a
+      # length 2 object
+      res <- svyvar(x, design, na.rm = na.rm, ...)
+      if (length(res) == 2) {
+        new_res <- NA_real_
+        attr(new_res, "names") <- prev_zscore_value_column(indicator)
+        attr(new_res, "var") <- NA_real_
+        attr(new_res, "statistic") <- "variance"
+        class(new_res) <- c("svyvar", "svystat", "numeric")
+        return(new_res)
       }
+      res
+    }
+    mean_est_sd_summary <- svyby(
+      zscore_formula,
+      subset_formula,
+      survey_design,
+      robust_svyvar,
+      na.rm = TRUE,
+      na.rm.all = TRUE,
+      drop.empty.groups = FALSE
     )
-
     data.frame(
       Group = as.character(mean_est_summary[[subset_col_name]]),
       r = mean_est_summary[[prev_zscore_value_column(indicator)]],

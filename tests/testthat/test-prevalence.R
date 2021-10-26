@@ -379,3 +379,24 @@ test_that("pop/unwpop are 0 if no values in that group", {
   expect_equal(res$BMIZ_pop, rep.int(0, nrow(res)))
   expect_equal(res$BMIZ_pop, rep.int(0, nrow(res)))
 })
+
+test_that("var can be computed even if some levels have just one observation", {
+  set.seed(1)
+  data <- data.frame(
+    sex = sample(1:2, 100, replace = TRUE),
+    age = sample(0:50, 100, replace = TRUE),
+    weight = pmax(rnorm(100, 20, 10), 1),
+    lenhei = pmax(rnorm(100, 80, 20), 30)
+  )
+  data$sex <- 1
+  data$sex[42] <- 2
+  res <- anthro_prevalence(
+    data$sex,
+    data$age,
+    is_age_in_month = TRUE,
+    weight = data$weight,
+    lenhei = data$lenhei
+  )
+  expect_true(is.na(res[res$Group == "Sex: Female", "HA_stdev"]))
+  expect_false(is.na(res[res$Group == "Sex: Male", "HA_stdev"]))
+})

@@ -14,6 +14,9 @@
   `anthro_prevalence` as they were not used for the final output.
 * `_pop/unwpop` values in prevalence calculation are now 0 instead of NA if no
   values are present for that group.
+* Previously, if one level in a group only has only one observation, all
+  `stdev` columns in `anthro_prevalence` are `NA`. Now only the levels with
+  one observations yield `NA`, for the others the `stdev` is still computed.
 
 # anthro 0.9.4
 

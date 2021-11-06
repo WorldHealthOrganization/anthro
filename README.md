@@ -47,7 +47,8 @@ indicators, weight-for- age, length/height-for-age,
 weight-for-length/height, body mass index (BMI)-for-age, head
 circumference-for-age, arm circumference-for-age, triceps
 skinfold-for-age and subscapular skinfold-for-age based on the [WHO
-Child Growth Standards](https://www.who.int/childgrowth/standards/en/).
+Child Growth
+Standards](https://www.who.int/tools/child-growth-standards).
 
 ``` r
 anthro_zscores(
@@ -136,6 +137,6 @@ before sending a pull request.
 ### Using the package in your own analyses
 
 The package has been tested thoroughly, but we cannot guarantee that
-there aren’t any bugs nor comes this with any warranty (as with all open
-source software). If you find a bug or cannot reproduce results obtained
-with other implementations, please post an issue.
+there aren’t any bugs nor comes this with any warranty. If you find a
+bug or cannot reproduce results obtained with other implementations,
+please post an issue.

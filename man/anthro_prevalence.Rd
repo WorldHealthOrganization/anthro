@@ -11,14 +11,10 @@ anthro_prevalence(
   weight = NA_real_,
   lenhei = NA_real_,
   measure = NA_character_,
-  headc = NA_real_,
-  armc = NA_real_,
-  triskin = NA_real_,
-  subskin = NA_real_,
   oedema = "n",
-  sw = 1,
-  cluster = 1L,
-  strata = 1L,
+  sw = NULL,
+  cluster = NULL,
+  strata = NULL,
   typeres = NA_character_,
   gregion = NA_character_,
   wealthq = NA_character_,
@@ -84,22 +80,6 @@ following algorithm:
       if measurement >= 87 cm.
 }}
 
-\item{headc}{A numeric variable containing head circumference information,
-which must be in centimeters. Head circumference-for-age
-z-scores are not calculated if head circumference is missing.}
-
-\item{armc}{A numeric variable containing arm circumference information,
-which must be in centimeters. Arm circumference-for-age z-scores
-are not calculated if arm circumference is missing.}
-
-\item{triskin}{A numeric variable containing triceps skinfold information,
-which must be in millimeters. Triceps skinfold-for-age z-scores
-are not calculated if triceps skinfold is missing.}
-
-\item{subskin}{A numeric variable containing subscapular skinfold information,
-which must be in millimeters. Subscapular skinfold-for-age z-scores
-are not calculated if subscapular skinfold is missing.}
-
 \item{oedema}{The values of this character variable must be "n", "N" or "2"
 for non-oedema, and "y", "Y", "1" for oedema. Although it is highly
 recommended that this variable is provided by the survey,
@@ -114,13 +94,14 @@ indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
 
 \item{sw}{An optional numeric vector containing the sampling weights.
-If unspecified, the all 1 vector is used, i.e. where all records
-have equal sampling weights, and un-weighted analysis is performed.
-Negative values are not allowed.}
+If NULL, no sampling weights are used.}
 
-\item{cluster}{An optional integer vector representing clusters}
+\item{cluster}{An optional integer vector representing clusters. If the value
+is NULL this is treated as a survey without a cluster. This is also the case
+if all values are equal, then we assume there is also no cluster.}
 
-\item{strata}{An optional integer vector representing strata}
+\item{strata}{An optional integer vector representing strata. Pass NULL to
+indicate that there are no strata.}
 
 \item{typeres}{An optional integer or character vector representing a type of
 residence.
@@ -228,6 +209,8 @@ estimation (standard analysis).
 
 Note: the function temporarily sets the \code{survey} option
 \code{survey.lonely.psu} to "adjust" and then restores the original values.
+The function is a wrapper around the \code{survey} package to compute
+estimates for the different groups (e.g. by age or sex).
 
 If not all parameter values have equal length, parameter values will be
 repeated to match the maximum length of all arguments except

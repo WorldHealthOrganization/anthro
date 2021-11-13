@@ -1,5 +1,26 @@
 # anthro (development version)
 
+## General
+
+* Improved prevalence computation code, it now consumes slightly less time and
+  is better organized. In addition test-coverage and documentation is improved.
+* Cluster/strata/sw values in `anthro_prevalence` now support an explicit `NULL`
+  value to better control for (missing) cluster/strata/sw information.
+* New API functions are exported, mainly useful to use complicated portions
+  of the logic in other packages, not meant for end-users.
+* `nest = TRUE` is now set for the survey designs in `anthro_prevalence`. See
+  the documentation of `survey::svydesign` for more information.
+* Removed `headc`, `armc`, `triskin` and `subskin` from parameters of
+  `anthro_prevalence` as they were not used for the final output.
+* `_pop/unwpop` values in prevalence calculation are now 0 instead of NA if no
+  values are present for that group.
+
+## Bugfix
+
+* Previously, if one level in a group only has only one observation, all
+  `stdev` columns in `anthro_prevalence` are `NA`. Now only the levels with
+  one observations yield `NA`, for the others the `stdev` is still computed.
+
 # anthro 0.9.4
 
 ## General

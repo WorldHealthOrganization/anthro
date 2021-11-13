@@ -1,34 +1,35 @@
 Package: anthro
-Version: 0.9.4.9000
+Version: 0.9.4.9003
 Title: Computation of the WHO Child Growth Standards
 Description: Provides WHO Child Growth Standards (z-scores) with
              confidence intervals and standard errors around the
              prevalence estimates, taking into account complex sample designs.
              More information on the methods is
              available online:
-             <https://www.who.int/childgrowth/standards/en/>.
+             <https://www.who.int/tools/child-growth-standards>.
 Authors@R: c(person("Dirk", "Schumacher", ,
                     "mail@dirk-schumacher.net", c("aut", "cre")),
              person("Elaine", "Borghi", , "borghie@who.int", "ctb"),
-             person("Jonathan", "Polonsky", , "polonskyj@who.int", "ctb"))
+             person("Jonathan", "Polonsky", , "polonskyj@who.int", "ctb"),
+             person(given = "World Health Organization", role = "cph"))
 License: GPL-3
 Encoding: UTF-8
 URL: https://github.com/dirkschumacher/anthro
 BugReports: https://github.com/dirkschumacher/anthro/issues
-LazyData: true
 ByteCompile: true
-Depends: R (>= 3.2)
+Depends: R (>= 3.5)
 Imports: 
     survey
 Suggests: 
     testthat
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.2
 Collate: 
     'anthro.R'
+    'utils.R'
     'assertions.R'
     'prevalence.R'
-    'utils.R'
     'z-score-helper.R'
+    'api.R'
     'z-score-arm-circumference-for-age.R'
     'z-score-bmi-for-age.R'
     'z-score-head-circumference-for-age.R'

@@ -1,4 +1,3 @@
-# cleans the sex variable
 standardize_sex_var <- function(sex) {
   sex <- tolower(trimws(as.character(sex)))
   sex <- ifelse(!is.na(sex) & (sex == "m" | sex == "1"), 1L,

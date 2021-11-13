@@ -1,12 +1,12 @@
 ---
 output: github_document
 ---
-
-[![Travis build status](https://travis-ci.org/dirkschumacher/anthro.svg?branch=master)](https://travis-ci.org/dirkschumacher/anthro)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro?branch=master&svg=true)](https://ci.appveyor.com/project/dirkschumacher/anthro)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/dirkschumacher/anthro/workflows/R-CMD-check/badge.svg)](https://github.com/dirkschumacher/anthro/actions)
 [![Coverage status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
@@ -19,9 +19,9 @@ knitr::opts_chunk$set(
 
 # Anthro
 
-The `anthro` package allows you to perform comprehensive analysis of anthropometric survey data based on the [method](https://www.who.int/childgrowth/standards/en/) developed by the Department of Nutrition for Health and Development at the World Health Organization.
+The `anthro` package allows you to perform comprehensive analysis of anthropometric survey data based on the [method](https://www.who.int/toolkits/child-growth-standards/standards) developed by the Department of Nutrition for Health and Development at the World Health Organization.
 
-The package is modelled after the [R macros](https://www.who.int/childgrowth/software/en/) provided by WHO. The package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case
+The package is modeled after the [R macros](https://www.who.int/childgrowth/software/en/) provided by WHO. The package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case by using the [survey package](https://cran.r-project.org/package=survey).
 
 ## Installation
 
@@ -41,7 +41,7 @@ library(anthro)
 
 ### Z-Score
 
-This function calculates z-scores for the eight anthropometric indicators, weight-for- age, length/height-for-age, weight-for-length/height, body mass index (BMI)-for-age, head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age based on the [WHO Child Growth Standards](https://www.who.int/childgrowth/standards/en/).
+This function calculates z-scores for the eight anthropometric indicators, weight-for- age, length/height-for-age, weight-for-length/height, body mass index (BMI)-for-age, head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age based on the [WHO Child Growth Standards](https://www.who.int/tools/child-growth-standards).
 
 
 ```{r}
@@ -72,7 +72,7 @@ To look at all parameters, type `?anthro_zscores`.
 
 ### Prevalence estimates
 
-The prevalence estimates are similiar to `anthro_zscores`: again they take vectors instead of a data frame and column names for the aforementioned reasons.
+The prevalence estimates are similar to `anthro_zscores`: again they take vectors instead of a data frame and column names for the aforementioned reasons.
 
 ```{r}
 anthro_prevalence(
@@ -93,4 +93,4 @@ Contributions are always very welcome. Please make sure to post an issue before 
 
 ### Using the package in your own analyses
 
-The package has been tested thoroughly, but we cannot guarantee that there aren't any bugs nor comes this with any warranty (as with all open source software). If you find a bug or cannot reproduce results obtained with other implementations, please post an issue.
+The package has been tested thoroughly, but we cannot guarantee that there aren't any bugs nor comes this with any warranty. If you find a bug or cannot reproduce results obtained with other implementations, please post an issue.

@@ -1,0 +1,91 @@
+#' Helper function to compute zscores
+#'
+#' @param y a numeric vector
+#' @param m a numeric vector
+#' @param l a numeric vector
+#' @param s a numeric vector
+#'
+#' @note
+#' This function is meant to be used by other anthro related packages.
+#' It is not advised to use this in you own packages or analysis. If you must
+#' use it, prepare for potential breaking changes in the future.
+#'
+#' @references
+#' http://www.who.int/childgrowth/standards/Chap_7.pdf
+#'
+#' @export
+#' @include z-score-helper.R
+anthro_api_compute_zscore <- compute_zscore
+
+#' Helper function to compute the adjusted zscore
+#'
+#' @param y a numeric vector
+#' @param m a numeric vector
+#' @param l a numeric vector
+#' @param s a numeric vector
+#'
+#' @note
+#' This function is meant to be used by other anthro related packages.
+#' It is not advised to use this in you own packages or analysis. If you must
+#' use it, prepare for potential breaking changes in the future.
+#'
+#' @export
+#'
+#' @references
+#' http://www.who.int/childgrowth/standards/Chap_7.pdf
+#'
+#' @include z-score-helper.R
+anthro_api_compute_zscore_adjusted <- compute_zscore_adjusted
+
+#' Compute prevalence of zscores
+#'
+#' @param data a data frame containing the underlying data
+#' @param zscores_to_compute a list of zscore indicators that should be computed.
+#' The list needs to have 4 named values:
+#' \describe{
+#'   \item{name}{The name or abbreviation of the indicator.
+#'   This will appear in the column names of the output.}
+#'   \item{column}{The column name without the 'z' of the zscore that shall be
+#'   used.}
+#'   \item{with_cutoffs}{TRUE iff cutoffs for the indicator shall be computed.}
+#'   \item{with_auxiliary_zscore_column}{TRUE iff z-score should be set to
+#'   -3.1 if \code{oedema = "y"} for prevalence estimates.}
+#'   \item{auxiliary_zscore_condition}{optional function to define a special
+#'   condition when the z-score should be set to -3.1}
+#' }
+#' @param survey_subsets subsets for which the prevalence values should be
+#' computed. It is a named list of characters, where the values correspond
+#' to columns and the names to labels in the output.
+#'
+#' @note
+#' This function is meant to be used by other anthro related packages.
+#' It is not advised to use this in you own packages or analysis. If you must
+#' use it, prepare for potential breaking changes in the future.
+#'
+#' @export
+#' @include prevalence.R
+anthro_api_compute_prevalence <- compute_prevalence_of_zscores
+
+#' Standardize the Oedema input values
+#' @param oedema a vector of values
+#'
+#' @note
+#' This function is meant to be used by other anthro related packages.
+#' It is not advised to use this in you own packages or analysis. If you must
+#' use it, prepare for potential breaking changes in the future.
+#'
+#' @export
+#' @include utils.R
+anthro_api_standardize_oedema_var <- standardize_oedema_var
+
+#' Standardize the Sex input values
+#' @param sex a vector of values
+#'
+#' @note
+#' This function is meant to be used by other anthro related packages.
+#' It is not advised to use this in you own packages or analysis. If you must
+#' use it, prepare for potential breaking changes in the future.
+#'
+#' @export
+#' @include utils.R
+anthro_api_standardize_sex_var <- standardize_sex_var

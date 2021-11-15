@@ -7,10 +7,6 @@
 #' More information on the methods is available online:
 #' <\url{https://www.who.int/tools/child-growth-standards}>.
 #'
-#' Package lifecycle is "maturing" in the tidyverse sense (<\url{https://www.tidyverse.org/lifecycle/}>).
-#' It is aimed to keep the API backward compatible, but changes to the API
-#' might occur.
-#'
 #' @docType package
 #' @name anthro
 #' @aliases anthro package-anthro

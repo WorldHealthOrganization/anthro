@@ -2,11 +2,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/dirkschumacher/anthro/workflows/R-CMD-check/badge.svg)](https://github.com/dirkschumacher/anthro/actions)
-[![Coverage
-status](https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg)](https://codecov.io/github/dirkschumacher/anthro?branch=master)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
 # Anthro

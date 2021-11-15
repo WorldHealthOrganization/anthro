@@ -2,7 +2,7 @@
 output: github_document
 ---
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/dirkschumacher/anthro/workflows/R-CMD-check/badge.svg)](https://github.com/dirkschumacher/anthro/actions)
+[![R-CMD-check](https://github.com/worldhealthorganization/anthro/workflows/R-CMD-check/badge.svg)](https://github.com/worldhealthorganization/anthro/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/anthro)](https://cran.r-project.org/package=anthro)
 <!-- badges: end -->
 
@@ -28,7 +28,7 @@ install.packages("anthro")
 ```
 
 ```{r, eval=FALSE}
-remotes::install_github("dirkschumacher/anthro")
+remotes::install_github("worldhealthorganization/anthro")
 ```
 
 ## Examples

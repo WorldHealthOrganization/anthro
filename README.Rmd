@@ -87,7 +87,7 @@ To look at all parameters, type `?anthro_prevalence`.
 
 ### Contribution
 
-Contributions are always very welcome. Please make sure to post an issue before sending a pull request.
+Contributions in the form of issues are very welcome. In particular if you find any bugs.
 
 ### Using the package in your own analyses
 

@@ -14,11 +14,12 @@ anthropometric survey data based on the
 developed by the Department of Nutrition for Health and Development at
 the World Health Organization.
 
-The package is modeled after the [R
-macros](https://www.who.int/childgrowth/software/en/) provided by WHO.
-The package adds more accurate calculations of confidence intervals and
-standard errors around the prevalence estimates, taking into account
-complex sample designs, whenever is the case by using the [survey
+The package is modeled after the original [R
+macros](https://www.who.int/toolkits/child-growth-standards/software)
+provided by WHO. In addition to z-scores, the package adds more accurate
+calculations of confidence intervals and standard errors around the
+prevalence estimates, taking into account complex sample designs,
+whenever is the case by using the [survey
 package](https://cran.r-project.org/package=survey).
 
 ## Installation

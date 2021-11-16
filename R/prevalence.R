@@ -852,12 +852,11 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       level = 0.95
     )
 
-    # the survey package's survey::svyvar fails if
-    # there is only one observation with an unexpected error it seems
-    # we catch this error here and set all results to NA
+    # when there is only one observation in the subset, svyvar returns a
+    # length 2 object which breaks svyby. We thus provide a robust
+    # version of svyvar that returns NA if a length 2 object is returned.
+    # this will be fixed in survey >= 4.2
     robust_svyvar <- function(x, design, na.rm = FALSE, ...) {
-      # when there is only one observation in the substet, svyvar returns a
-      # length 2 object
       res <- svyvar(x, design, na.rm = na.rm, ...)
       if (length(res) == 2) {
         new_res <- NA_real_

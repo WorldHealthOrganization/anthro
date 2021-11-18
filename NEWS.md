@@ -1,4 +1,4 @@
-# anthro (development version)
+# anthro 1.0.0
 
 ## General
 

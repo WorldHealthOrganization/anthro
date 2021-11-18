@@ -80,7 +80,7 @@ which data are available)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -88,7 +88,7 @@ which data are available)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,8 +101,8 @@ which data are available)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/dirkschumacher/anthro/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/worldhealthorganization/anthro/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -120,7 +120,7 @@ which data are available)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Compute prevalence estimates</h1>
-    <small class="dont-index">Source: <a href='https://github.com/dirkschumacher/anthro/blob/master/R/prevalence.R'><code>R/prevalence.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/worldhealthorganization/anthro/blob/master/R/prevalence.R'><code>R/prevalence.R</code></a></small>
     <div class="hidden name"><code>anthro_prevalence.Rd</code></div>
     </div>
 
@@ -143,14 +143,10 @@ which data are available).</p>
   weight <span class='op'>=</span> <span class='cn'>NA_real_</span>,
   lenhei <span class='op'>=</span> <span class='cn'>NA_real_</span>,
   measure <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  headc <span class='op'>=</span> <span class='cn'>NA_real_</span>,
-  armc <span class='op'>=</span> <span class='cn'>NA_real_</span>,
-  triskin <span class='op'>=</span> <span class='cn'>NA_real_</span>,
-  subskin <span class='op'>=</span> <span class='cn'>NA_real_</span>,
   oedema <span class='op'>=</span> <span class='st'>"n"</span>,
-  sw <span class='op'>=</span> <span class='fl'>1</span>,
-  cluster <span class='op'>=</span> <span class='fl'>1L</span>,
-  strata <span class='op'>=</span> <span class='fl'>1L</span>,
+  sw <span class='op'>=</span> <span class='cn'>NULL</span>,
+  cluster <span class='op'>=</span> <span class='cn'>NULL</span>,
+  strata <span class='op'>=</span> <span class='cn'>NULL</span>,
   typeres <span class='op'>=</span> <span class='cn'>NA_character_</span>,
   gregion <span class='op'>=</span> <span class='cn'>NA_character_</span>,
   wealthq <span class='op'>=</span> <span class='cn'>NA_character_</span>,
@@ -230,30 +226,6 @@ following algorithm:</p><ul>
 </ul></td>
     </tr>
     <tr>
-      <th>headc</th>
-      <td><p>A numeric variable containing head circumference information,
-which must be in centimeters. Head circumference-for-age
-z-scores are not calculated if head circumference is missing.</p></td>
-    </tr>
-    <tr>
-      <th>armc</th>
-      <td><p>A numeric variable containing arm circumference information,
-which must be in centimeters. Arm circumference-for-age z-scores
-are not calculated if arm circumference is missing.</p></td>
-    </tr>
-    <tr>
-      <th>triskin</th>
-      <td><p>A numeric variable containing triceps skinfold information,
-which must be in millimeters. Triceps skinfold-for-age z-scores
-are not calculated if triceps skinfold is missing.</p></td>
-    </tr>
-    <tr>
-      <th>subskin</th>
-      <td><p>A numeric variable containing subscapular skinfold information,
-which must be in millimeters. Subscapular skinfold-for-age z-scores
-are not calculated if subscapular skinfold is missing.</p></td>
-    </tr>
-    <tr>
       <th>oedema</th>
       <td><p>The values of this character variable must be "n", "N" or "2"
 for non-oedema, and "y", "Y", "1" for oedema. Although it is highly
@@ -271,17 +243,18 @@ estimation.</p></td>
     <tr>
       <th>sw</th>
       <td><p>An optional numeric vector containing the sampling weights.
-If unspecified, the all 1 vector is used, i.e. where all records
-have equal sampling weights, and un-weighted analysis is performed.
-Negative values are not allowed.</p></td>
+If NULL, no sampling weights are used.</p></td>
     </tr>
     <tr>
       <th>cluster</th>
-      <td><p>An optional integer vector representing clusters</p></td>
+      <td><p>An optional integer vector representing clusters. If the value
+is NULL this is treated as a survey without a cluster. This is also the case
+if all values are equal, then we assume there is also no cluster.</p></td>
     </tr>
     <tr>
       <th>strata</th>
-      <td><p>An optional integer vector representing strata</p></td>
+      <td><p>An optional integer vector representing strata. Pass NULL to
+indicate that there are no strata.</p></td>
     </tr>
     <tr>
       <th>typeres</th>
@@ -387,38 +360,40 @@ data are available).</p>
 are used for each indicator-specific prevalence
 estimation (standard analysis).</p>
 <p>Note: the function temporarily sets the <code>survey</code> option
-<code>survey.lonely.psu</code> to "adjust" and then restores the original values.</p>
+<code>survey.lonely.psu</code> to "adjust" and then restores the original values.
+The function is a wrapper around the <code>survey</code> package to compute
+estimates for the different groups (e.g. by age or sex).</p>
 <p>If not all parameter values have equal length, parameter values will be
 repeated to match the maximum length of all arguments except
 <code>is_age_in_month</code> using <code>rep_len</code>. This happens without warnings.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='co'># because it takes too long for CRAN checks</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/dirkschumacher/anthro'>anthro</a></span><span class='op'>)</span>
-
-<span class='co'># compute the prevalence estimates for 100 random children</span>
-<span class='co'># with weight around 15kg and height around 100cm</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>anthro_prevalence</span><span class='op'>(</span>
-  sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,
-  age <span class='op'>=</span> <span class='fl'>1000</span>, <span class='co'># days</span>
-  weight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>15</span>, <span class='fl'>1</span><span class='op'>)</span>,
-  lenhei <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>100</span>, <span class='fl'>10</span><span class='op'>)</span>
-<span class='op'>)</span>
-
-<span class='co'># Height-for-age</span>
-<span class='co'># We extract prevalence estimates for &lt;-3SD, &lt;-2SD (Stunting)</span>
-<span class='co'># and the z-score mean</span>
-<span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"HAZ_unwpop"</span>, <span class='st'>"HA_3_r"</span>, <span class='st'>"HA_2_r"</span>, <span class='st'>"HA_r"</span><span class='op'>)</span>
-<span class='va'>res</span> <span class='op'>&lt;-</span> <span class='va'>res</span><span class='op'>[</span>, <span class='va'>col_names</span><span class='op'>]</span>
-
-<span class='co'># rename the columns</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span><span class='op'>)</span>
-
-<span class='co'># note that we only generated data for one age group</span>
-<span class='va'>res</span>
-<span class='op'>}</span>
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'><span class='co'># because it takes too long for CRAN checks</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/worldhealthorganization/anthro'>anthro</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># compute the prevalence estimates for 100 random children</span></span>
+<span class='r-in'><span class='co'># with weight around 15kg and height around 100cm</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='fu'>anthro_prevalence</span><span class='op'>(</span></span>
+<span class='r-in'>  sex <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>,</span>
+<span class='r-in'>  age <span class='op'>=</span> <span class='fl'>1000</span>, <span class='co'># days</span></span>
+<span class='r-in'>  weight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>15</span>, <span class='fl'>1</span><span class='op'>)</span>,</span>
+<span class='r-in'>  lenhei <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>100</span>, <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Height-for-age</span></span>
+<span class='r-in'><span class='co'># We extract prevalence estimates for &lt;-3SD, &lt;-2SD (Stunting)</span></span>
+<span class='r-in'><span class='co'># and the z-score mean</span></span>
+<span class='r-in'><span class='va'>col_names</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"HAZ_unwpop"</span>, <span class='st'>"HA_3_r"</span>, <span class='st'>"HA_2_r"</span>, <span class='st'>"HA_r"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>res</span> <span class='op'>&lt;-</span> <span class='va'>res</span><span class='op'>[</span>, <span class='va'>col_names</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># rename the columns</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>res</span><span class='op'>)</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Group"</span>, <span class='st'>"Unweighted N"</span>, <span class='st'>"-3SD"</span>, <span class='st'>"-2SD"</span>, <span class='st'>"z-score mean "</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># note that we only generated data for one age group</span></span>
+<span class='r-in'><span class='va'>res</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

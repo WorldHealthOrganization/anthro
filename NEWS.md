@@ -1,5 +1,7 @@
 # anthro (development version)
 
+# anthro 1.0.0
+
 ## General
 
 * Improved prevalence computation code, it now consumes slightly less time and

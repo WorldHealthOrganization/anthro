@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Page not found (404) • anthro</title>
+<title>Compute prevalence of zscores — anthro_api_compute_prevalence • anthro</title>
 
 
 <!-- jquery -->
@@ -18,8 +18,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
-<link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script>
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
@@ -33,13 +33,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
-<link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script>
+<link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script>
 
 
 
 
-<meta property="og:title" content="Page not found (404)" />
+<meta property="og:title" content="Compute prevalence of zscores — anthro_api_compute_prevalence" />
+<meta property="og:description" content="Compute prevalence of zscores" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-title-body">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -70,7 +71,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">anthro</a>
+        <a class="navbar-link" href="../index.html">anthro</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
@@ -78,16 +79,16 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">
+  <a href="../index.html">
     <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
-  <a href="reference/index.html">Reference</a>
+  <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">Changelog</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -108,23 +109,63 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Page not found (404)</h1>
+    <h1>Compute prevalence of zscores</h1>
+    <small class="dont-index">Source: <a href='https://github.com/worldhealthorganization/anthro/blob/master/R/api.R'><code>R/api.R</code></a></small>
+    <div class="hidden name"><code>anthro_api_compute_prevalence.Rd</code></div>
     </div>
 
-Content not found. Please use links in the navbar.
+    <div class="ref-description">
+    <p>Compute prevalence of zscores</p>
+    </div>
+
+    <pre class="usage"><span class='fu'>anthro_api_compute_prevalence</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>zscores_to_compute</span>, <span class='va'>survey_subsets</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a data frame containing the underlying data</p></td>
+    </tr>
+    <tr>
+      <th>zscores_to_compute</th>
+      <td><p>a list of zscore indicators that should be computed.
+The list needs to have 4 named values:</p><dl>
+  <dt>name</dt><dd><p>The name or abbreviation of the indicator.
+  This will appear in the column names of the output.</p></dd>
+  <dt>column</dt><dd><p>The column name without the 'z' of the zscore that shall be
+  used.</p></dd>
+  <dt>with_cutoffs</dt><dd><p>TRUE iff cutoffs for the indicator shall be computed.</p></dd>
+  <dt>with_auxiliary_zscore_column</dt><dd><p>TRUE iff z-score should be set to
+  -3.1 if <code>oedema = "y"</code> for prevalence estimates.</p></dd>
+  <dt>auxiliary_zscore_condition</dt><dd><p>optional function to define a special
+  condition when the z-score should be set to -3.1</p></dd>
+
+</dl></td>
+    </tr>
+    <tr>
+      <th>survey_subsets</th>
+      <td><p>subsets for which the prevalence values should be
+computed. It is a named list of characters, where the values correspond
+to columns and the names to labels in the output.</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>This function is meant to be used by other anthro related packages.
+It is not advised to use this in you own packages or analysis. If you must
+use it, prepare for potential breaking changes in the future.</p>
 
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
-
 
 
       <footer>

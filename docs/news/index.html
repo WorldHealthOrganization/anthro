@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -79,7 +79,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,8 +92,8 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/dirkschumacher/anthro/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/worldhealthorganization/anthro/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -111,24 +111,50 @@
   <div class="col-md-9 contents">
     <div class="page-header">
       <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/dirkschumacher/anthro/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+      <small>Source: <a href='https://github.com/worldhealthorganization/anthro/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="anthro-094" class="section level1">
-<h1 class="page-header" data-toc-text="0.9.4">
-<a href="#anthro-094" class="anchor"></a>anthro 0.9.4<small> Unreleased </small>
+    <div id="anthro-100" class="section level1">
+<h1 class="page-header" data-toc-text="1.0.0">
+<a href="#anthro-100" class="anchor"></a>anthro 1.0.0<small> Unreleased </small>
 </h1>
 <div id="general" class="section level2">
 <h2 class="hasAnchor">
 <a href="#general" class="anchor"></a>General</h2>
 <ul>
-<li>Handling of age information is improved and loss of information from converting from age in days to age in months or vice verse is reduced.</li>
-<li>Some code improvements.</li>
+<li>Improved prevalence computation code, it now consumes slightly less time and is better organized. In addition test-coverage and documentation is improved.</li>
+<li>Cluster/strata/sw values in <code>anthro_prevalence</code> now support an explicit <code>NULL</code> value to better control for (missing) cluster/strata/sw information.</li>
+<li>New API functions are exported, mainly useful to use complicated portions of the logic in other packages, not meant for end-users.</li>
+<li>
+<code>nest = TRUE</code> is now set for the survey designs in <code>anthro_prevalence</code>. See the documentation of <code><a href="https://rdrr.io/pkg/survey/man/svydesign.html">survey::svydesign</a></code> for more information.</li>
+<li>Removed <code>headc</code>, <code>armc</code>, <code>triskin</code> and <code>subskin</code> from parameters of <code>anthro_prevalence</code> as they were not used for the final output.</li>
+<li>
+<code>_pop/unwpop</code> values in prevalence calculation are now 0 instead of NA if no values are present for that group.</li>
 </ul>
 </div>
 <div id="bugfix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bugfix" class="anchor"></a>Bugfix</h2>
+<ul>
+<li>Previously, if one level in a group only has only one observation, all <code>stdev</code> columns in <code>anthro_prevalence</code> are <code>NA</code>. Now only the levels with one observations yield <code>NA</code>, for the others the <code>stdev</code> is still computed.</li>
+</ul>
+</div>
+</div>
+    <div id="anthro-094" class="section level1">
+<h1 class="page-header" data-toc-text="0.9.4">
+<a href="#anthro-094" class="anchor"></a>anthro 0.9.4<small> 2020-10-30 </small>
+</h1>
+<div id="general-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#general-1" class="anchor"></a>General</h2>
+<ul>
+<li>Handling of age information is improved and loss of information from converting from age in days to age in months or vice verse is reduced.</li>
+<li>Some code improvements.</li>
+</ul>
+</div>
+<div id="bugfix-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfix-1" class="anchor"></a>Bugfix</h2>
 <ul>
 <li>Fixed a bug where, observations where erroneously removed from prevalence computation. This happens if age in months was supplied, then values <code>&gt; 59.992</code> months were considered <code>&gt; 1826</code> days. Now anything above <code>60.009</code> months is considered <code>&gt; 1826</code> days and thus excluded.</li>
 </ul>
@@ -138,16 +164,16 @@
 <h1 class="page-header" data-toc-text="0.9.3">
 <a href="#anthro-093" class="anchor"></a>anthro 0.9.3<small> 2020-05-21 </small>
 </h1>
-<div id="general-1" class="section level2">
+<div id="general-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#general-1" class="anchor"></a>General</h2>
+<a href="#general-2" class="anchor"></a>General</h2>
 <ul>
 <li>Internal code improvements.</li>
 </ul>
 </div>
-<div id="bugfix-1" class="section level2">
+<div id="bugfix-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bugfix-1" class="anchor"></a>Bugfix</h2>
+<a href="#bugfix-2" class="anchor"></a>Bugfix</h2>
 <ul>
 <li>Z-scores are now only computed for <code>age &lt; 60 months</code> instead of <code>age &lt;= 60 months</code>.</li>
 <li>Z-scores for wfl were previously also computed when <code>age &gt;= 60 months</code> and <code>&lt;= 1856 days</code>.</li>
@@ -159,10 +185,10 @@
 <a href="#anthro-092" class="anchor"></a>anthro 0.9.2<small> 2020-01-08 </small>
 </h1>
 <ul>
-<li>Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining the data with the reference values. This is in line with previous implementations and in particularly relevant for data points with age exactly 24 months. Previously the example above was converted to 730 days and with this release it is converted to 731 days (<a href='https://github.com/dirkschumacher/anthro/issues/17'>#17</a>).</li>
-<li>The cleaned <code>measure</code> and <code>sex</code> variables are now part of the output data.frame of <code>anthro_zscores</code> (<a href='https://github.com/dirkschumacher/anthro/issues/20'>#20</a>, <a href='https://github.com/dirkschumacher/anthro/issues/24'>#24</a>).</li>
+<li>Age in days is now rounded half to even (e.g. 730.5 days = 731) before joining the data with the reference values. This is in line with previous implementations and in particularly relevant for data points with age exactly 24 months. Previously the example above was converted to 730 days and with this release it is converted to 731 days (<a href='https://github.com/worldhealthorganization/anthro/issues/17'>#17</a>).</li>
+<li>The cleaned <code>measure</code> and <code>sex</code> variables are now part of the output data.frame of <code>anthro_zscores</code> (<a href='https://github.com/worldhealthorganization/anthro/issues/20'>#20</a>, <a href='https://github.com/worldhealthorganization/anthro/issues/24'>#24</a>).</li>
 <li>Removed <code>covr</code> from suggests dependencies.</li>
-<li>Fixed a typo in the docs (<a href='https://github.com/dirkschumacher/anthro/issues/15'>#15</a>).</li>
+<li>Fixed a typo in the docs (<a href='https://github.com/worldhealthorganization/anthro/issues/15'>#15</a>).</li>
 </ul>
 </div>
     <div id="anthro-091" class="section level1">

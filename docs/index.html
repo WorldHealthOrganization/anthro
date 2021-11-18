@@ -17,7 +17,7 @@
              prevalence estimates, taking into account complex sample designs.
              More information on the methods is
              available online:
-             &lt;https://www.who.int/childgrowth/standards/en/&gt;.">
+             &lt;https://www.who.int/tools/child-growth-standards&gt;.">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
@@ -36,7 +36,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">anthro</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -44,7 +44,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -57,8 +57,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/dirkschumacher/anthro/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/worldhealthorganization/anthro/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -79,27 +79,27 @@
 <div id="anthro" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#anthro" class="anchor"></a>Anthro</h1></div>
-<p>The <code>anthro</code> package allows you to perform comprehensive analysis of anthropometric survey data based on the <a href="https://www.who.int/childgrowth/standards/en/">method</a> developed by the Department of Nutrition for Health and Development at the World Health Organization.</p>
-<p>The package is modelled after the <a href="https://www.who.int/childgrowth/software/en/">R macros</a> provided by WHO. The package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case</p>
+<p>The <code>anthro</code> package allows you to perform comprehensive analysis of anthropometric survey data based on the <a href="https://www.who.int/toolkits/child-growth-standards/standards">method</a> developed by the Department of Nutrition for Health and Development at the World Health Organization.</p>
+<p>The package is modeled after the original <a href="https://www.who.int/toolkits/child-growth-standards/software">R macros</a> provided by WHO. In addition to z-scores, the package adds more accurate calculations of confidence intervals and standard errors around the prevalence estimates, taking into account complex sample designs, whenever is the case by using the <a href="https://cran.r-project.org/package=survey">survey package</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"anthro"</span><span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"dirkschumacher/anthro"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"anthro"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"worldhealthorganization/anthro"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dirkschumacher/anthro">anthro</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/worldhealthorganization/anthro">anthro</a></span><span class="op">)</span></code></pre></div>
 <div id="z-score" class="section level3">
 <h3 class="hasAnchor">
 <a href="#z-score" class="anchor"></a>Z-Score</h3>
-<p>This function calculates z-scores for the eight anthropometric indicators, weight-for- age, length/height-for-age, weight-for-length/height, body mass index (BMI)-for-age, head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age based on the <a href="https://www.who.int/childgrowth/standards/en/">WHO Child Growth Standards</a>.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="reference/anthro_zscores.html">anthro_zscores</a></span><span class="op">(</span>
+<p>This function calculates z-scores for the eight anthropometric indicators, weight-for- age, length/height-for-age, weight-for-length/height, body mass index (BMI)-for-age, head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age based on the <a href="https://www.who.int/tools/child-growth-standards">WHO Child Growth Standards</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/anthro_zscores.html">anthro_zscores</a></span><span class="op">(</span>
   sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,
   age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1001</span>, <span class="fl">1000</span>, <span class="fl">1010</span>, <span class="fl">1000</span><span class="op">)</span>,
   weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span>,
@@ -114,26 +114,26 @@
 <span class="co">#&gt; 1  NA  NA  NA  NA  NA  NA  NA</span>
 <span class="co">#&gt; 2  NA  NA  NA  NA  NA  NA  NA</span>
 <span class="co">#&gt; 3  NA  NA  NA  NA  NA  NA  NA</span>
-<span class="co">#&gt; 4  NA  NA  NA  NA  NA  NA  NA</span></pre></div>
+<span class="co">#&gt; 4  NA  NA  NA  NA  NA  NA  NA</span></code></pre></div>
 <p>The returned value is a <code>data.frame</code> that can further be processed or saved as a <code>.csv</code> file as in the original function.</p>
 <p>You can also use the function with a given dataset with <code>with</code></p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="va">your_data_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"my_survey.csv"</span><span class="op">)</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">your_data_set</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"my_survey.csv"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span>
   <span class="va">your_data_set</span>,
   <span class="fu"><a href="reference/anthro_zscores.html">anthro_zscores</a></span><span class="op">(</span>
     sex <span class="op">=</span> <span class="va">sex</span>, age <span class="op">=</span> <span class="va">age_in_days</span>,
     weight <span class="op">=</span> <span class="va">weight</span>, lenhei <span class="op">=</span> <span class="va">lenhei</span>
   <span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p>To look at all parameters, type <code><a href="reference/anthro_zscores.html">?anthro_zscores</a></code>.</p>
 </div>
 <div id="prevalence-estimates" class="section level3">
 <h3 class="hasAnchor">
 <a href="#prevalence-estimates" class="anchor"></a>Prevalence estimates</h3>
-<p>The prevalence estimates are similiar to <code>anthro_zscores</code>: again they take vectors instead of a data frame and column names for the aforementioned reasons.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="reference/anthro_prevalence.html">anthro_prevalence</a></span><span class="op">(</span>
+<p>The prevalence estimates are similar to <code>anthro_zscores</code>: again they take vectors instead of a data frame and column names for the aforementioned reasons.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/anthro_prevalence.html">anthro_prevalence</a></span><span class="op">(</span>
   sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>,
   age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1001</span>, <span class="fl">1000</span>, <span class="fl">1010</span>, <span class="fl">1000</span><span class="op">)</span>,
   weight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">18</span>, <span class="fl">15</span>, <span class="fl">10</span>, <span class="fl">15</span><span class="op">)</span>,
@@ -141,38 +141,38 @@
 <span class="op">)</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
 <span class="co">#&gt;                         Group HAZ_pop HAZ_unwpop HA_3_r  HA_3_se</span>
 <span class="co">#&gt; 1                         All       4          4     25 25.00000</span>
-<span class="co">#&gt; 2         Age group: 00-05 mo      NA         NA     NA       NA</span>
-<span class="co">#&gt; 3         Age group: 06-11 mo      NA         NA     NA       NA</span>
-<span class="co">#&gt; 4         Age group: 12-23 mo      NA         NA     NA       NA</span>
+<span class="co">#&gt; 2         Age group: 00-05 mo       0          0     NA       NA</span>
+<span class="co">#&gt; 3         Age group: 06-11 mo       0          0     NA       NA</span>
+<span class="co">#&gt; 4         Age group: 12-23 mo       0          0     NA       NA</span>
 <span class="co">#&gt; 5         Age group: 24-35 mo       4          4     25 25.00000</span>
-<span class="co">#&gt; 6         Age group: 36-47 mo      NA         NA     NA       NA</span>
-<span class="co">#&gt; 7         Age group: 48-59 mo      NA         NA     NA       NA</span>
+<span class="co">#&gt; 6         Age group: 36-47 mo       0          0     NA       NA</span>
+<span class="co">#&gt; 7         Age group: 48-59 mo       0          0     NA       NA</span>
 <span class="co">#&gt; 8                 Sex: Female       2          2     50 40.82483</span>
 <span class="co">#&gt; 9                   Sex: Male       2          2      0  0.00000</span>
-<span class="co">#&gt; 10 Age + sex: 00-05 mo.Female      NA         NA     NA       NA</span>
-<span class="co">#&gt; 11 Age + sex: 06-11 mo.Female      NA         NA     NA       NA</span>
-<span class="co">#&gt; 12 Age + sex: 12-23 mo.Female      NA         NA     NA       NA</span>
+<span class="co">#&gt; 10 Age + sex: 00-05 mo.Female       0          0     NA       NA</span>
+<span class="co">#&gt; 11 Age + sex: 06-11 mo.Female       0          0     NA       NA</span>
+<span class="co">#&gt; 12 Age + sex: 12-23 mo.Female       0          0     NA       NA</span>
 <span class="co">#&gt; 13 Age + sex: 24-35 mo.Female       2          2     50 40.82483</span>
-<span class="co">#&gt; 14 Age + sex: 36-47 mo.Female      NA         NA     NA       NA</span>
-<span class="co">#&gt; 15 Age + sex: 48-59 mo.Female      NA         NA     NA       NA</span>
-<span class="co">#&gt; 16   Age + sex: 00-05 mo.Male      NA         NA     NA       NA</span>
-<span class="co">#&gt; 17   Age + sex: 06-11 mo.Male      NA         NA     NA       NA</span>
-<span class="co">#&gt; 18   Age + sex: 12-23 mo.Male      NA         NA     NA       NA</span>
+<span class="co">#&gt; 14 Age + sex: 36-47 mo.Female       0          0     NA       NA</span>
+<span class="co">#&gt; 15 Age + sex: 48-59 mo.Female       0          0     NA       NA</span>
+<span class="co">#&gt; 16   Age + sex: 00-05 mo.Male       0          0     NA       NA</span>
+<span class="co">#&gt; 17   Age + sex: 06-11 mo.Male       0          0     NA       NA</span>
+<span class="co">#&gt; 18   Age + sex: 12-23 mo.Male       0          0     NA       NA</span>
 <span class="co">#&gt; 19   Age + sex: 24-35 mo.Male       2          2      0  0.00000</span>
-<span class="co">#&gt; 20   Age + sex: 36-47 mo.Male      NA         NA     NA       NA</span>
-<span class="co">#&gt; 21   Age + sex: 48-59 mo.Male      NA         NA     NA       NA</span></pre></div>
+<span class="co">#&gt; 20   Age + sex: 36-47 mo.Male       0          0     NA       NA</span>
+<span class="co">#&gt; 21   Age + sex: 48-59 mo.Male       0          0     NA       NA</span></code></pre></div>
 <p>Using the function <code>with</code> it is easy to apply <code>anthro_prevalence</code> to a full dataset.</p>
 <p>To look at all parameters, type <code><a href="reference/anthro_prevalence.html">?anthro_prevalence</a></code>.</p>
 </div>
 <div id="contribution" class="section level3">
 <h3 class="hasAnchor">
 <a href="#contribution" class="anchor"></a>Contribution</h3>
-<p>Contributions are always very welcome. Please make sure to post an issue before sending a pull request.</p>
+<p>Contributions in the form of issues are very welcome. In particular if you find any bugs.</p>
 </div>
 <div id="using-the-package-in-your-own-analyses" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-the-package-in-your-own-analyses" class="anchor"></a>Using the package in your own analyses</h3>
-<p>The package has been tested thoroughly, but we cannot guarantee that there aren’t any bugs nor comes this with any warranty (as with all open source software). If you find a bug or cannot reproduce results obtained with other implementations, please post an issue.</p>
+<p>The package has been tested thoroughly, but we cannot guarantee that there aren’t any bugs nor comes this with any warranty. If you find a bug or cannot reproduce results obtained with other implementations, please post an issue.</p>
 </div>
 </div>
 </div>
@@ -185,9 +185,9 @@
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=anthro">https://​cloud.r-project.org/​package=anthro</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/dirkschumacher/anthro/">https://​github.com/​dirkschumacher/​anthro/​</a>
+<li>Browse source code at <br><a href="https://github.com/worldhealthorganization/anthro/">https://​github.com/​worldhealthorganization/​anthro/​</a>
 </li>
-<li>Report a bug at <br><a href="https://github.com/dirkschumacher/anthro/issues">https://​github.com/​dirkschumacher/​anthro/​issues</a>
+<li>Report a bug at <br><a href="https://github.com/worldhealthorganization/anthro/issues">https://​github.com/​worldhealthorganization/​anthro/​issues</a>
 </li>
 </ul>
 </div>
@@ -209,11 +209,8 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/dirkschumacher/anthro"><img src="https://travis-ci.org/dirkschumacher/anthro.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/dirkschumacher/anthro"><img src="https://ci.appveyor.com/api/projects/status/github/dirkschumacher/anthro?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
-<li><a href="https://codecov.io/github/dirkschumacher/anthro?branch=master"><img src="https://codecov.io/gh/dirkschumacher/anthro/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://github.com/worldhealthorganization/anthro/actions"><img src="https://github.com/worldhealthorganization/anthro/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://cran.r-project.org/package=anthro"><img src="https://www.r-pkg.org/badges/version/anthro" alt="CRAN status"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
 </ul>
 </div>
 </div>

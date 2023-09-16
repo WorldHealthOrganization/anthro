@@ -1,5 +1,5 @@
 ## Test environments
-* local Mac OS install, R 4.1.2
+* local Mac OS install, R 4.3.1
 * Mac OS (on Github Actions), R release
 * ubuntu latest (on Github Actions), R oldrel, devel, release
 * Windows (on Github Actions), R release

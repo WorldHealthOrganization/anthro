@@ -147,7 +147,7 @@
 #'   interval limit}
 #' }
 #'
-#' @include anthro.R
+#' @include anthro-package.R
 #' @include assertions.R
 #' @importFrom stats confint
 #' @importFrom stats as.formula
@@ -168,7 +168,6 @@ anthro_prevalence <- function(sex,
                               wealthq = NA_character_,
                               mothered = NA_character_,
                               othergr = NA_character_) {
-
   # the other variables are being checked by anthro_zscores
   assert_character_or_numeric(typeres)
   assert_character_or_numeric(gregion)
@@ -444,7 +443,7 @@ compute_prevalence_of_zscores <- function(data,
 
   # set all sw that are NA to 0
   if (!is.null(data[["sampling_weights"]]) &&
-      anyNA(data[["sampling_weights"]])) {
+    anyNA(data[["sampling_weights"]])) {
     sw <- data[["sampling_weights"]]
     na_sw <- is.na(sw)
     sw[na_sw] <- 0
@@ -507,18 +506,18 @@ build_survey_design <- function(survey_data) {
     ~sampling_weights
   }
   design <- svydesign(
-      ids = cluster_formula,
-      strata = strata_formula,
-      weights = sampling_weights_formula,
-      data = survey_data,
-      nest = TRUE
+    ids = cluster_formula,
+    strata = strata_formula,
+    weights = sampling_weights_formula,
+    data = survey_data,
+    nest = TRUE
   )
   design_unweighted <- svydesign(
-      ids = cluster_formula,
-      strata = strata_formula,
-      weights = NULL,
-      data = survey_data,
-      nest = TRUE
+    ids = cluster_formula,
+    strata = strata_formula,
+    weights = NULL,
+    data = survey_data,
+    nest = TRUE
   )
   list(
     design = design,
@@ -635,8 +634,10 @@ prev_prevalence_column_name <- function(indicator) {
 
 create_zscore_auxiliary_columns <- function(zscores_to_compute, dataframe) {
   oedema <- dataframe[["oedema"]]
-  aux_indicators <- Filter(function(x) isTRUE(x$with_auxiliary_zscore_column),
-                           zscores_to_compute)
+  aux_indicators <- Filter(
+    function(x) isTRUE(x$with_auxiliary_zscore_column),
+    zscores_to_compute
+  )
   aux_cols <- vapply(aux_indicators, prev_zscore_value_column, character(1))
   stopifnot(all(aux_cols %in% colnames(dataframe)))
   for (indicator in aux_indicators) {
@@ -837,7 +838,6 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       stringsAsFactors = FALSE
     )
   } else {
-
     mean_est_summary <- svyby(
       zscore_formula,
       subset_formula,
@@ -848,7 +848,8 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       drop.empty.groups = FALSE
     )
     mean_est_ci_summary <- confint(
-      mean_est_summary, df = degf(survey_design),
+      mean_est_summary,
+      df = degf(survey_design),
       level = 0.95
     )
 

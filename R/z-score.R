@@ -154,7 +154,7 @@
 #'   )
 #' )
 #' }
-#' @include anthro.R
+#' @include anthro-package.R
 #' @include assertions.R
 #' @export
 anthro_zscores <- function(sex,

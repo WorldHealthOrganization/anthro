@@ -18,13 +18,13 @@ URL: https://github.com/worldhealthorganization/anthro
 BugReports: https://github.com/worldhealthorganization/anthro/issues
 ByteCompile: true
 Depends: R (>= 3.2)
-Imports: 
+Imports:
     survey
-Suggests: 
+Suggests:
     testthat
-RoxygenNote: 7.1.2
-Collate: 
-    'anthro.R'
+RoxygenNote: 7.2.3
+Collate:
+    'anthro-package.R'
     'utils.R'
     'assertions.R'
     'prevalence.R'

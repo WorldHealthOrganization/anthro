@@ -6,11 +6,7 @@
 #' prevalence estimates, taking into account complex sample designs.
 #' More information on the methods is available online:
 #' <\url{https://www.who.int/tools/child-growth-standards}>.
-#'
-#' @docType package
-#' @name anthro
-#' @aliases anthro package-anthro
-NULL
+"_PACKAGE"
 
 globalVariables(c(
   "growthstandards_lenanthro",

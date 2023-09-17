@@ -1,3 +1,5 @@
+# anthro (development version)
+
 # anthro 1.0.1
 
 * Fixed the package documentation to adhere to CRAN guidelines.

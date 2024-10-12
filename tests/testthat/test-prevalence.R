@@ -400,3 +400,15 @@ test_that("var can be computed even if some levels have just one observation", {
   expect_true(is.na(res[res$Group == "Sex: Female", "HA_stdev"]))
   expect_false(is.na(res[res$Group == "Sex: Male", "HA_stdev"]))
 })
+
+test_that("sex = NA with all values NA does not stop computation", {
+  expect_silent(
+    anthro_prevalence(
+      sex = c(1, 1, 1, 1, 1, NA),
+      age = 30,
+      is_age_in_month = TRUE,
+      weight = 500,
+      lenhei = 700
+    )
+  )
+})

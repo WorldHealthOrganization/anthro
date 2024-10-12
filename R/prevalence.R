@@ -773,7 +773,7 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
 
   res <- if (all_na) {
     data.frame(
-      Group = as.character(unique(survey_design$variables[[subset_col_name]])),
+      Group = unique_groups(survey_design$variables[[subset_col_name]]),
       r = NA_real_,
       se = NA_real_,
       ll = NA_real_,
@@ -829,7 +829,7 @@ compute_prevalence_zscore_summaries <- function(survey_design,
   all_na <- all(is.na(survey_design$variables[[zscore_col_name]]))
   res <- if (all_na) {
     data.frame(
-      Group = as.character(unique(survey_design$variables[[subset_col_name]])),
+      Group = unique_groups(survey_design$variables[[subset_col_name]]),
       r = NA_real_,
       se = NA_real_,
       ll = NA_real_,
@@ -894,4 +894,8 @@ compute_prevalence_zscore_summaries <- function(survey_design,
   )
   colnames(res) <- c("Group", value_col_names)
   res
+}
+
+unique_groups <- function(values) {
+  as.character(unique(values[!is.na(values)]))
 }

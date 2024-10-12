@@ -1,5 +1,12 @@
 # anthro (development version)
 
+## Bugfix
+
+* Fixed a bug during prevalence computation when a value used as a group
+  (like sex) contains `NA` and at the same time all values in that group are
+  `NA` as well. Previously this resulted in a hard stop of the computation,
+  now the code gracefully handles it.
+
 # anthro 1.0.1
 
 * Fixed the package documentation to adhere to CRAN guidelines.

@@ -1,5 +1,10 @@
 # anthro (development version)
 
+## Performance
+
+* For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster
+  method was added for this special case to compute `anthro_prevalence`.
+
 ## Bugfix
 
 * Fixed a bug during prevalence computation when a value used as a group

@@ -22,14 +22,17 @@ Imports:
     survey
 Suggests:
     testthat
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Collate:
     'anthro-package.R'
     'utils.R'
+    'prevalence-survey.R'
+    'prevalence-simple.R'
     'assertions.R'
     'prevalence.R'
     'z-score-helper.R'
     'api.R'
+    'prevalence-compute-api.R'
     'z-score-arm-circumference-for-age.R'
     'z-score-bmi-for-age.R'
     'z-score-head-circumference-for-age.R'

@@ -131,7 +131,6 @@
 #'  \item{_se}{Standard error}
 #' }
 #'
-#'
 #' \strong{For example:}
 #' \describe{
 #'   \item{WHZ_pop}{Weight-for-height weighted sample size}
@@ -147,8 +146,26 @@
 #'   interval limit}
 #' }
 #'
+#' \strong{Methods:}
+#'
+#' The \code{survey} package is used to compute all estimates.
+#' Confidence intervals are computed with a significance level of \code{0.05}.
+#' \link[survey]{svymean} is used the z-score mean and CIs, while for the
+#' prevalence estimates \link[survey]{svyciprop} is used with the \code{logit}
+#' method.
+#'
+#' For cases where \code{cluster/strata/sw is NULL} a fast approximation
+#' is used that does not use the \code{survey} package but computes the same
+#' results within bounds (maximum empirical difference is < 0.0001).
+#'
+#' @references
+#' T. Lumley (2024) "survey: analysis of complex survey samples".
+#' R package version 4.4.
+#'
 #' @include anthro-package.R
 #' @include assertions.R
+#' @include prevalence-simple.R
+#' @include prevalence-survey.R
 #' @importFrom stats confint
 #' @importFrom stats as.formula
 #' @importFrom stats setNames
@@ -382,6 +399,7 @@ anthro_prevalence <- function(sex,
   )
 }
 
+prevalence_significance_level <- 0.05
 
 #' @importFrom survey svytotal
 #' @importFrom survey svyby
@@ -460,7 +478,8 @@ compute_prevalence_of_zscores <- function(data,
   res <- set_flagged_zscores_to_NA(zscores_to_compute, data)
   res <- create_zscore_auxiliary_columns(zscores_to_compute, res)
   res <- create_cutoff_columns_for_each_zscore(zscores_to_compute, res)
-  survey_design <- build_survey_design(res)
+
+  survey_design <- build_design(res)
 
   final_result <- compute_prevalence_for_each_subset_and_indicator(
     subset_col_names = survey_subsets,
@@ -486,43 +505,22 @@ generate_cutoffs <- function(data_column) {
   })
 }
 
-#' @importFrom survey svydesign
-build_survey_design <- function(survey_data) {
-  has_cluster_info <- !is.null(survey_data[["cluster"]])
-  has_strata_info <- !is.null(survey_data[["strata"]])
-  has_sampling_weights <- !is.null(survey_data[["sampling_weights"]])
-  just_one_cluster <- has_cluster_info && length(unique(survey_data[["cluster"]])) == 1L
-  any_strata_na <- anyNA(survey_data[["strata"]])
-  stopifnot(!any_strata_na)
-  cluster_formula <- if (just_one_cluster || !has_cluster_info) {
-    ~1
-  } else {
-    ~cluster
+build_design <- function(survey_data) {
+  # we can override the choice here using internal options.
+  # these options are not part of the public api and can change at any time.
+  if (isTRUE(getOption("anthro.internal.compute_method") == "survey")) {
+    return(build_survey_design(survey_data))
   }
-  strata_formula <- if (has_strata_info) {
-    ~strata
+  is_simple_problem <- is.null(survey_data[["cluster"]]) &&
+    is.null(survey_data[["strata"]]) &&
+    (
+      is.null(survey_data[["sampling_weights"]]) ||
+        all(survey_data[["sampling_weights"]] == 1, na.rm = TRUE)
+    )
+  if (is_simple_problem) {
+    return(build_simple_design(survey_data))
   }
-  sampling_weights_formula <- if (has_sampling_weights) {
-    ~sampling_weights
-  }
-  design <- svydesign(
-    ids = cluster_formula,
-    strata = strata_formula,
-    weights = sampling_weights_formula,
-    data = survey_data,
-    nest = TRUE
-  )
-  design_unweighted <- svydesign(
-    ids = cluster_formula,
-    strata = strata_formula,
-    weights = NULL,
-    data = survey_data,
-    nest = TRUE
-  )
-  list(
-    design = design,
-    design_unweighted = design_unweighted
-  )
+  build_survey_design(survey_data)
 }
 
 compute_prevalence_stunting_wasting <- function(survey_design, subset_col_name) {
@@ -535,7 +533,7 @@ compute_prevalence_stunting_wasting <- function(survey_design, subset_col_name) 
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
-      survey_design$design, indicator$name,
+      survey_design, indicator$name,
       subset_col_name, prev_prevalence_column_name(indicator)
     )
   )
@@ -551,7 +549,7 @@ compute_prevalence_stunting_overweight <- function(survey_design, subset_col_nam
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
-      survey_design$design, indicator$name,
+      survey_design, indicator$name,
       subset_col_name, prev_prevalence_column_name(indicator)
     )
   )
@@ -562,7 +560,7 @@ compute_prevalence_for_each_subset_and_indicator <- function(subset_col_names,
                                                              survey_design,
                                                              indicators) {
   has_zlen_and_wfl <- all(
-    c("zlen", "zwfl_aux") %in% colnames(survey_design$design$variables)
+    c("zlen", "zwfl_aux") %in% column_names(survey_design)
   )
   # This double apply could be moved down to the survey package as it
   # also supports calculating multiple values at once.
@@ -576,10 +574,10 @@ compute_prevalence_for_each_subset_and_indicator <- function(subset_col_names,
             survey_design, indicator, subset_col_name
           )),
           compute_prevalence_cutoff_summaries(
-            survey_design$design, indicator, subset_col_name
+            survey_design, indicator, subset_col_name
           ),
           list(compute_prevalence_zscore_summaries(
-            survey_design$design, indicator, subset_col_name
+            survey_design, indicator, subset_col_name
           ))
         )
       })
@@ -655,17 +653,15 @@ create_zscore_auxiliary_columns <- function(zscores_to_compute, dataframe) {
   }
   has_zlen_and_wfl <- all(c("zlen", "zwfl_aux") %in% colnames(dataframe))
   if (has_zlen_and_wfl) {
+    zlen <- dataframe[["zlen"]]
+    zwfl_aux <- dataframe[["zwfl_aux"]]
+    is_na <- is.na(zlen) | is.na(zwfl_aux)
+    res <- rep.int(0L, length(zlen))
+    res[is_na] <- NA_integer_
     make_combined_aux_col <- function(flag_fun) {
-      as.integer(
-        with(
-          dataframe,
-          ifelse(
-            is.na(zlen) | is.na(zwfl_aux),
-            NA_integer_,
-            ifelse(zlen < -2 & flag_fun(zwfl_aux), 1L, 0L)
-          )
-        )
-      )
+      res_local <- res
+      res_local[zlen < -2 & flag_fun(zwfl_aux)] <- 1L
+      res_local
     }
     dataframe[["zlen_zwfl_aux_stunting_wasting"]] <- make_combined_aux_col(
       flag_fun = function(x) x < -2
@@ -676,6 +672,7 @@ create_zscore_auxiliary_columns <- function(zscores_to_compute, dataframe) {
   }
   dataframe
 }
+
 
 set_flagged_zscores_to_NA <- function(indicators, dataframe) {
   for (indicator in indicators) {
@@ -703,43 +700,11 @@ create_cutoff_columns_for_each_zscore <- function(indicators, dataframe) {
 }
 
 compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_name) {
-  indicator_name <- indicator$name
-  expr_name <- paste0("I(!is.na(", prev_prevalence_column_name(indicator), "))")
-  prev_formula <- as.formula(paste0("~", expr_name))
-  subset_formula <- as.formula(paste0("~", subset_col_name))
-  prev <- svyby(
-    prev_formula,
-    subset_formula,
-    survey_design$design,
-    svytotal,
-    drop.empty.groups = FALSE
-  )
-  unweighted_prev <- svyby(
-    prev_formula,
-    subset_formula,
-    survey_design$design_unweighted,
-    svytotal,
-    drop.empty.groups = FALSE
-  )
-  pop_weighted <- prev[[paste0(expr_name, "TRUE")]]
-  pop_unweighted <- unweighted_prev[[paste0(expr_name, "TRUE")]]
-
-  # syby returns NA for empty levels. We set the count to 0 for these.
-  pop_weighted[is.na(pop_weighted)] <- 0
-  pop_unweighted[is.na(pop_unweighted)] <- 0
-
-  stopifnot( # check that subsets come in the right order
-    all(prev[[subset_col_name]] == unweighted_prev[[subset_col_name]])
-  )
-  res <- data.frame(
-    Group = as.character(prev[[subset_col_name]]),
-    pop = pop_weighted,
-    unwpop = pop_unweighted,
-    stringsAsFactors = FALSE
-  )
+  res <- compute_prevalence_sample_size_by(survey_design, indicator, subset_col_name)
 
   # due to backwards compatibility, columns HA_2_WH_2 and HA_2_WH2 will not
   # have a suffix Z for now
+  indicator_name <- indicator$name
   suffix <- if (indicator_name %in% c("HA_2_WH_2", "HA_2_WH2")) {
     c("_pop", "_unwpop")
   } else {
@@ -767,13 +732,10 @@ compute_prevalence_cutoff_summaries <- function(survey_design, indicator, subset
 }
 
 compute_prevalence_estimates_for_column <- function(survey_design, indicator_name, subset_col_name, prev_col_name) {
-  subset_formula <- as.formula(paste0("~", subset_col_name))
-  prev_col_formula <- as.formula(paste0("~", prev_col_name))
-  all_na <- all(is.na(survey_design$variables[[prev_col_name]]))
-
+  all_na <- all(is.na(column_values(survey_design, prev_col_name)))
   res <- if (all_na) {
     data.frame(
-      Group = unique_groups(survey_design$variables[[subset_col_name]]),
+      Group = unique_groups(column_values(survey_design, subset_col_name)),
       r = NA_real_,
       se = NA_real_,
       ll = NA_real_,
@@ -781,36 +743,7 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
       stringsAsFactors = FALSE
     )
   } else {
-    mean_est_prev <- svyby(
-      prev_col_formula,
-      subset_formula,
-      survey_design,
-      svymean,
-      na.rm = TRUE,
-      na.rm.all = TRUE,
-      drop.empty.groups = FALSE
-    )
-
-    mean_est_ci_prev <- svyby(
-      prev_col_formula,
-      subset_formula,
-      survey_design,
-      svyciprop,
-      vartype = "ci",
-      df = degf(survey_design),
-      method = "logit",
-      drop.empty.groups = FALSE,
-      na.rm.all = TRUE,
-      level = 0.95
-    )[, 3L:4L]
-    data.frame(
-      Group = as.character(mean_est_prev[[subset_col_name]]),
-      r = mean_est_prev[[prev_col_name]] * 100,
-      se = survey::SE(mean_est_prev) * 100,
-      ll = mean_est_ci_prev$ci_l * 100,
-      ul = mean_est_ci_prev$ci_u * 100,
-      stringsAsFactors = FALSE
-    )
+    compute_prevalence_estimates_for_column_by(survey_design, indicator_name, subset_col_name, prev_col_name)
   }
   value_col_names <- paste0(
     indicator_name, c("_r", "_se", "_ll", "_ul")
@@ -820,16 +753,15 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
   res
 }
 
+
+
 compute_prevalence_zscore_summaries <- function(survey_design,
                                                 indicator, subset_col_name) {
-  indicator_name <- indicator$name
   zscore_col_name <- prev_zscore_value_column(indicator)
-  zscore_formula <- as.formula(paste0("~", zscore_col_name))
-  subset_formula <- as.formula(paste0("~", subset_col_name))
-  all_na <- all(is.na(survey_design$variables[[zscore_col_name]]))
+  all_na <- all(is.na(column_values(survey_design, zscore_col_name)))
   res <- if (all_na) {
     data.frame(
-      Group = unique_groups(survey_design$variables[[subset_col_name]]),
+      Group = unique_groups(column_values(survey_design, subset_col_name)),
       r = NA_real_,
       se = NA_real_,
       ll = NA_real_,
@@ -838,57 +770,10 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       stringsAsFactors = FALSE
     )
   } else {
-    mean_est_summary <- svyby(
-      zscore_formula,
-      subset_formula,
-      survey_design,
-      svymean,
-      na.rm = TRUE,
-      na.rm.all = TRUE,
-      drop.empty.groups = FALSE
-    )
-    mean_est_ci_summary <- confint(
-      mean_est_summary,
-      df = degf(survey_design),
-      level = 0.95
-    )
-
-    # when there is only one observation in the subset, svyvar returns a
-    # length 2 object which breaks svyby. We thus provide a robust
-    # version of svyvar that returns NA if a length 2 object is returned.
-    # this will be fixed in survey >= 4.2
-    robust_svyvar <- function(x, design, na.rm = FALSE, ...) {
-      res <- svyvar(x, design, na.rm = na.rm, ...)
-      if (length(res) == 2) {
-        new_res <- NA_real_
-        attr(new_res, "names") <- prev_zscore_value_column(indicator)
-        attr(new_res, "var") <- NA_real_
-        attr(new_res, "statistic") <- "variance"
-        class(new_res) <- c("svyvar", "svystat", "numeric")
-        return(new_res)
-      }
-      res
-    }
-    mean_est_sd_summary <- svyby(
-      zscore_formula,
-      subset_formula,
-      survey_design,
-      robust_svyvar,
-      na.rm = TRUE,
-      na.rm.all = TRUE,
-      drop.empty.groups = FALSE
-    )
-    data.frame(
-      Group = as.character(mean_est_summary[[subset_col_name]]),
-      r = mean_est_summary[[prev_zscore_value_column(indicator)]],
-      se = survey::SE(mean_est_summary),
-      ll = mean_est_ci_summary[, 1L, drop = TRUE],
-      ul = mean_est_ci_summary[, 2L, drop = TRUE],
-      stdev = sqrt(mean_est_sd_summary[, 2L, drop = TRUE]),
-      stringsAsFactors = FALSE
-    )
+    compute_prevalence_zscore_summaries_by(survey_design, indicator, subset_col_name)
   }
 
+  indicator_name <- indicator$name
   value_col_names <- paste0(
     indicator_name, c("_r", "_se", "_ll", "_ul", "_stdev")
   )
@@ -898,4 +783,54 @@ compute_prevalence_zscore_summaries <- function(survey_design,
 
 unique_groups <- function(values) {
   as.character(unique(values[!is.na(values)]))
+}
+
+
+build_simple_design <- function(survey_data) {
+  structure(
+    list(data = survey_data),
+    class = "simple_design"
+  )
+}
+
+#' @importFrom survey svydesign
+build_survey_design <- function(survey_data) {
+  has_cluster_info <- !is.null(survey_data[["cluster"]])
+  has_strata_info <- !is.null(survey_data[["strata"]])
+  has_sampling_weights <- !is.null(survey_data[["sampling_weights"]])
+  just_one_cluster <- has_cluster_info && length(unique(survey_data[["cluster"]])) == 1L
+  any_strata_na <- anyNA(survey_data[["strata"]])
+  stopifnot(!any_strata_na)
+  cluster_formula <- if (just_one_cluster || !has_cluster_info) {
+    ~1
+  } else {
+    ~cluster
+  }
+  strata_formula <- if (has_strata_info) {
+    ~strata
+  }
+  sampling_weights_formula <- if (has_sampling_weights) {
+    ~sampling_weights
+  }
+  design <- svydesign(
+    ids = cluster_formula,
+    strata = strata_formula,
+    weights = sampling_weights_formula,
+    data = survey_data,
+    nest = TRUE
+  )
+  design_unweighted <- svydesign(
+    ids = cluster_formula,
+    strata = strata_formula,
+    weights = NULL,
+    data = survey_data,
+    nest = TRUE
+  )
+  structure(
+    list(
+      design = design,
+      design_unweighted = design_unweighted
+    ),
+    class = "survey_design"
+  )
 }

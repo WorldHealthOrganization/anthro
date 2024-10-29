@@ -175,7 +175,6 @@ The resulting columns are coded with a \emph{prefix},
  \item{_se}{Standard error}
 }
 
-
 \strong{For example:}
 \describe{
   \item{WHZ_pop}{Weight-for-height weighted sample size}
@@ -190,6 +189,18 @@ The resulting columns are coded with a \emph{prefix},
   weight-for-height combined (stunted & wasted) lower 95\% confidence
   interval limit}
 }
+
+\strong{Methods:}
+
+The \code{survey} package is used to compute all estimates.
+Confidence intervals are computed with a significance level of \code{0.05}.
+\link[survey]{svymean} is used the z-score mean and CIs, while for the
+prevalence estimates \link[survey]{svyciprop} is used with the \code{logit}
+method.
+
+For cases where \code{cluster/strata/sw is NULL} a fast approximation
+is used that does not use the \code{survey} package but computes the same
+results within bounds (maximum empirical difference is < 0.0001).
 }
 \description{
 Prevalence estimates according to the WHO recommended standard analysis:
@@ -242,4 +253,8 @@ colnames(res) <- c("Group", "Unweighted N", "-3SD", "-2SD", "z-score mean ")
 # note that we only generated data for one age group
 res
 }
+}
+\references{
+T. Lumley (2024) "survey: analysis of complex survey samples".
+R package version 4.4.
 }

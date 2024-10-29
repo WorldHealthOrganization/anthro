@@ -1,0 +1,168 @@
+#' The following is a fast approximation of what the survey package
+#' computes given cluster/strata/sw is NULL.
+#'
+#' T. Lumley (2024) "survey: analysis of complex survey samples".
+#' R package version 4.4.
+#'
+#' The speedup and memory savings can be substantial in particular for very
+#' large surveys with > 100.000 observations.
+#'
+#' The simple here refers to the absence of cluster/strata/sw, making the
+#' structure a bit more simple.
+#' @noRd
+
+#' @export
+column_names.simple_design <- function(x) {
+  colnames(x$data)
+}
+
+#' @export
+column_values.simple_design <- function(x, col) {
+  x$data[[col]]
+}
+
+#' @export
+compute_prevalence_zscore_summaries_by.simple_design <- function(
+    data, indicator, subset_col_name) {
+  zscore_col_name <- prev_zscore_value_column(indicator)
+  compute_and_aggregate(
+    data,
+    zscore_col_name,
+    subset_col_name,
+    compute = zscore_estimate,
+    empty_data_prototype = data.frame(
+      r = NA_real_,
+      se = NA_real_,
+      ll = NA_real_,
+      ul = NA_real_,
+      stdev = NA_real_
+    )
+  )
+}
+
+#' @export
+compute_prevalence_estimates_for_column_by.simple_design <- function(
+    data, indicator_name, subset_col_name, prev_col_name) {
+  compute_and_aggregate(
+    data,
+    prev_col_name,
+    subset_col_name,
+    compute = logit_rate_estimate,
+    empty_data_prototype = data.frame(
+      r = NA_real_,
+      se = NA_real_,
+      ll = NA_real_,
+      ul = NA_real_
+    )
+  )
+}
+
+#' @export
+compute_prevalence_sample_size_by.simple_design <- function(
+    data, indicator, subset_col_name) {
+  column_name <- prev_prevalence_column_name(indicator)
+  compute_and_aggregate(
+    data,
+    column_name,
+    subset_col_name,
+    compute = sample_size,
+    empty_data_prototype = data.frame(
+      pop = 0,
+      unwpop = 0
+    )
+  )
+}
+
+#' @importFrom stats aggregate
+compute_and_aggregate <- function(
+    data, value_column, subset_column, compute, empty_data_prototype) {
+  col_values <- column_values(data, value_column)
+  N <- length(col_values)
+  values <- aggregate(
+    col_values,
+    by = list(Group = column_values(data, subset_column)),
+    FUN = compute,
+    simplify = FALSE,
+    drop = FALSE,
+    N = N,
+    empty_data_prototype = empty_data_prototype
+  )
+  Group <- values$Group
+  values <- lapply(values$x, function(df) {
+    if (is.null(df)) {
+      return(empty_data_prototype)
+    }
+    df
+  })
+  data <- do.call(rbind, values)
+  cbind(Group, data)
+}
+
+#' @importFrom stats glm plogis qt quasibinomial
+logit_rate_estimate <- function(x, N, empty_data_prototype) {
+  x_orig <- x
+  x <- x[!is.na(x)]
+  if (length(x) == 0) {
+    return(empty_data_prototype)
+  }
+  n <- length(x)
+  r <- mean(x == 1)
+  se <- sample_se(x, r, n, N)
+
+  cis <- if (r == 1) {
+    c(1, 1)
+  } else if (r == 0) {
+    c(0, 0)
+  } else {
+    glm_model <- glm(x_orig ~ 1, family = quasibinomial(link = "logit"))
+    summary_model <- summary(glm_model)
+    r_var <- summary_model$cov.unscaled[1, 1]
+    logit_r <- summary_model$coefficients[1, "Estimate"]
+    scale <- N / (N - 1)
+    se_logit <- sqrt(scale * r_var)
+    t_value <- qt(1 - prevalence_significance_level / 2, df = N - 1)
+    cis <- plogis(
+      logit_r + se_logit * c(-t_value, t_value)
+    )
+    as.numeric(cis)
+  }
+
+  data.frame(
+    r = r * 100,
+    se = se * 100,
+    ll = cis[1L] * 100,
+    ul = cis[2L] * 100
+  )
+}
+
+#' @importFrom stats sd plogis qt
+zscore_estimate <- function(x, N, empty_data_prototype) {
+  x <- x[!is.na(x)]
+  if (length(x) == 0) {
+    return(empty_data_prototype)
+  }
+  n <- length(x)
+  r <- mean(x)
+  stdev <- sd(x)
+  se <- sample_se(x, r, n, N)
+  t_value <- qt(1 - prevalence_significance_level / 2, N - 1)
+  cis <- r + se * c(-t_value, t_value)
+  data.frame(
+    r = r,
+    se = se,
+    ll = cis[1L],
+    ul = cis[2L],
+    stdev = stdev
+  )
+}
+
+sample_size <- function(x, N, empty_data_prototype) {
+  n <- as.numeric(sum(!is.na(x)))
+  data.frame(pop = n, unwpop = n)
+}
+
+sample_se <- function(x, x_mean, n, N) {
+  scale <- N / (N - 1)
+  x_centered_and_scaled <- (x - x_mean) / n * sqrt(scale)
+  sqrt(sum(x_centered_and_scaled^2))
+}

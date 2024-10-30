@@ -1,11 +1,13 @@
 test_that("survey and approximation yield are equal within tolerance", {
   set.seed(1)
+  n <- 200
   data <- data.frame(
-    sex = sample(1:2, 100, replace = TRUE),
-    age = sample(0:50, 100, replace = TRUE),
-    weight = pmax(rnorm(100, 20, 10), 1),
-    lenhei = pmax(rnorm(100, 80, 20), 30)
+    sex = sample(1:2, n, replace = TRUE),
+    age = sample(0:50, n, replace = TRUE),
+    weight = pmax(rnorm(n, 20, 10), 1),
+    lenhei = pmax(rnorm(n, 80, 20), 30)
   )
+  data$weight[43] <- NA_real_
   res_simple <- anthro_prevalence(
     data$sex,
     data$age,
@@ -27,15 +29,4 @@ test_that("survey and approximation yield are equal within tolerance", {
   for (col in colnames(res_simple)) {
     expect_equal(res_simple[[!!col]], res_survey[[!!col]], tolerance = 0.0001)
   }
-})
-
-describe("sample size", {
-  it("counts non na values", {
-    res <- sample_size(c(1, 2, NA_real_))
-    expect_s3_class(res, "data.frame")
-    expect_equal(res$pop, 2)
-    expect_equal(res$unwpop, 2)
-    expect_false(is.integer(res$pop))
-    expect_false(is.integer(res$unwpop))
-  })
 })

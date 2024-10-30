@@ -78,29 +78,30 @@ compute_and_aggregate <- function(
     data, value_column, subset_column, compute, empty_data_prototype) {
   col_values <- column_values(data, value_column)
   N <- length(col_values)
-  values <- aggregate(
-    col_values,
-    by = list(Group = column_values(data, subset_column)),
-    FUN = compute,
-    simplify = FALSE,
-    drop = FALSE,
-    N = N,
-    empty_data_prototype = empty_data_prototype
-  )
-  Group <- values$Group
-  values <- lapply(values$x, function(df) {
-    if (is.null(df)) {
-      return(empty_data_prototype)
-    }
-    df
-  })
+  grouping <- column_values(data, subset_column)
+  groups <- if (is.factor(grouping)) {
+    levels(grouping)
+  } else {
+    unique(grouping)
+  }
+  values <- vector(mode = "list", length(groups))
+  names(values) <- as.character(groups)
+  for (group in groups) {
+    values[[as.character(group)]] <- compute(
+      col_values[grouping == group],
+      N = N,
+      empty_data_prototype = empty_data_prototype
+    )
+  }
+  Group <- names(values)
   data <- do.call(rbind, values)
-  cbind(Group, data)
+  data <- cbind(Group, data)
+  rownames(data) <- NULL
+  data
 }
 
 #' @importFrom stats glm plogis qt quasibinomial
 logit_rate_estimate <- function(x, N, empty_data_prototype) {
-  x_orig <- x
   x <- x[!is.na(x)]
   if (length(x) == 0) {
     return(empty_data_prototype)
@@ -114,12 +115,10 @@ logit_rate_estimate <- function(x, N, empty_data_prototype) {
   } else if (r == 0) {
     c(0, 0)
   } else {
-    glm_model <- glm(x_orig ~ 1, family = quasibinomial(link = "logit"))
-    summary_model <- summary(glm_model)
-    r_var <- summary_model$cov.unscaled[1, 1]
-    logit_r <- summary_model$coefficients[1, "Estimate"]
+    logit_r <- log(r / (1 - r))
+    logit_r_var <- 1 / (n * r * (1 - r))
     scale <- N / (N - 1)
-    se_logit <- sqrt(scale * r_var)
+    se_logit <- sqrt(scale * logit_r_var)
     t_value <- qt(1 - prevalence_significance_level / 2, df = N - 1)
     cis <- plogis(
       logit_r + se_logit * c(-t_value, t_value)
@@ -164,5 +163,5 @@ sample_size <- function(x, N, empty_data_prototype) {
 sample_se <- function(x, x_mean, n, N) {
   scale <- N / (N - 1)
   x_centered_and_scaled <- (x - x_mean) / n * sqrt(scale)
-  sqrt(sum(x_centered_and_scaled^2))
+  sqrt(sum(x_centered_and_scaled*x_centered_and_scaled))
 }

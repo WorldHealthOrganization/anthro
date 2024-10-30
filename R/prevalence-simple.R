@@ -84,10 +84,11 @@ compute_and_aggregate <- function(
   } else {
     unique(grouping)
   }
+  grouping <- as.character(grouping)
   values <- vector(mode = "list", length(groups))
-  names(values) <- as.character(groups)
+  names(values) <- groups
   for (group in groups) {
-    values[[as.character(group)]] <- compute(
+    values[[group]] <- compute(
       col_values[grouping == group],
       N = N,
       empty_data_prototype = empty_data_prototype
@@ -161,7 +162,7 @@ sample_size <- function(x, N, empty_data_prototype) {
 }
 
 sample_se <- function(x, x_mean, n, N) {
-  scale <- N / (N - 1)
-  x_centered_and_scaled <- (x - x_mean) / n * sqrt(scale)
-  sqrt(sum(x_centered_and_scaled*x_centered_and_scaled))
+  scale <- N / (N - 1) * 1 / (n * n)
+  x_deviation <- x - x_mean
+  sqrt(sum(scale * x_deviation * x_deviation))
 }

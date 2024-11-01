@@ -162,7 +162,7 @@ sample_size <- function(x, N, empty_data_prototype) {
 }
 
 sample_se <- function(x, x_mean, n, N) {
-  scale <- N / (N - 1) * 1 / (n * n)
+  scale <- N / (N - 1)
   x_deviation <- x - x_mean
-  sqrt(sum(scale * x_deviation * x_deviation))
+  sqrt(scale)/n * sqrt(sum(x_deviation * x_deviation))
 }

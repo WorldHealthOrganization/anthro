@@ -30,3 +30,10 @@ test_that("survey and approximation yield are equal within tolerance", {
     expect_equal(res_simple[[!!col]], res_survey[[!!col]], tolerance = 0.0001)
   }
 })
+
+test_that("zscore estimates should not overflow", {
+  x <- rnorm(100000)
+  expect_no_warning(
+    zscore_estimate(x, length(x), data.frame())
+  )
+})

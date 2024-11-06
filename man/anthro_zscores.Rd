@@ -182,4 +182,6 @@ Geneva: World Health Organization; pp 312. (web site: http://www.who.int/childgr
 
 WHO Multicentre Growth Reference Study Group (2007). WHO Child Growth Standards: Head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age: Methods and development.
 Geneva: World Health Organization; pp 217. (web site: http://www.who.int/childgrowth/publications/en/ )
+
+World Health Organization. (2019). Recommendations for data collection, analysis and reporting on anthropometric indicators in children under 5 years old.
 }

@@ -32,10 +32,6 @@ anthro_zscore_weight_for_lenhei <-
     # then we have everything to compute the zscores
     n <- length(lenhei)
 
-    # clean weight/lenhei
-    weight[weight < 0.9 | weight > 58.0] <- NA_real_
-    lenhei[lenhei < 38.0 | lenhei > 150.0] <- NA_real_
-
     # we also need to interpolate lenhei under certain coniditions
     low_lenhei <- trunc(lenhei * 10) / 10
     upp_lenhei <- trunc(lenhei * 10 + 1) / 10

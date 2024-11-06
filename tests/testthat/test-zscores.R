@@ -203,8 +203,8 @@ test_that("zcores are only computed for children younger to 60 months", {
     headc = 5,
     measure = "h"
   )
-  expect_true(all(is.na(res[2:3, -1:-4])))
-  expect_false(all(is.na(res[1, -1:-4])))
+  expect_true(all(is.na(res[2:3, -1:-5])))
+  expect_false(all(is.na(res[1, -1:-5])))
 })
 
 test_that("height measurements are used for age 24 months", {
@@ -240,4 +240,42 @@ test_that("clenhei takes the measure argument into account correctly", {
   )
   expect_equal(res$clenhei, c(77.5, 77.5))
   expect_equal(res$zlen, c(-2.55, -2.55))
+})
+
+test_that("weight is set to NA if it is out of bounds", {
+  res <- anthro_zscores(
+    age = 100,
+    sex = 1,
+    lenhei = 100,
+    weight = c(0.4, 41)
+  )
+  expect_true(all(is.na(res$cweight)))
+  expect_true(all(is.na(res$cbmi)))
+  expect_false(all(is.na(res$zlen)))
+  expect_false(all(is.na(res$flen)))
+  expect_true(all(is.na(res$zwfl)))
+  expect_true(all(is.na(res$fwfl)))
+  expect_true(all(is.na(res$zbmi)))
+  expect_true(all(is.na(res$fbmi)))
+  expect_true(all(is.na(res$zwei)))
+  expect_true(all(is.na(res$fwei)))
+})
+
+test_that("lenhei is set to NA if it is out of bounds", {
+  res <- anthro_zscores(
+    age = 100,
+    sex = 1,
+    lenhei = c(34, 141),
+    weight = 40
+  )
+  expect_true(all(is.na(res$clenhei)))
+  expect_true(all(is.na(res$cbmi)))
+  expect_true(all(is.na(res$zlen)))
+  expect_true(all(is.na(res$flen)))
+  expect_true(all(is.na(res$zwfl)))
+  expect_true(all(is.na(res$fwfl)))
+  expect_true(all(is.na(res$zbmi)))
+  expect_true(all(is.na(res$fbmi)))
+  expect_false(all(is.na(res$zwei)))
+  expect_false(all(is.na(res$fwei)))
 })

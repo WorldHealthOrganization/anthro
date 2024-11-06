@@ -1,5 +1,14 @@
 # anthro (development version)
 
+## Method
+
+* Prior to z-score computation, _length/height_ and _weight_ are set to `NA`
+  if they exceed the plausible range of values.
+  For _length/height_ this is `35cm to 140cm` and for _weight_ it is
+  `0.5kg to 40kg`.
+  The adjusted values are shown in the resulting data frame under columns
+  `clenhei` and `cweight` respectively.
+
 ## Performance
 
 * For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster

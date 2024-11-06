@@ -136,6 +136,8 @@
 #' WHO Multicentre Growth Reference Study Group (2007). WHO Child Growth Standards: Head circumference-for-age, arm circumference-for-age, triceps skinfold-for-age and subscapular skinfold-for-age: Methods and development.
 #' Geneva: World Health Organization; pp 217. (web site: http://www.who.int/childgrowth/publications/en/ )
 #'
+#' World Health Organization. (2019). Recommendations for data collection, analysis and reporting on anthropometric indicators in children under 5 years old.
+#'
 #' @examples
 #' # you can either use the function to compute zscores for specific values
 #' anthro_zscores(sex = "f", age = 10, is_age_in_month = TRUE, weight = 10)
@@ -214,6 +216,12 @@ anthro_zscores <- function(sex,
   subskin <- rep_len(subskin, length.out = max_len)
   oedema <- rep_len(oedema, length.out = max_len)
 
+  # clean weight/height
+  clenhei <- lenhei
+  clenhei[clenhei < 35.0 | clenhei > 140.0] <- NA_real_
+  cweight <- weight
+  cweight[cweight < 0.5 | cweight > 40.0] <- NA_real_
+
   # clean sex
   csex <- standardize_sex_var(sex)
 
@@ -235,11 +243,12 @@ anthro_zscores <- function(sex,
     age_in_months < 9
   cmeasure[measure_implausible] <- NA_character_
 
-  clenhei <- adjust_lenhei(age_in_days, cmeasure, lenhei)
+  clenhei <- adjust_lenhei(age_in_days, cmeasure, clenhei)
 
-  cbmi <- weight / ((clenhei / 100)^2)
+  cbmi <- cweight / ((clenhei / 100)^2)
   cbind(
     clenhei,
+    cweight,
     cbmi,
     cmeasure,
     csex,
@@ -250,14 +259,14 @@ anthro_zscores <- function(sex,
       sex = csex
     ),
     anthro_zscore_weight_for_age(
-      weight = weight,
+      weight = cweight,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
       sex = csex,
       oedema = oedema
     ),
     anthro_zscore_weight_for_lenhei(
-      weight = weight,
+      weight = cweight,
       lenhei = clenhei,
       lenhei_unit = cmeasure,
       age_in_days = age_in_days,

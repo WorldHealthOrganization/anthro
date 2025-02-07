@@ -101,7 +101,7 @@ compute_and_aggregate <- function(
   data
 }
 
-#' @importFrom stats glm plogis qt quasibinomial
+#' @importFrom stats plogis qt
 logit_rate_estimate <- function(x, N, empty_data_prototype) {
   x <- x[!is.na(x)]
   if (length(x) == 0) {

@@ -83,6 +83,11 @@
 #'             BUT they are treated as being < -3 SD in the weight-related
 #'             indicator prevalence (\code{\link{anthro_prevalence}})
 #'             estimation.
+#' @param control An optional list to control the behavior of the computation.
+#' Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
+#' `NA`. A measure is considered implausible if its value is `"h"` and
+#' `age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
+#' the adjustment is not applied.
 #'
 #'
 #' @return A data.frame with three types of columns. Columns starting with a
@@ -167,7 +172,10 @@ anthro_zscores <- function(sex,
                            armc = NA_real_,
                            triskin = NA_real_,
                            subskin = NA_real_,
-                           oedema = "n") {
+                           oedema = "n",
+                           control = list(
+                             remove_implausible_measures = TRUE
+                           )) {
   assert_logical(is_age_in_month)
   assert_length(is_age_in_month, 1L)
   assert_character_or_numeric(sex)
@@ -189,6 +197,12 @@ anthro_zscores <- function(sex,
   assert_values_in_set(oedema,
     allowed = c("n", "y", "N", "Y", "2", "1", NA_character_)
   )
+
+  # extract control options
+  if (!is.list(control)) {
+    control <- list()
+  }
+  remove_implausible_measures <- isTRUE(control[["remove_implausible_measures"]])
 
   # make all input lengths equal
   max_len <- pmax(
@@ -227,13 +241,15 @@ anthro_zscores <- function(sex,
   age_in_days <- age_to_days(age, is_age_in_month = is_age_in_month)
   age_in_months <- age_to_months(age, is_age_in_month = is_age_in_month)
 
-  # we consider a height measure for children younger than 9 months as
-  # implausible
-  measure_implausible <- !is.na(cmeasure) &
-    !is.na(age_in_months) &
-    cmeasure == "h" &
-    age_in_months < 9
-  cmeasure[measure_implausible] <- NA_character_
+  if (remove_implausible_measures) {
+    # we consider a height measure for children younger than 9 months as
+    # implausible
+    measure_implausible <- !is.na(cmeasure) &
+      !is.na(age_in_months) &
+      cmeasure == "h" &
+      age_in_months < 9
+    cmeasure[measure_implausible] <- NA_character_
+  }
 
   clenhei <- adjust_lenhei(age_in_days, cmeasure, lenhei)
 

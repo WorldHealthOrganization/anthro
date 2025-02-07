@@ -15,7 +15,8 @@ anthro_zscores(
   armc = NA_real_,
   triskin = NA_real_,
   subskin = NA_real_,
-  oedema = "n"
+  oedema = "n",
+  control = list(remove_implausible_measures = TRUE)
 )
 }
 \arguments{
@@ -104,6 +105,12 @@ treated as non-oedema. For oedema, weight related z-scores
 BUT they are treated as being < -3 SD in the weight-related
 indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
+
+\item{control}{An optional list to control the behavior of the computation.
+Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
+`NA`. A measure is considered implausible if its value is `"h"` and
+`age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
+the adjustment is not applied.}
 }
 \value{
 A data.frame with three types of columns. Columns starting with a

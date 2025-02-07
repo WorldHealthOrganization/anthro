@@ -1,5 +1,13 @@
 # anthro (development version)
 
+## Method
+
+* `anthro_zscores` and `anthro_prevalence` have a new `control` parameter.
+   With this parameter you can control the certain behavior of the computation.
+   With this release `remove_implausible_measures` can be used to control if
+   implausible measures are set to `NA`. See the readme for more information.
+   The default behavior is to remove implausible measures. No breaking change.
+
 ## Performance
 
 * For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster

@@ -19,7 +19,8 @@ anthro_prevalence(
   gregion = NA_character_,
   wealthq = NA_character_,
   mothered = NA_character_,
-  othergr = NA_character_
+  othergr = NA_character_,
+  control = list(remove_implausible_measures = TRUE)
 )
 }
 \arguments{
@@ -126,6 +127,12 @@ attained by the mother}
 
 \item{othergr}{An optional integer or character vector that is of interest
 for stratified analysis.}
+
+\item{control}{An optional list to control the behavior of the computation.
+Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
+`NA`. A measure is considered implausible if its value is `"h"` and
+`age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
+the adjustment is not applied.}
 }
 \value{
 Returns a data.frame with prevalence estimates for the various

@@ -362,6 +362,22 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   expect_equal(
     observed$HAZ_unwpop, as.numeric(expected_total_unweighted[2])
   )
+
+  # we also enforce that the cis
+  HA_2_WH_2_r_se_0 <- res$HA_2_WH_2_r == 0 & res$HA_2_WH_2_se == 0
+  expect_true(
+    all(res$HA_2_WH_2_ll[HA_2_WH_2_r_se_0] == 0, na.rm = TRUE)
+  )
+  expect_true(
+    all(res$HA_2_WH_2_ul[HA_2_WH_2_r_se_0] == 0, na.rm = TRUE)
+  )
+  WH_3_r_se_0 <- res$WH_3_r == 0 & res$WH_3_se == 0
+  expect_true(
+    all(res$WH_3_ll[WH_3_r_se_0] == 0, na.rm = TRUE)
+  )
+  expect_true(
+    all(res$WH_3_ul[WH_3_r_se_0] == 0, na.rm = TRUE)
+  )
 })
 
 test_that("pop/unwpop are 0 if no values in that group", {

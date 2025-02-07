@@ -65,7 +65,6 @@ compute_prevalence_zscore_summaries_by.survey_design <- function(
   )
 }
 
-
 #' @export
 compute_prevalence_sample_size_by.survey_design <- function(
     data, indicator, subset_col_name) {
@@ -104,7 +103,6 @@ compute_prevalence_sample_size_by.survey_design <- function(
   )
 }
 
-
 #' @export
 compute_prevalence_estimates_for_column_by.survey_design <- function(
     data, indicator_name, subset_col_name, prev_col_name) {
@@ -131,7 +129,7 @@ compute_prevalence_estimates_for_column_by.survey_design <- function(
     na.rm.all = TRUE,
     level = 1 - prevalence_significance_level
   )[, 3L:4L]
-  data.frame(
+  res <- data.frame(
     Group = as.character(mean_est_prev[[subset_col_name]]),
     r = mean_est_prev[[prev_col_name]] * 100,
     se = survey::SE(mean_est_prev) * 100,
@@ -139,4 +137,15 @@ compute_prevalence_estimates_for_column_by.survey_design <- function(
     ul = mean_est_ci_prev$ci_u * 100,
     stringsAsFactors = FALSE
   )
+  # For the extreme cases of `r = 0` and `r = 1` we set the CIs
+  # to [0,0] and [1,1] respectively. Mostly for the convenience
+  # of the human user who consumes the prevalence estimates and to be
+  # in line with the method of the `simple` computation.
+  boundary_0 <- res$r == 0
+  boundary_1 <- res$r == 1
+  res$ll[boundary_0] <- 0
+  res$ul[boundary_0] <- 0
+  res$ll[boundary_1] <- 1
+  res$ul[boundary_1] <- 1
+  res
 }

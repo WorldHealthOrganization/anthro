@@ -20,7 +20,7 @@ anthro_prevalence(
   wealthq = NA_character_,
   mothered = NA_character_,
   othergr = NA_character_,
-  control = list(remove_implausible_measures = TRUE)
+  control = list(remove_implausible_measures = FALSE)
 )
 }
 \arguments{

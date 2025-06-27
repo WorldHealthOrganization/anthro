@@ -186,7 +186,7 @@ anthro_prevalence <- function(sex,
                               mothered = NA_character_,
                               othergr = NA_character_,
                               control = list(
-                                remove_implausible_measures = TRUE
+                                remove_implausible_measures = FALSE
                               )) {
   # the other variables are being checked by anthro_zscores
   assert_character_or_numeric(typeres)

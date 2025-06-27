@@ -268,3 +268,26 @@ test_that("removal of implausible cmeasures can be controlled", {
   expect_equal(res_adjustment$cmeasure, c(NA_character_, "h"))
   expect_equal(res_default$cmeasure, c("h", "h"))
 })
+
+test_that("default behaviour is that no measurements are removed", {
+  res_default <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h")
+  )
+  res_no_adjustment <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h"),
+    control = list(
+      remove_implausible_measures = FALSE
+    )
+  )
+  expect_equal(res_default, res_no_adjustment)
+})

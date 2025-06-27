@@ -174,7 +174,7 @@ anthro_zscores <- function(sex,
                            subskin = NA_real_,
                            oedema = "n",
                            control = list(
-                             remove_implausible_measures = TRUE
+                             remove_implausible_measures = FALSE
                            )) {
   assert_logical(is_age_in_month)
   assert_length(is_age_in_month, 1L)

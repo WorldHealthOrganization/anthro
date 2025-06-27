@@ -183,7 +183,10 @@ test_that("young children with measured standing will not be adjusted", {
     sex = 1, age = c(8, 9),
     is_age_in_month = TRUE,
     lenhei = 60,
-    measure = "h"
+    measure = "h",
+    control = list(
+      remove_implausible_measures = TRUE
+    )
   )
   expect_equal(res$clenhei, c(60, 60.7))
   expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
@@ -251,7 +254,7 @@ test_that("removal of implausible cmeasures can be controlled", {
     is_age_in_month = TRUE,
     measure = c("h", "h")
   )
-  res_no_adjustment <- anthro_zscores(
+  res_adjustment <- anthro_zscores(
     sex = 2,
     age = c(8, 9),
     lenhei = 77.5,
@@ -259,9 +262,9 @@ test_that("removal of implausible cmeasures can be controlled", {
     is_age_in_month = TRUE,
     measure = c("h", "h"),
     control = list(
-      remove_implausible_measures = FALSE
+      remove_implausible_measures = TRUE
     )
   )
-  expect_equal(res_default$cmeasure, c(NA_character_, "h"))
-  expect_equal(res_no_adjustment$cmeasure, c("h", "h"))
+  expect_equal(res_adjustment$cmeasure, c(NA_character_, "h"))
+  expect_equal(res_default$cmeasure, c("h", "h"))
 })

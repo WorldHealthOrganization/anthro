@@ -6,7 +6,10 @@
    With this parameter you can control the certain behavior of the computation.
    With this release `remove_implausible_measures` can be used to control if
    implausible measures are set to `NA`. See the readme for more information.
-   The default behavior is to remove implausible measures. No breaking change.
+
+   The default behavior is *not* to remove implausible measures anymore. This
+   change in default settings can result in different results compared to
+   previous versions of the package.
 
 ## Performance
 

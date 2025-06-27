@@ -16,7 +16,7 @@ anthro_zscores(
   triskin = NA_real_,
   subskin = NA_real_,
   oedema = "n",
-  control = list(remove_implausible_measures = TRUE)
+  control = list(remove_implausible_measures = FALSE)
 )
 }
 \arguments{

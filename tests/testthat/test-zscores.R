@@ -188,8 +188,8 @@ test_that("young children with measured standing will not be adjusted", {
       remove_implausible_measures = TRUE
     )
   )
-  expect_equal(res$clenhei, c(60, 60.7))
-  expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
+  expect_equal(res$clenhei, c(NA_real_, 60.7))
+  expect_equal(res$zlen, c(NA_real_, -5.02), tolerance = 0.01)
   expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 

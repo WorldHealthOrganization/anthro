@@ -89,6 +89,13 @@
 #' `age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
 #' the adjustment is not applied.
 #'
+#' If `remove_implausible_measures` is `TRUE`:
+#' For children under 9 months old, height measurements recorded in a 'standing'
+#' position, rather than the expected 'lying' position, are excluded from the
+#' analysis. In these instances,
+#' the \code{cmeasure} and \code{clenhei} variables are set to missing since this
+#' is deemed to be an error.
+#'
 #'
 #' @return A data.frame with three types of columns. Columns starting with a
 #' "c" are cleaned versions of the input arguments. Columns beginning with
@@ -241,6 +248,8 @@ anthro_zscores <- function(sex,
   age_in_days <- age_to_days(age, is_age_in_month = is_age_in_month)
   age_in_months <- age_to_months(age, is_age_in_month = is_age_in_month)
 
+  # we assume everything is plausible by default
+  measure_implausible <- rep.int(FALSE, length(cmeasure))
   if (remove_implausible_measures) {
     # we consider a height measure for children younger than 9 months as
     # implausible
@@ -252,6 +261,9 @@ anthro_zscores <- function(sex,
   }
 
   clenhei <- adjust_lenhei(age_in_days, cmeasure, lenhei)
+  if (remove_implausible_measures) {
+    clenhei[measure_implausible] <- NA_real_
+  }
 
   cbmi <- weight / ((clenhei / 100)^2)
   cbind(

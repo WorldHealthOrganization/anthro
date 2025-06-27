@@ -132,7 +132,14 @@ for stratified analysis.}
 Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
 `NA`. A measure is considered implausible if its value is `"h"` and
 `age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
-the adjustment is not applied.}
+the adjustment is not applied.
+
+If `remove_implausible_measures` is `TRUE`:
+For children under 9 months old, height measurements recorded in a 'standing'
+position, rather than the expected 'lying' position, are excluded from the
+analysis. In these instances,
+the \code{cmeasure} and \code{clenhei} variables are set to missing since this
+is deemed to be an error.}
 }
 \value{
 Returns a data.frame with prevalence estimates for the various

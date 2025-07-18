@@ -37,3 +37,34 @@ test_that("zscore estimates should not overflow", {
     zscore_estimate(x, length(x), data.frame())
   )
 })
+
+test_that("prevalence is computed without measure adjustment by default", {
+  n <- 10
+  data <- data.frame(
+    sex = 1:2,
+    age = 1:10,
+    weight = 20,
+    lenhei = 80,
+    measure = "h"
+  )
+  res_default <- anthro_prevalence(
+    data$sex,
+    data$age,
+    is_age_in_month = TRUE,
+    weight = data$weight,
+    lenhei = data$lenhei,
+    measure = data$measure
+  )
+  res_no_adjustment <- anthro_prevalence(
+    data$sex,
+    data$age,
+    is_age_in_month = TRUE,
+    weight = data$weight,
+    lenhei = data$lenhei,
+    measure = data$measure,
+    control = list(
+      remove_implausible_measures = FALSE
+    )
+  )
+  expect_equal(res_default, res_no_adjustment)
+})

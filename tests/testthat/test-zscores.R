@@ -183,10 +183,13 @@ test_that("young children with measured standing will not be adjusted", {
     sex = 1, age = c(8, 9),
     is_age_in_month = TRUE,
     lenhei = 60,
-    measure = "h"
+    measure = "h",
+    control = list(
+      remove_implausible_measures = TRUE
+    )
   )
-  expect_equal(res$clenhei, c(60, 60.7))
-  expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
+  expect_equal(res$clenhei, c(NA_real_, 60.7))
+  expect_equal(res$zlen, c(NA_real_, -5.02), tolerance = 0.01)
   expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 
@@ -240,4 +243,51 @@ test_that("clenhei takes the measure argument into account correctly", {
   )
   expect_equal(res$clenhei, c(77.5, 77.5))
   expect_equal(res$zlen, c(-2.55, -2.55))
+})
+
+test_that("removal of implausible cmeasures can be controlled", {
+  res_default <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h")
+  )
+  res_adjustment <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h"),
+    control = list(
+      remove_implausible_measures = TRUE
+    )
+  )
+  expect_equal(res_adjustment$cmeasure, c(NA_character_, "h"))
+  expect_equal(res_default$cmeasure, c("h", "h"))
+})
+
+test_that("default behaviour is that no measurements are removed", {
+  res_default <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h")
+  )
+  res_no_adjustment <- anthro_zscores(
+    sex = 2,
+    age = c(8, 9),
+    lenhei = 77.5,
+    weight = 8.8,
+    is_age_in_month = TRUE,
+    measure = c("h", "h"),
+    control = list(
+      remove_implausible_measures = FALSE
+    )
+  )
+  expect_equal(res_default, res_no_adjustment)
 })

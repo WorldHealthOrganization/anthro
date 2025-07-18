@@ -1,5 +1,21 @@
 # anthro (development version)
 
+## Method
+
+* `anthro_zscores` and `anthro_prevalence` have a new `control` parameter.
+  With this parameter you can control the certain behavior of the computation.
+  With this release `remove_implausible_measures` can be used to control if
+  implausible measures are set to `NA`. See the readme for more information.
+
+  The default behavior is *not* to remove implausible measures anymore. This
+  change in default settings can result in different results compared to
+  previous versions of the package.
+
+* When `remove_implausible_measures` is `TRUE` and a child younger than 9 months
+  was measured standing, then in addition to `cmeasure` being set to `NA` now
+  also `clenhei` is set to `NA. This impacts z-score and prevalence calculations
+  based on these two values.
+
 ## Performance
 
 * For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster

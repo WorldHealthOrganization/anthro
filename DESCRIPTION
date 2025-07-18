@@ -11,6 +11,7 @@ Authors@R: c(person("Dirk", "Schumacher", ,
                     "mail@dirk-schumacher.net", c("aut", "cre")),
              person("Elaine", "Borghi", , "borghie@who.int", "ctb"),
              person("Jonathan", "Polonsky", , "polonskyj@who.int", "ctb"),
+             person("Giovanna", "Gatica Dominguez", , "gaticag@who.int", "ctb"),
              person(given = "World Health Organization", role = "cph"))
 License: GPL-3
 Encoding: UTF-8

@@ -37,5 +37,7 @@ usethis::use_data(growthstandards_weianthro,
   growthstandards_acanthro,
   growthstandards_tsanthro,
   growthstandards_ssanthro,
-  overwrite = TRUE, internal = TRUE
+  overwrite = TRUE,
+  internal = TRUE,
+  version = 2 # we set it to version 2 to be able to support older R versions
 )

@@ -15,8 +15,7 @@ anthro_zscores(
   armc = NA_real_,
   triskin = NA_real_,
   subskin = NA_real_,
-  oedema = "n",
-  control = list(remove_implausible_measures = FALSE)
+  oedema = "n"
 )
 }
 \arguments{
@@ -105,19 +104,6 @@ treated as non-oedema. For oedema, weight related z-scores
 BUT they are treated as being < -3 SD in the weight-related
 indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
-
-\item{control}{An optional list to control the behavior of the computation.
-Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
-`NA`. A measure is considered implausible if its value is `"h"` and
-`age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
-the adjustment is not applied.
-
-If `remove_implausible_measures` is `TRUE`:
-For children under 9 months old, height measurements recorded in a 'standing'
-position, rather than the expected 'lying' position, are excluded from the
-analysis. In these instances,
-the \code{cmeasure} and \code{clenhei} variables are set to missing since this
-is deemed to be an error.}
 }
 \value{
 A data.frame with three types of columns. Columns starting with a
@@ -130,7 +116,11 @@ of the input arguments.
 The following columns are returned:
 \itemize{
 \item{\code{clenhei}} converted length/height for deriving z-score
+\item{\code{c9mo_flag}} 0 and 1 to flag children below 9 months of age with
+.the incorrect measurement position. 1 means the measurement position was
+considered incorrect and replaced by `NA`.
 \item{\code{cbmi}} BMI value based on length/height given by clenhei
+\item{\code{cmeasure}} The cleaned measure that was used in the computation
 
 \item{\code{zlen}} Length/Height-for-age z-score
 \item{\code{flen}} 1, if \code{abs(zlen) > 6}

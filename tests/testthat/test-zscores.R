@@ -57,6 +57,18 @@ describe("anthro_zscores()", {
     res <- anthro_zscores(sex = NA_character_, lenhei = 50, age = 50)
     expect_equal(res[["zlen"]], NA_real_)
   })
+  it("has a certain column order", {
+    res <- anthro_zscores(
+      sex = 1L,
+      age = 30,
+      weight = 20,
+      is_age_in_month = TRUE
+    )
+    expect_equal(
+      colnames(res)[1:5],
+      c("clenhei", "cmeasure", "c9mo_flag", "cbmi", "csex")
+    )
+  })
 })
 
 test_that("length for age uses adjusted lenhei", {

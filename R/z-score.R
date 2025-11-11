@@ -248,9 +248,9 @@ anthro_zscores <- function(sex,
   cbmi <- weight / ((clenhei / 100)^2)
   cbind(
     clenhei,
+    cmeasure,
     c9mo_flag,
     cbmi,
-    cmeasure,
     csex,
     anthro_zscore_length_for_age(
       lenhei = clenhei,

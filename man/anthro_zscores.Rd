@@ -15,8 +15,7 @@ anthro_zscores(
   armc = NA_real_,
   triskin = NA_real_,
   subskin = NA_real_,
-  oedema = "n",
-  control = list(remove_implausible_measures = FALSE)
+  oedema = "n"
 )
 }
 \arguments{
@@ -105,32 +104,20 @@ treated as non-oedema. For oedema, weight related z-scores
 BUT they are treated as being < -3 SD in the weight-related
 indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
-
-\item{control}{An optional list to control the behavior of the computation.
-Setting `remove_implausible_measures` to `TRUE` sets implausible measures to
-`NA`. A measure is considered implausible if its value is `"h"` and
-`age_in_months < 9`. If `remove_implausible_measures` is not `TRUE` or missing,
-the adjustment is not applied.
-
-If `remove_implausible_measures` is `TRUE`:
-For children under 9 months old, height measurements recorded in a 'standing'
-position, rather than the expected 'lying' position, are excluded from the
-analysis. In these instances,
-the \code{cmeasure} and \code{clenhei} variables are set to missing since this
-is deemed to be an error.}
 }
 \value{
-A data.frame with three types of columns. Columns starting with a
-"c" are cleaned versions of the input arguments. Columns beginning with
-a "z" are the respective z-scores and columns prefixed by a "f" indicate
-if these z-scores are flagged (integers).
-The number of rows is given by the length
+A `data.frame` with three types of columns: columns starting with a
+"c" are cleaned versions of the input arguments
+(i.e., `clenhei`, `cmeasure`, `cbmi`). Columns prefixed by "z" contain the respective z-scores, while columns prefixed by "f" indicate whether these z-scores are flagged (integers).
+Additional derived flags based on input arguments, such as `c9mo_flag`, flag children under 9 months with incorrect measurement position. The number of rows is given by the length
 of the input arguments.
 
-The following columns are returned:
+The returned columns are:
 \itemize{
-\item{\code{clenhei}} converted length/height for deriving z-score
-\item{\code{cbmi}} BMI value based on length/height given by clenhei
+\item{\code{clenhei}} converted length/height for deriving z-scores.
+\item{\code{cmeasure}} cleaned measurement position used in the computation; for children under 9 months measured incorrectly, the value is replaced by `NA`.
+\item{\code{c9mo_flag}} a value of 0 means the measurement position is appropriate, while 1 means it is incorrect.
+\item{\code{cbmi}} BMI value based on length/height given by `clenhei`.
 
 \item{\code{zlen}} Length/Height-for-age z-score
 \item{\code{flen}} 1, if \code{abs(zlen) > 6}

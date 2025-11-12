@@ -106,21 +106,18 @@ indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
 }
 \value{
-A data.frame with three types of columns. Columns starting with a
-"c" are cleaned versions of the input arguments. Columns beginning with
-a "z" are the respective z-scores and columns prefixed by a "f" indicate
-if these z-scores are flagged (integers).
-The number of rows is given by the length
+A `data.frame` with three types of columns: columns starting with a
+"c" are cleaned versions of the input arguments
+(i.e., `clenhei`, `cmeasure`, `cbmi`). Columns prefixed by "z" contain the respective z-scores, while columns prefixed by "f" indicate whether these z-scores are flagged (integers).
+Additional derived flags based on input arguments, such as `c9mo_flag`, flag children under 9 months with incorrect measurement position. The number of rows is given by the length
 of the input arguments.
 
-The following columns are returned:
+The returned columns are:
 \itemize{
-\item{\code{clenhei}} converted length/height for deriving z-score
-\item{\code{c9mo_flag}} 0 and 1 to flag children below 9 months of age with
-.the incorrect measurement position. 1 means the measurement position was
-considered incorrect and replaced by `NA`.
-\item{\code{cbmi}} BMI value based on length/height given by clenhei
-\item{\code{cmeasure}} The cleaned measure that was used in the computation
+\item{\code{clenhei}} converted length/height for deriving z-scores.
+\item{\code{cmeasure}} cleaned measurement position used in the computation; for children under 9 months measured incorrectly, the value is replaced by `NA`.
+\item{\code{c9mo_flag}} a value of 0 means the measurement position is appropriate, while 1 means it is incorrect.
+\item{\code{cbmi}} BMI value based on length/height given by `clenhei`.
 
 \item{\code{zlen}} Length/Height-for-age z-score
 \item{\code{flen}} 1, if \code{abs(zlen) > 6}

@@ -184,10 +184,7 @@ anthro_prevalence <- function(sex,
                               gregion = NA_character_,
                               wealthq = NA_character_,
                               mothered = NA_character_,
-                              othergr = NA_character_,
-                              control = list(
-                                remove_implausible_measures = FALSE
-                              )) {
+                              othergr = NA_character_) {
   # the other variables are being checked by anthro_zscores
   assert_character_or_numeric(typeres)
   assert_character_or_numeric(gregion)
@@ -230,8 +227,7 @@ anthro_prevalence <- function(sex,
     weight = input[["weight"]],
     lenhei = input[["lenhei"]],
     measure = input[["measure"]],
-    oedema = input[["oedema"]],
-    control = control
+    oedema = input[["oedema"]]
   )
   zscores_orig <- zscores
   stopifnot(c("zlen", "zwei", "zwfl", "zbmi") %in% colnames(zscores))

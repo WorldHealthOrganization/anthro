@@ -57,6 +57,18 @@ describe("anthro_zscores()", {
     res <- anthro_zscores(sex = NA_character_, lenhei = 50, age = 50)
     expect_equal(res[["zlen"]], NA_real_)
   })
+  it("has a certain column order", {
+    res <- anthro_zscores(
+      sex = 1L,
+      age = 30,
+      weight = 20,
+      is_age_in_month = TRUE
+    )
+    expect_equal(
+      colnames(res)[1:5],
+      c("clenhei", "cmeasure", "c9mo_flag", "cbmi", "csex")
+    )
+  })
 })
 
 test_that("length for age uses adjusted lenhei", {
@@ -178,18 +190,16 @@ test_that("arguments will be recycled", {
   expect_equal(nrow(res), 10L)
 })
 
-test_that("young children with measured standing will not be adjusted", {
+test_that("young children with measured standing will be adjusted", {
   res <- anthro_zscores(
     sex = 1, age = c(8, 9),
     is_age_in_month = TRUE,
     lenhei = 60,
-    measure = "h",
-    control = list(
-      remove_implausible_measures = TRUE
-    )
+    measure = "h"
   )
-  expect_equal(res$clenhei, c(NA_real_, 60.7))
-  expect_equal(res$zlen, c(NA_real_, -5.02), tolerance = 0.01)
+  expect_equal(res$c9mo_flag, c(1L, 0L))
+  expect_equal(res$clenhei, c(60.0, 60.7))
+  expect_equal(res$zlen, c(-4.81, -5.02), tolerance = 0.01)
   expect_equal(res$cmeasure, c(NA_character_, "h"))
 })
 
@@ -206,8 +216,8 @@ test_that("zcores are only computed for children younger to 60 months", {
     headc = 5,
     measure = "h"
   )
-  expect_true(all(is.na(res[2:3, -1:-4])))
-  expect_false(all(is.na(res[1, -1:-4])))
+  expect_true(all(is.na(res[2:3, -1:-5])))
+  expect_false(all(is.na(res[1, -1:-5])))
 })
 
 test_that("height measurements are used for age 24 months", {
@@ -243,51 +253,4 @@ test_that("clenhei takes the measure argument into account correctly", {
   )
   expect_equal(res$clenhei, c(77.5, 77.5))
   expect_equal(res$zlen, c(-2.55, -2.55))
-})
-
-test_that("removal of implausible cmeasures can be controlled", {
-  res_default <- anthro_zscores(
-    sex = 2,
-    age = c(8, 9),
-    lenhei = 77.5,
-    weight = 8.8,
-    is_age_in_month = TRUE,
-    measure = c("h", "h")
-  )
-  res_adjustment <- anthro_zscores(
-    sex = 2,
-    age = c(8, 9),
-    lenhei = 77.5,
-    weight = 8.8,
-    is_age_in_month = TRUE,
-    measure = c("h", "h"),
-    control = list(
-      remove_implausible_measures = TRUE
-    )
-  )
-  expect_equal(res_adjustment$cmeasure, c(NA_character_, "h"))
-  expect_equal(res_default$cmeasure, c("h", "h"))
-})
-
-test_that("default behaviour is that no measurements are removed", {
-  res_default <- anthro_zscores(
-    sex = 2,
-    age = c(8, 9),
-    lenhei = 77.5,
-    weight = 8.8,
-    is_age_in_month = TRUE,
-    measure = c("h", "h")
-  )
-  res_no_adjustment <- anthro_zscores(
-    sex = 2,
-    age = c(8, 9),
-    lenhei = 77.5,
-    weight = 8.8,
-    is_age_in_month = TRUE,
-    measure = c("h", "h"),
-    control = list(
-      remove_implausible_measures = FALSE
-    )
-  )
-  expect_equal(res_default, res_no_adjustment)
 })

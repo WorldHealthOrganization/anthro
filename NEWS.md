@@ -1,5 +1,11 @@
 # anthro (development version)
 
+## Method
+
+* The `Weight-for-length/height (zwfl)` z-score indicator is now also computed
+  for observations where `weight` or `lenhei` is outside the plausible ranges.
+  The plausible ranges were 0.9-58 for `weight` and 38-150 for `lenhei`.
+
 ## Z-scores
 
 * The resulting data frame of `anthro_zscores` has a new column `c9mo_flag`

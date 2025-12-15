@@ -11,8 +11,15 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_bmi_for_age <-
-  function(bmi, age_in_days, age_in_months, sex, oedema, flag_threshold = 5,
-           growthstandards = growthstandards_bmianthro) {
+  function(
+    bmi,
+    age_in_days,
+    age_in_months,
+    sex,
+    oedema,
+    flag_threshold = 5,
+    growthstandards = growthstandards_bmianthro
+  ) {
     anthro_zscore_adjusted(
       name = "bmi",
       measure = bmi,
@@ -21,6 +28,7 @@ anthro_zscore_bmi_for_age <-
       sex = sex,
       growthstandards = growthstandards,
       flag_threshold = flag_threshold,
-      allowed_age_range = c(0, 1856), !(oedema %in% "y")
+      allowed_age_range = c(0, 1856),
+      !(oedema %in% "y")
     )
   }

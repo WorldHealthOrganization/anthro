@@ -10,7 +10,10 @@ column_names.survey_design <- function(x) {
 
 #' @export
 compute_prevalence_zscore_summaries_by.survey_design <- function(
-    data, indicator, subset_col_name) {
+  data,
+  indicator,
+  subset_col_name
+) {
   zscore_col_name <- prev_zscore_value_column(indicator)
   zscore_formula <- as.formula(paste0("~", zscore_col_name))
   subset_formula <- as.formula(paste0("~", subset_col_name))
@@ -68,7 +71,10 @@ compute_prevalence_zscore_summaries_by.survey_design <- function(
 
 #' @export
 compute_prevalence_sample_size_by.survey_design <- function(
-    data, indicator, subset_col_name) {
+  data,
+  indicator,
+  subset_col_name
+) {
   expr_name <- paste0("I(!is.na(", prev_prevalence_column_name(indicator), "))")
   prev_formula <- as.formula(paste0("~", expr_name))
   subset_formula <- as.formula(paste0("~", subset_col_name))
@@ -93,7 +99,8 @@ compute_prevalence_sample_size_by.survey_design <- function(
   pop_weighted[is.na(pop_weighted)] <- 0
   pop_unweighted[is.na(pop_unweighted)] <- 0
 
-  stopifnot( # check that subsets come in the right order
+  stopifnot(
+    # check that subsets come in the right order
     all(prev[[subset_col_name]] == unweighted_prev[[subset_col_name]])
   )
   data.frame(
@@ -107,7 +114,11 @@ compute_prevalence_sample_size_by.survey_design <- function(
 
 #' @export
 compute_prevalence_estimates_for_column_by.survey_design <- function(
-    data, indicator_name, subset_col_name, prev_col_name) {
+  data,
+  indicator_name,
+  subset_col_name,
+  prev_col_name
+) {
   subset_formula <- as.formula(paste0("~", subset_col_name))
   prev_col_formula <- as.formula(paste0("~", prev_col_name))
   mean_est_prev <- svyby(

@@ -20,7 +20,11 @@ describe("anthro_zscore_length_for_age", {
   it("has a default flag threshold of 6", {
     observed <- anthro_zscore_length_for_age(50, 44, to_months(44), 1)
     expect_equal(observed$flen, 0L)
-    observed <- anthro_zscore_length_for_age(50, 44, to_months(44), 1,
+    observed <- anthro_zscore_length_for_age(
+      50,
+      44,
+      to_months(44),
+      1,
       flag_threshold = 2
     )
     expect_equal(observed$flen, 1L)

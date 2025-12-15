@@ -99,54 +99,93 @@ test_that("age related indicators are now calculated if age is NA", {
 
 test_that("oedema is all 'n' by default", {
   res <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l"
   )
   res2 <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, oedema = "n", measure = "l"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    oedema = "n",
+    measure = "l"
   )
   expect_equal(res, res2)
 })
 
 test_that("oedema n = 2 and y = 1", {
   res <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "2"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "2"
   )
   res2 <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, oedema = "n", measure = "l"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    oedema = "n",
+    measure = "l"
   )
   expect_equal(res, res2)
   res <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "1"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "1"
   )
   res2 <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, oedema = "y", measure = "l"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    oedema = "y",
+    measure = "l"
   )
   expect_equal(res, res2)
 })
 
 test_that("oedema can also be numeric", {
   res <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "2"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "2"
   )
   res2 <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "n"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "n"
   )
   expect_equal(res, res2)
   res <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "1"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "1"
   )
   res2 <- anthro_zscores(
-    sex = 1, age = 100,
-    lenhei = 60, weight = 7, measure = "l", oedema = "y"
+    sex = 1,
+    age = 100,
+    lenhei = 60,
+    weight = 7,
+    measure = "l",
+    oedema = "y"
   )
   expect_equal(res, res2)
 })
@@ -192,7 +231,8 @@ test_that("arguments will be recycled", {
 
 test_that("young children with measured standing will be adjusted", {
   res <- anthro_zscores(
-    sex = 1, age = c(8, 9),
+    sex = 1,
+    age = c(8, 9),
     is_age_in_month = TRUE,
     lenhei = 60,
     measure = "h"

@@ -1,9 +1,9 @@
 standardize_sex_var <- function(sex) {
   sex <- tolower(trimws(as.character(sex)))
-  sex <- ifelse(!is.na(sex) & (sex == "m" | sex == "1"), 1L,
-    ifelse(!is.na(sex) & (sex == "f" | sex == "2"),
-      2L, NA_integer_
-    )
+  sex <- ifelse(
+    !is.na(sex) & (sex == "m" | sex == "1"),
+    1L,
+    ifelse(!is.na(sex) & (sex == "f" | sex == "2"), 2L, NA_integer_)
   )
   sex
 }
@@ -64,9 +64,5 @@ anthro_age_groups <- function(age_in_months) {
     "36-47 mo",
     "48-59 mo"
   )
-  cut(age_in_months,
-    breaks = cut_breaks,
-    labels = cut_labels,
-    right = FALSE
-  )
+  cut(age_in_months, breaks = cut_breaks, labels = cut_labels, right = FALSE)
 }

@@ -28,7 +28,8 @@ growthstandards_wfhanthro <- as.data.frame(
 )
 growthstandards_wfhanthro$sex <- as.integer(growthstandards_wfhanthro$sex)
 
-usethis::use_data(growthstandards_weianthro,
+usethis::use_data(
+  growthstandards_weianthro,
   growthstandards_lenanthro,
   growthstandards_bmianthro,
   growthstandards_wflanthro,

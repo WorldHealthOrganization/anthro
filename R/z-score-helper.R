@@ -45,16 +45,24 @@ compute_zscore_adjusted <- function(y, m, l, s) {
   zscore
 }
 
-apply_zscore_and_growthstandards <- function(zscore_fun, growthstandards,
-                                             age_in_days, sex, measure) {
+apply_zscore_and_growthstandards <- function(
+  zscore_fun,
+  growthstandards,
+  age_in_days,
+  sex,
+  measure
+) {
   n <- length(measure)
   age_in_days[!is.na(age_in_days) & age_in_days < 0] <- NA_real_
   age_in_days <- as.integer(round_up(age_in_days))
   input_df <- data.frame(measure, age_in_days, sex, ordering = seq_len(n))
-  merged_df <- merge(input_df,
+  merged_df <- merge(
+    input_df,
     growthstandards,
-    by.x = c("age_in_days", "sex"), by.y = c("age", "sex"),
-    all.x = TRUE, sort = FALSE
+    by.x = c("age_in_days", "sex"),
+    by.y = c("age", "sex"),
+    all.x = TRUE,
+    sort = FALSE
   )
   merged_df <- merged_df[order(merged_df$ordering), , drop = FALSE]
 
@@ -97,7 +105,9 @@ adjust_lenhei <- function(age_in_days, measure, lenhei) {
   lenhei <-
     ifelse(
       !is.na(age_in_days) &
-        age_in_days < 731 & !is.na(measure) & measure == "h",
+        age_in_days < 731 &
+        !is.na(measure) &
+        measure == "h",
       lenhei + 0.7,
       lenhei
     )
@@ -105,7 +115,9 @@ adjust_lenhei <- function(age_in_days, measure, lenhei) {
   lenhei <-
     ifelse(
       !is.na(age_in_days) &
-        age_in_days >= 731 & !is.na(measure) & measure == "l",
+        age_in_days >= 731 &
+        !is.na(measure) &
+        measure == "l",
       lenhei - 0.7,
       lenhei
     )
@@ -113,14 +125,23 @@ adjust_lenhei <- function(age_in_days, measure, lenhei) {
 }
 
 anthro_zscore_adjusted <-
-  function(name, measure, age_in_days, age_in_months, sex, growthstandards, flag_threshold,
-           allowed_age_range = c(0, 1856),
-           zscore_is_valid = rep.int(TRUE, length(measure)),
-           zscore_fun = compute_zscore_adjusted) {
+  function(
+    name,
+    measure,
+    age_in_days,
+    age_in_months,
+    sex,
+    growthstandards,
+    flag_threshold,
+    allowed_age_range = c(0, 1856),
+    zscore_is_valid = rep.int(TRUE, length(measure)),
+    zscore_fun = compute_zscore_adjusted
+  ) {
     stopifnot(is.character(name), length(name) == 1L, !is.na(name))
     stopifnot(is.numeric(measure))
     stopifnot(
-      is.numeric(allowed_age_range), length(allowed_age_range) == 2L,
+      is.numeric(allowed_age_range),
+      length(allowed_age_range) == 2L,
       !any(is.na(allowed_age_range))
     )
     stopifnot(is.numeric(age_in_months))
@@ -140,8 +161,11 @@ anthro_zscore_adjusted <-
     # join that with the growthstandards
     # then we have everything to compute the zscores
     zscore <- apply_zscore_and_growthstandards(
-      zscore_fun, growthstandards,
-      age_in_days, sex, measure
+      zscore_fun,
+      growthstandards,
+      age_in_days,
+      sex,
+      measure
     )
 
     # we only compute zscores for children age < 60 months

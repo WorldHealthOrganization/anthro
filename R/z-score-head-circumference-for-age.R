@@ -11,8 +11,14 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_head_circumference_for_age <-
-  function(headc, age_in_days, age_in_months, sex, flag_threshold = 5,
-           growthstandards = growthstandards_hcanthro) {
+  function(
+    headc,
+    age_in_days,
+    age_in_months,
+    sex,
+    flag_threshold = 5,
+    growthstandards = growthstandards_hcanthro
+  ) {
     anthro_zscore_adjusted(
       name = "hc",
       measure = headc,

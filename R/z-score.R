@@ -157,24 +157,32 @@
 #' @include anthro-package.R
 #' @include assertions.R
 #' @export
-anthro_zscores <- function(sex,
-                           age = NA_real_,
-                           is_age_in_month = FALSE,
-                           weight = NA_real_,
-                           lenhei = NA_real_,
-                           measure = NA_character_,
-                           headc = NA_real_,
-                           armc = NA_real_,
-                           triskin = NA_real_,
-                           subskin = NA_real_,
-                           oedema = "n") {
+anthro_zscores <- function(
+  sex,
+  age = NA_real_,
+  is_age_in_month = FALSE,
+  weight = NA_real_,
+  lenhei = NA_real_,
+  measure = NA_character_,
+  headc = NA_real_,
+  armc = NA_real_,
+  triskin = NA_real_,
+  subskin = NA_real_,
+  oedema = "n"
+) {
   assert_logical(is_age_in_month)
   assert_length(is_age_in_month, 1L)
   assert_character_or_numeric(sex)
-  assert_values_in_set(sex,
+  assert_values_in_set(
+    sex,
     allowed = c(
-      "1", "2", "m",
-      "f", "M", "F", NA_character_
+      "1",
+      "2",
+      "m",
+      "f",
+      "M",
+      "F",
+      NA_character_
     )
   )
   assert_numeric(age)
@@ -186,7 +194,8 @@ anthro_zscores <- function(sex,
   assert_numeric(armc)
   assert_numeric(triskin)
   assert_numeric(subskin)
-  assert_values_in_set(oedema,
+  assert_values_in_set(
+    oedema,
     allowed = c("n", "y", "N", "Y", "2", "1", NA_character_)
   )
 

@@ -15,14 +15,18 @@ describe("anthro_prevalence()", {
   })
   it("fails if no values left for analysis", {
     expect_error(
-      expect_warning(anthro_prevalence(
-        sex = c(1, 2, 2, 1),
-        age = c(100, 100, 100, 100),
-        oedema = c("n", "n", "n", "y"),
-        is_age_in_month = TRUE,
-        weight = c(18, 15, 10, 15),
-        lenhei = c(100, 80, 100, 100)
-      ), "rows", all = TRUE),
+      expect_warning(
+        anthro_prevalence(
+          sex = c(1, 2, 2, 1),
+          age = c(100, 100, 100, 100),
+          oedema = c("n", "n", "n", "y"),
+          is_age_in_month = TRUE,
+          weight = c(18, 15, 10, 15),
+          lenhei = c(100, 80, 100, 100)
+        ),
+        "rows",
+        all = TRUE
+      ),
       "removed"
     )
   })
@@ -84,11 +88,16 @@ describe("anthro_prevalence()", {
       wealthq = c("Q1", "Q2", "3", "4", "5")
     )
     row_names <- res$Group[grepl(res$Group, pattern = "^Wealth")]
-    expected_rownames <- paste0("Wealth quintile: ", c(
-      "Q1: Poorest", "Q2",
-      "Q3", "Q4",
-      "Q5: Richest"
-    ))
+    expected_rownames <- paste0(
+      "Wealth quintile: ",
+      c(
+        "Q1: Poorest",
+        "Q2",
+        "Q3",
+        "Q4",
+        "Q5: Richest"
+      )
+    )
     expect_true(all(expected_rownames %in% row_names))
     expect_equal(res[22:26, "HAZ_pop"], rep.int(20, 5)) # 20 per quintile
   })
@@ -166,7 +175,8 @@ describe("anthro_prevalence()", {
         weight = c(18, 15, 10, 15, 15),
         lenhei = c(100, 80, 100, 100, 100),
         sw = 0.5
-      ), "1 row will be excluded"
+      ),
+      "1 row will be excluded"
     )
   })
   it("filters out rows with NA clusters", {
@@ -179,7 +189,8 @@ describe("anthro_prevalence()", {
         lenhei = c(100, 80, 100, 100, 100),
         sw = 0.5,
         cluster = c(1, 1, 1, 1, NA_real_)
-      ), "1 row will be excluded"
+      ),
+      "1 row will be excluded"
     )
   })
   it("filters out rows with NA strata", {
@@ -193,7 +204,8 @@ describe("anthro_prevalence()", {
         sw = 0.5,
         cluster = 1,
         strata = c(1, 1, 1, 1, NA_real_)
-      ), "1 row will be excluded"
+      ),
+      "1 row will be excluded"
     )
   })
   it("shows result also for empty levels", {
@@ -324,22 +336,36 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   zscores <- cbind(zscores, data)
   zscores$zlen <- ifelse(zscores$flen == 1, NA_real_, zscores$zlen)
   design <- survey::svydesign(
-    id = ~cluster, data = zscores, nest = TRUE, weights = ~sw, strata = ~strata
+    id = ~cluster,
+    data = zscores,
+    nest = TRUE,
+    weights = ~sw,
+    strata = ~strata
   )
   design_unweighted <- survey::svydesign(
-    id = ~cluster, data = zscores, nest = TRUE, weights = NULL, strata = ~strata
+    id = ~cluster,
+    data = zscores,
+    nest = TRUE,
+    weights = NULL,
+    strata = ~strata
   )
-  expected <- survey::svyby(~zlen, ~sex, design, survey::svymean,
+  expected <- survey::svyby(
+    ~zlen,
+    ~sex,
+    design,
+    survey::svymean,
     na.rm = TRUE,
     na.rm.all = TRUE,
     drop.empty.groups = FALSE
   )
   observed <- res[c(8, 9), c("Group", "HA_r", "HA_se")]
   expect_equal(
-    observed$HA_r, rev(expected$zlen)
+    observed$HA_r,
+    rev(expected$zlen)
   )
   expect_equal(
-    observed$HA_se, rev(expected$se)
+    observed$HA_se,
+    rev(expected$se)
   )
   expected_total_weighted <- survey::svytotal(
     ~ I(!is.na(zlen)),
@@ -357,10 +383,12 @@ test_that("Cluster/strata/sw information is passed correctly to survey", {
   )
   observed <- res[1, 2:3, drop = TRUE]
   expect_equal(
-    observed$HAZ_pop, as.numeric(expected_total_weighted[2])
+    observed$HAZ_pop,
+    as.numeric(expected_total_weighted[2])
   )
   expect_equal(
-    observed$HAZ_unwpop, as.numeric(expected_total_unweighted[2])
+    observed$HAZ_unwpop,
+    as.numeric(expected_total_unweighted[2])
   )
 })
 

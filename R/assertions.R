@@ -16,7 +16,8 @@ assert_valid_sex <- function(sex) {
 
 assert_valid_age_in_days <- function(age_in_days) {
   if (!is.numeric(age_in_days)) {
-    stop("Parameter `age_in_days` must be integer values",
+    stop(
+      "Parameter `age_in_days` must be integer values",
       " or values that can be coerced to integers",
       call. = FALSE
     )
@@ -51,26 +52,27 @@ deparse_chr <- function(expr) {
 }
 
 assert_logical <- function(x) {
-  assert_type(is.logical, "logical", x,
-    param_name = deparse_chr(substitute(x))
-  )
+  assert_type(is.logical, "logical", x, param_name = deparse_chr(substitute(x)))
 }
 
 assert_numeric <- function(x) {
-  assert_type(is.numeric, "numeric", x,
-    param_name = deparse_chr(substitute(x))
-  )
+  assert_type(is.numeric, "numeric", x, param_name = deparse_chr(substitute(x)))
 }
 
 assert_character <- function(x) {
-  assert_type(is.character, "character", x,
+  assert_type(
+    is.character,
+    "character",
+    x,
     param_name = deparse_chr(substitute(x))
   )
 }
 
 assert_character_or_numeric <- function(x) {
-  assert_type(function(y) is.character(y) || is.numeric(y),
-    "character or numeric", x,
+  assert_type(
+    function(y) is.character(y) || is.numeric(y),
+    "character or numeric",
+    x,
     param_name = deparse_chr(substitute(x))
   )
 }
@@ -86,8 +88,12 @@ assert_type <- function(type_fun, type_name, x, param_name) {
 assert_values_in_set <- function(x, allowed) {
   param_name <- as.character(substitute(x))
   if (length(allowed) > 0L && any(!(x %in% allowed))) {
-    stop("Some values in ", param_name, " are not valid.",
-      " Accepted values are ", paste0(allowed, collapse = ", "),
+    stop(
+      "Some values in ",
+      param_name,
+      " are not valid.",
+      " Accepted values are ",
+      paste0(allowed, collapse = ", "),
       call. = FALSE
     )
   }

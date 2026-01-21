@@ -68,6 +68,18 @@ test_that("survey and approximation with sw results are equal within tolerance",
 })
 
 test_that("sw > 0 is approximated correctly within tolerance", {
+  res <- anthro_prevalence(
+    sex = c(1,2,1),
+    age = c(50, 50, NA_real_),
+    is_age_in_month = TRUE,
+    weight = 80,
+    lenhei = 100,
+    sw = 0.05
+  )
+  expect_true(all(!is.na(res$HAZ_pop)))
+})
+
+test_that("sw > 0 is approximated correctly within tolerance", {
   set.seed(1)
   data <- data.frame(
     sex = sample(1:2, 100, replace = TRUE),

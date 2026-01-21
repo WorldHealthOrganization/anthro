@@ -93,7 +93,7 @@ zscore_estimate_weighted <- function(x, N, weights, empty_data_prototype) {
 
 sample_size_weighted <- function(x, N, weights, empty_data_prototype) {
   x <- as.numeric(!is.na(x))
-  pop <- as.numeric(sum(x * weights))
+  pop <- as.numeric(sum(x * weights, na.rm = TRUE))
   n <- as.numeric(sum(x))
   data.frame(pop = pop, unwpop = n)
 }

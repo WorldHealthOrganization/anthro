@@ -93,6 +93,8 @@ compute_and_aggregate <- function(
 ) {
   col_values <- column_values(data, value_column)
   N <- length(col_values)
+  weights <- data$data[["sampling_weights"]]
+  has_weights <- !is.null(weights)
   grouping <- column_values(data, subset_column)
   groups <- if (is.factor(grouping)) {
     levels(grouping)
@@ -103,11 +105,21 @@ compute_and_aggregate <- function(
   values <- vector(mode = "list", length(groups))
   names(values) <- groups
   for (group in groups) {
-    values[[group]] <- compute(
-      col_values[grouping == group],
-      N = N,
-      empty_data_prototype = empty_data_prototype
-    )
+    values[[group]] <- if (has_weights) {
+      subroup <- grouping == group
+      compute(
+        col_values[subroup],
+        N = N,
+        weights = weights[subroup],
+        empty_data_prototype = empty_data_prototype
+      )
+    } else {
+      compute(
+        col_values[grouping == group],
+        N = N,
+        empty_data_prototype = empty_data_prototype
+      )
+    }
   }
   Group <- names(values)
   data <- do.call(rbind, values)

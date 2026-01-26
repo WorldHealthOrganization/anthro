@@ -29,6 +29,7 @@ Collate:
     'utils.R'
     'prevalence-survey.R'
     'prevalence-simple.R'
+    'prevalence-hybrid-sw.R'
     'assertions.R'
     'prevalence.R'
     'z-score-helper.R'

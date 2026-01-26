@@ -165,6 +165,7 @@
 #' @include anthro-package.R
 #' @include assertions.R
 #' @include prevalence-simple.R
+#' @include prevalence-hybrid-sw.R
 #' @include prevalence-survey.R
 #' @importFrom stats confint
 #' @importFrom stats as.formula
@@ -562,6 +563,12 @@ generate_cutoffs <- function(data_column) {
   })
 }
 
+#' build_design constructs a custom design object that is used to compute
+#' all indicators.
+#' The function decides if the survey package is used for all indicator
+#' or if a specialized method can be used to compute the results faster. For
+#' example when there are no cluster/strata and sampling weights.
+#' @noRd
 build_design <- function(survey_data) {
   # we can override the choice here using internal options.
   # these options are not part of the public api and can change at any time.
@@ -574,6 +581,11 @@ build_design <- function(survey_data) {
       all(survey_data[["sampling_weights"]] == 1, na.rm = TRUE))
   if (is_simple_problem) {
     return(build_simple_design(survey_data))
+  }
+  is_simple_problem_with_sw <- is.null(survey_data[["cluster"]]) &&
+    is.null(survey_data[["strata"]])
+  if (is_simple_problem_with_sw) {
+    return(build_hybrid_design(survey_data))
   }
   build_survey_design(survey_data)
 }
@@ -907,6 +919,25 @@ build_simple_design <- function(survey_data) {
   structure(
     list(data = survey_data),
     class = "simple_design"
+  )
+}
+
+build_hybrid_design <- function(survey_data) {
+  # for cases with sw > 0 but cluster/strata = NULL, we just need
+  # a single survey design object
+  design <- svydesign(
+    ids = ~1,
+    strata = NULL,
+    weights = ~sampling_weights,
+    data = survey_data,
+    nest = TRUE
+  )
+  structure(
+    list(
+      data = survey_data,
+      design = design
+    ),
+    class = "hybrid_design"
   )
 }
 

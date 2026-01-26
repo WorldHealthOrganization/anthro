@@ -14,8 +14,10 @@
 
 ## Performance
 
-* For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster
-  method was added for this special case to compute `anthro_prevalence`.
+* For inputs with `cluster/strata = NULL` a faster
+  method was added for this special case to compute `anthro_prevalence`. This
+  method yields the same results within an observed tolerance of `< 0.0001` on
+  test data.
 
 ## Bugfix
 

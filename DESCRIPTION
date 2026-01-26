@@ -8,8 +8,8 @@ Description: Provides WHO Child Growth Standards (z-scores) with
              available online:
              <https://www.who.int/tools/child-growth-standards>.
 Authors@R: c(person("Dirk", "Schumacher", ,
-                    "mail@dirk-schumacher.net", c("aut", "cre")),
-             person("Elaine", "Borghi", , "borghie@who.int", "ctb"),
+                    "mail@dirk-schumacher.net", c("aut")),
+             person("Elaine", "Borghi", , "nfsdata@who.int", c("ctb", "cre")),
              person("Jonathan", "Polonsky", , "polonskyj@who.int", "ctb"),
              person("Giovanna", "Gatica Dominguez", , "gaticag@who.int", "ctb"),
              person(given = "World Health Organization", role = "cph"))

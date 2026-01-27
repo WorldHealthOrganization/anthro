@@ -165,26 +165,29 @@
 #' @include anthro-package.R
 #' @include assertions.R
 #' @include prevalence-simple.R
+#' @include prevalence-hybrid-sw.R
 #' @include prevalence-survey.R
 #' @importFrom stats confint
 #' @importFrom stats as.formula
 #' @importFrom stats setNames
 #' @export
-anthro_prevalence <- function(sex,
-                              age = NA_real_,
-                              is_age_in_month = FALSE,
-                              weight = NA_real_,
-                              lenhei = NA_real_,
-                              measure = NA_character_,
-                              oedema = "n",
-                              sw = NULL,
-                              cluster = NULL,
-                              strata = NULL,
-                              typeres = NA_character_,
-                              gregion = NA_character_,
-                              wealthq = NA_character_,
-                              mothered = NA_character_,
-                              othergr = NA_character_) {
+anthro_prevalence <- function(
+  sex,
+  age = NA_real_,
+  is_age_in_month = FALSE,
+  weight = NA_real_,
+  lenhei = NA_real_,
+  measure = NA_character_,
+  oedema = "n",
+  sw = NULL,
+  cluster = NULL,
+  strata = NULL,
+  typeres = NA_character_,
+  gregion = NA_character_,
+  wealthq = NA_character_,
+  mothered = NA_character_,
+  othergr = NA_character_
+) {
   # the other variables are being checked by anthro_zscores
   assert_character_or_numeric(typeres)
   assert_character_or_numeric(gregion)
@@ -232,8 +235,14 @@ anthro_prevalence <- function(sex,
   zscores_orig <- zscores
   stopifnot(c("zlen", "zwei", "zwfl", "zbmi") %in% colnames(zscores))
 
-  input[["age_in_days"]] <- age_to_days(input[["age"]], is_age_in_month = is_age_in_month)
-  input[["age_in_months"]] <- age_to_months(input[["age"]], is_age_in_month = is_age_in_month)
+  input[["age_in_days"]] <- age_to_days(
+    input[["age"]],
+    is_age_in_month = is_age_in_month
+  )
+  input[["age_in_months"]] <- age_to_months(
+    input[["age"]],
+    is_age_in_month = is_age_in_month
+  )
 
   input[["oedema"]] <- standardize_oedema_var(input[["oedema"]])
 
@@ -244,19 +253,28 @@ anthro_prevalence <- function(sex,
   # (children w/ oedema count in prevalence even if z-score missing
   # for weight related indicators)
   # this is redundant with the filter that age_in_days <= 1826
-  stopifnot(is.character(input[["oedema"]]), all(!is.na(input[["oedema"]]) &
-    oedema %in% c("n", "y")))
+  stopifnot(
+    is.character(input[["oedema"]]),
+    all(
+      !is.na(input[["oedema"]]) &
+        oedema %in% c("n", "y")
+    )
+  )
   oedema_to_n <- !is.na(input[["age_in_days"]]) & input[["age_in_days"]] > 1826
   input[["oedema"]][oedema_to_n] <- "n"
 
   # retain only those records where age <= 1826 or is.na(age)
-  filter_zscores <- is.na(input[["age_in_days"]]) | input[["age_in_days"]] <= 1826
+  filter_zscores <- is.na(input[["age_in_days"]]) |
+    input[["age_in_days"]] <= 1826
 
   # warn if rows are excluded
   no_excluded <- sum(!filter_zscores, na.rm = TRUE)
   if (no_excluded > 0L) {
     row_label <- if (no_excluded == 1L) "row" else "rows"
-    warning(no_excluded, " ", row_label,
+    warning(
+      no_excluded,
+      " ",
+      row_label,
       " will be excluded for the prevalence ",
       "computation due to missing age or age > 1826 days ",
       call. = FALSE
@@ -270,7 +288,8 @@ anthro_prevalence <- function(sex,
     input[["wealthq"]] %in% as.character(1L:5L) |
     input[["wealthq"]] %in% paste0("Q", 1L:5L)
   if (!all(valid_wealthq_values)) {
-    warning("Some entries in wealthq are out of range. Allowed values are: ",
+    warning(
+      "Some entries in wealthq are out of range. Allowed values are: ",
       "NA, 1, 2, 3, 4, 5 or Q1, Q2, Q3, Q4, Q5. ",
       "All other values will be converted to NA",
       call. = FALSE
@@ -285,17 +304,26 @@ anthro_prevalence <- function(sex,
   input[["wealthq"]][wealth_q_in("3")] <- "Q3"
   input[["wealthq"]][wealth_q_in("4")] <- "Q4"
   input[["wealthq"]][wealth_q_in("5")] <- "Q5: Richest"
-  input[["wealthq"]] <- factor(input[["wealthq"]], levels = c(
-    "Q1: Poorest", "Q2", "Q3",
-    "Q4", "Q5: Richest"
-  ))
+  input[["wealthq"]] <- factor(
+    input[["wealthq"]],
+    levels = c(
+      "Q1: Poorest",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5: Richest"
+    )
+  )
 
   input[["sex"]] <- as.character(standardize_sex_var(input[["sex"]]))
   input[["sex"]][input[["sex"]] %in% "1"] <- "Male"
   input[["sex"]][input[["sex"]] %in% "2"] <- "Female"
   input[["sex"]] <- factor(input[["sex"]], levels = c("Female", "Male"))
 
-  input[["age_sex_interaction"]] <- interaction(input[["age_group"]], input[["sex"]])
+  input[["age_sex_interaction"]] <- interaction(
+    input[["age_group"]],
+    input[["sex"]]
+  )
 
   # here we prepare all different strata that are being computed
   optional_strata_labels <-
@@ -327,7 +355,8 @@ anthro_prevalence <- function(sex,
     logical(1L)
   )
   if (all(included_strata == FALSE)) {
-    stop("It seems that all values have been removed from the analysis, ",
+    stop(
+      "It seems that all values have been removed from the analysis, ",
       "due to specific exclusion rules. We stop the calculation here.",
       call. = FALSE
     )
@@ -379,20 +408,28 @@ anthro_prevalence <- function(sex,
     data = prev_data,
     zscores_to_compute = list(
       list(
-        name = "HA", column = "len",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = FALSE
+        name = "HA",
+        column = "len",
+        with_cutoffs = TRUE,
+        with_auxiliary_zscore_column = FALSE
       ),
       list(
-        name = "WA", column = "wei",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
+        name = "WA",
+        column = "wei",
+        with_cutoffs = TRUE,
+        with_auxiliary_zscore_column = TRUE
       ),
       list(
-        name = "BMI", column = "bmi",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
+        name = "BMI",
+        column = "bmi",
+        with_cutoffs = TRUE,
+        with_auxiliary_zscore_column = TRUE
       ),
       list(
-        name = "WH", column = "wfl",
-        with_cutoffs = TRUE, with_auxiliary_zscore_column = TRUE
+        name = "WH",
+        column = "wfl",
+        with_cutoffs = TRUE,
+        with_auxiliary_zscore_column = TRUE
       )
     ),
     survey_subsets = setNames(strata_cols[included_strata], strata_label)
@@ -407,22 +444,32 @@ prevalence_significance_level <- 0.05
 #' @importFrom survey degf
 #' @importFrom survey svymean
 #' @importFrom survey svyvar
-compute_prevalence_of_zscores <- function(data,
-                                          zscores_to_compute,
-                                          survey_subsets) {
+compute_prevalence_of_zscores <- function(
+  data,
+  zscores_to_compute,
+  survey_subsets
+) {
   stopifnot(
     is.data.frame(data),
     all(c("oedema") %in% colnames(data)),
     is.list(zscores_to_compute),
-    all(vapply(zscores_to_compute, function(x) {
-      is.list(x)
-    }, logical(1L))),
-    is.null(data[["sampling_weights"]]) || is.numeric(data[["sampling_weights"]]),
+    all(vapply(
+      zscores_to_compute,
+      function(x) {
+        is.list(x)
+      },
+      logical(1L)
+    )),
+    is.null(data[["sampling_weights"]]) ||
+      is.numeric(data[["sampling_weights"]]),
     is.list(survey_subsets),
     is.character(names(survey_subsets))
   )
 
-  if (!is.null(data[["sampling_weights"]]) && any(data[["sampling_weights"]] < 0, na.rm = TRUE)) {
+  if (
+    !is.null(data[["sampling_weights"]]) &&
+      any(data[["sampling_weights"]] < 0, na.rm = TRUE)
+  ) {
     stop(
       "Negative sampling weights are not allowed.",
       call. = FALSE
@@ -431,7 +478,9 @@ compute_prevalence_of_zscores <- function(data,
 
   zscores_to_compute <- lapply(zscores_to_compute, function(indicator) {
     if (isTRUE(indicator$with_cutoffs)) {
-      indicator$cutoffs <- generate_cutoffs(prev_prevalence_column_name(indicator))
+      indicator$cutoffs <- generate_cutoffs(prev_prevalence_column_name(
+        indicator
+      ))
     }
     indicator
   })
@@ -452,7 +501,10 @@ compute_prevalence_of_zscores <- function(data,
   no_excluded <- old_data_nrows - nrow(data)
   if (no_excluded > 0L) {
     row_label <- if (no_excluded == 1L) "row" else "rows"
-    warning(no_excluded, " ", row_label,
+    warning(
+      no_excluded,
+      " ",
+      row_label,
       " will be excluded for the prevalence ",
       "computation due to missing cluster and strata.",
       call. = FALSE
@@ -460,15 +512,21 @@ compute_prevalence_of_zscores <- function(data,
   }
 
   # set all sw that are NA to 0
-  if (!is.null(data[["sampling_weights"]]) &&
-    anyNA(data[["sampling_weights"]])) {
+  if (
+    !is.null(data[["sampling_weights"]]) &&
+      anyNA(data[["sampling_weights"]])
+  ) {
     sw <- data[["sampling_weights"]]
     na_sw <- is.na(sw)
     sw[na_sw] <- 0
     data[["sampling_weights"]] <- sw
     no_excluded <- sum(na_sw)
     row_label <- if (no_excluded == 1L) "row" else "rows"
-    warning(no_excluded, " ", row_label, " had missing sampling weights",
+    warning(
+      no_excluded,
+      " ",
+      row_label,
+      " had missing sampling weights",
       " and they will be set to 0. ",
       "Doing this excludes them in the prevalence calculation.",
       call. = FALSE
@@ -505,6 +563,12 @@ generate_cutoffs <- function(data_column) {
   })
 }
 
+#' build_design constructs a custom design object that is used to compute
+#' all indicators.
+#' The function decides if the survey package is used for all indicator
+#' or if a specialized method can be used to compute the results faster. For
+#' example when there are no cluster/strata and sampling weights.
+#' @noRd
 build_design <- function(survey_data) {
   # we can override the choice here using internal options.
   # these options are not part of the public api and can change at any time.
@@ -513,17 +577,23 @@ build_design <- function(survey_data) {
   }
   is_simple_problem <- is.null(survey_data[["cluster"]]) &&
     is.null(survey_data[["strata"]]) &&
-    (
-      is.null(survey_data[["sampling_weights"]]) ||
-        all(survey_data[["sampling_weights"]] == 1, na.rm = TRUE)
-    )
+    (is.null(survey_data[["sampling_weights"]]) ||
+      all(survey_data[["sampling_weights"]] == 1, na.rm = TRUE))
   if (is_simple_problem) {
     return(build_simple_design(survey_data))
+  }
+  is_simple_problem_with_sw <- is.null(survey_data[["cluster"]]) &&
+    is.null(survey_data[["strata"]])
+  if (is_simple_problem_with_sw) {
+    return(build_hybrid_design(survey_data))
   }
   build_survey_design(survey_data)
 }
 
-compute_prevalence_stunting_wasting <- function(survey_design, subset_col_name) {
+compute_prevalence_stunting_wasting <- function(
+  survey_design,
+  subset_col_name
+) {
   indicator <- list(
     name = "HA_2_WH_2",
     column = "len_zwfl_aux_stunting_wasting",
@@ -533,13 +603,18 @@ compute_prevalence_stunting_wasting <- function(survey_design, subset_col_name) 
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
-      survey_design, indicator$name,
-      subset_col_name, prev_prevalence_column_name(indicator)
+      survey_design,
+      indicator$name,
+      subset_col_name,
+      prev_prevalence_column_name(indicator)
     )
   )
 }
 
-compute_prevalence_stunting_overweight <- function(survey_design, subset_col_name) {
+compute_prevalence_stunting_overweight <- function(
+  survey_design,
+  subset_col_name
+) {
   indicator <- list(
     name = "HA_2_WH2",
     column = "len_zwfl_aux_stunting_overweight",
@@ -549,67 +624,88 @@ compute_prevalence_stunting_overweight <- function(survey_design, subset_col_nam
   list(
     compute_prevalence_sample_size(survey_design, indicator, subset_col_name),
     compute_prevalence_estimates_for_column(
-      survey_design, indicator$name,
-      subset_col_name, prev_prevalence_column_name(indicator)
+      survey_design,
+      indicator$name,
+      subset_col_name,
+      prev_prevalence_column_name(indicator)
     )
   )
 }
 
-compute_prevalence_for_each_subset_and_indicator <- function(subset_col_names,
-                                                             subset_labels,
-                                                             survey_design,
-                                                             indicators) {
+compute_prevalence_for_each_subset_and_indicator <- function(
+  subset_col_names,
+  subset_labels,
+  survey_design,
+  indicators
+) {
   has_zlen_and_wfl <- all(
     c("zlen", "zwfl_aux") %in% column_names(survey_design)
   )
   # This double apply could be moved down to the survey package as it
   # also supports calculating multiple values at once.
-  subset_results <- mapply(function(subset_col_name, label) {
-    indicator_results <- lapply(indicators, function(indicator) {
-      # some svyby calls produce glm.fit warnings.
-      # It was decided to suppress these warnings.
-      suppressWarnings({
-        c(
-          list(compute_prevalence_sample_size(
-            survey_design, indicator, subset_col_name
-          )),
-          compute_prevalence_cutoff_summaries(
-            survey_design, indicator, subset_col_name
-          ),
-          list(compute_prevalence_zscore_summaries(
-            survey_design, indicator, subset_col_name
-          ))
-        )
+  subset_results <- mapply(
+    function(subset_col_name, label) {
+      indicator_results <- lapply(indicators, function(indicator) {
+        # some svyby calls produce glm.fit warnings.
+        # It was decided to suppress these warnings.
+        suppressWarnings({
+          c(
+            list(compute_prevalence_sample_size(
+              survey_design,
+              indicator,
+              subset_col_name
+            )),
+            compute_prevalence_cutoff_summaries(
+              survey_design,
+              indicator,
+              subset_col_name
+            ),
+            list(compute_prevalence_zscore_summaries(
+              survey_design,
+              indicator,
+              subset_col_name
+            ))
+          )
+        })
       })
-    })
-    indicator_results <- unlist(indicator_results, recursive = FALSE) # flatten
+      indicator_results <- unlist(indicator_results, recursive = FALSE) # flatten
 
-    suppressWarnings({
-      if (has_zlen_and_wfl) {
-        indicator_results <- c(
-          indicator_results,
-          compute_prevalence_stunting_wasting(survey_design, subset_col_name),
-          compute_prevalence_stunting_overweight(survey_design, subset_col_name)
-        )
+      suppressWarnings({
+        if (has_zlen_and_wfl) {
+          indicator_results <- c(
+            indicator_results,
+            compute_prevalence_stunting_wasting(survey_design, subset_col_name),
+            compute_prevalence_stunting_overweight(
+              survey_design,
+              subset_col_name
+            )
+          )
+        }
+      })
+
+      # now we merge everything into one df
+      # we assume the first indicator results DF has all levels of the Group
+      # then we merge everything and after that we have to restore the original
+      # ordering of the levels (they get lost by the `merge` calls (sometimes))
+      original_group_ordering <- indicator_results[[1]][["Group"]]
+      res <- Reduce(
+        function(acc, el) {
+          merge(acc, el, by = "Group", sort = FALSE, all = TRUE)
+        },
+        indicator_results
+      )
+      stopifnot(setequal(res[["Group"]], original_group_ordering))
+      res <- res[match(original_group_ordering, res[["Group"]]), , drop = FALSE]
+
+      if (label != "All") {
+        res[["Group"]] <- paste0(label, ": ", res[["Group"]])
       }
-    })
-
-    # now we merge everything into one df
-    # we assume the first indicator results DF has all levels of the Group
-    # then we merge everything and after that we have to restore the original
-    # ordering of the levels (they get lost by the `merge` calls (sometimes))
-    original_group_ordering <- indicator_results[[1]][["Group"]]
-    res <- Reduce(function(acc, el) {
-      merge(acc, el, by = "Group", sort = FALSE, all = TRUE)
-    }, indicator_results)
-    stopifnot(setequal(res[["Group"]], original_group_ordering))
-    res <- res[match(original_group_ordering, res[["Group"]]), , drop = FALSE]
-
-    if (label != "All") {
-      res[["Group"]] <- paste0(label, ": ", res[["Group"]])
-    }
-    res
-  }, subset_col_names, subset_labels, SIMPLIFY = FALSE)
+      res
+    },
+    subset_col_names,
+    subset_labels,
+    SIMPLIFY = FALSE
+  )
   res <- do.call(rbind, subset_results)
   rownames(res) <- NULL
   res
@@ -699,8 +795,16 @@ create_cutoff_columns_for_each_zscore <- function(indicators, dataframe) {
   dataframe
 }
 
-compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_name) {
-  res <- compute_prevalence_sample_size_by(survey_design, indicator, subset_col_name)
+compute_prevalence_sample_size <- function(
+  survey_design,
+  indicator,
+  subset_col_name
+) {
+  res <- compute_prevalence_sample_size_by(
+    survey_design,
+    indicator,
+    subset_col_name
+  )
 
   # due to backwards compatibility, columns HA_2_WH_2 and HA_2_WH2 will not
   # have a suffix Z for now
@@ -713,25 +817,37 @@ compute_prevalence_sample_size <- function(survey_design, indicator, subset_col_
   colnames(res) <- c("Group", paste0(indicator_name, suffix))
   # only HA_2_WH_2 has pop and unwpop columns, but not HA_2_WH2
   if (indicator_name == "HA_2_WH2") {
-    col_idx_to_drop <- which(colnames(res) %in% c("HA_2_WH2_pop", "HA_2_WH2_unwpop"))
+    col_idx_to_drop <- which(
+      colnames(res) %in% c("HA_2_WH2_pop", "HA_2_WH2_unwpop")
+    )
     res <- res[, colnames(res)[-col_idx_to_drop], drop = FALSE]
   }
   res
 }
 
-compute_prevalence_cutoff_summaries <- function(survey_design, indicator, subset_col_name) {
+compute_prevalence_cutoff_summaries <- function(
+  survey_design,
+  indicator,
+  subset_col_name
+) {
   indicator_name <- indicator$name
   lapply(indicator$cutoffs, function(cutoff) {
     prev_col_name <- paste0("prev_", indicator_name, cutoff$suffix)
     compute_prevalence_estimates_for_column(
       survey_design,
       indicator_name = paste0(indicator_name, cutoff$suffix),
-      subset_col_name, prev_col_name
+      subset_col_name,
+      prev_col_name
     )
   })
 }
 
-compute_prevalence_estimates_for_column <- function(survey_design, indicator_name, subset_col_name, prev_col_name) {
+compute_prevalence_estimates_for_column <- function(
+  survey_design,
+  indicator_name,
+  subset_col_name,
+  prev_col_name
+) {
   all_na <- all(is.na(column_values(survey_design, prev_col_name)))
   res <- if (all_na) {
     data.frame(
@@ -743,10 +859,16 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
       stringsAsFactors = FALSE
     )
   } else {
-    compute_prevalence_estimates_for_column_by(survey_design, indicator_name, subset_col_name, prev_col_name)
+    compute_prevalence_estimates_for_column_by(
+      survey_design,
+      indicator_name,
+      subset_col_name,
+      prev_col_name
+    )
   }
   value_col_names <- paste0(
-    indicator_name, c("_r", "_se", "_ll", "_ul")
+    indicator_name,
+    c("_r", "_se", "_ll", "_ul")
   )
   col_names <- c("Group", value_col_names)
   colnames(res) <- col_names
@@ -754,9 +876,11 @@ compute_prevalence_estimates_for_column <- function(survey_design, indicator_nam
 }
 
 
-
-compute_prevalence_zscore_summaries <- function(survey_design,
-                                                indicator, subset_col_name) {
+compute_prevalence_zscore_summaries <- function(
+  survey_design,
+  indicator,
+  subset_col_name
+) {
   zscore_col_name <- prev_zscore_value_column(indicator)
   all_na <- all(is.na(column_values(survey_design, zscore_col_name)))
   res <- if (all_na) {
@@ -770,12 +894,17 @@ compute_prevalence_zscore_summaries <- function(survey_design,
       stringsAsFactors = FALSE
     )
   } else {
-    compute_prevalence_zscore_summaries_by(survey_design, indicator, subset_col_name)
+    compute_prevalence_zscore_summaries_by(
+      survey_design,
+      indicator,
+      subset_col_name
+    )
   }
 
   indicator_name <- indicator$name
   value_col_names <- paste0(
-    indicator_name, c("_r", "_se", "_ll", "_ul", "_stdev")
+    indicator_name,
+    c("_r", "_se", "_ll", "_ul", "_stdev")
   )
   colnames(res) <- c("Group", value_col_names)
   res
@@ -793,12 +922,32 @@ build_simple_design <- function(survey_data) {
   )
 }
 
+build_hybrid_design <- function(survey_data) {
+  # for cases with sw > 0 but cluster/strata = NULL, we just need
+  # a single survey design object
+  design <- svydesign(
+    ids = ~1,
+    strata = NULL,
+    weights = ~sampling_weights,
+    data = survey_data,
+    nest = TRUE
+  )
+  structure(
+    list(
+      data = survey_data,
+      design = design
+    ),
+    class = "hybrid_design"
+  )
+}
+
 #' @importFrom survey svydesign
 build_survey_design <- function(survey_data) {
   has_cluster_info <- !is.null(survey_data[["cluster"]])
   has_strata_info <- !is.null(survey_data[["strata"]])
   has_sampling_weights <- !is.null(survey_data[["sampling_weights"]])
-  just_one_cluster <- has_cluster_info && length(unique(survey_data[["cluster"]])) == 1L
+  just_one_cluster <- has_cluster_info &&
+    length(unique(survey_data[["cluster"]])) == 1L
   any_strata_na <- anyNA(survey_data[["strata"]])
   stopifnot(!any_strata_na)
   cluster_formula <- if (just_one_cluster || !has_cluster_info) {

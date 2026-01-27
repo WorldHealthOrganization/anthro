@@ -84,18 +84,18 @@
 #'             indicator prevalence (\code{\link{anthro_prevalence}})
 #'             estimation.
 #'
-#'
-#' @return A data.frame with three types of columns. Columns starting with a
-#' "c" are cleaned versions of the input arguments. Columns beginning with
-#' a "z" are the respective z-scores and columns prefixed by a "f" indicate
-#' if these z-scores are flagged (integers).
-#' The number of rows is given by the length
+#' @return A `data.frame` with three types of columns: columns starting with a
+#' "c" are cleaned versions of the input arguments
+#' (i.e., `clenhei`, `cmeasure`, `cbmi`). Columns prefixed by "z" contain the respective z-scores, while columns prefixed by "f" indicate whether these z-scores are flagged (integers).
+#' Additional derived flags based on input arguments, such as `c9mo_flag`, flag children under 9 months with incorrect measurement position. The number of rows is given by the length
 #' of the input arguments.
 #'
-#' The following columns are returned:
+#' The returned columns are:
 #' \itemize{
-#' \item{\code{clenhei}} converted length/height for deriving z-score
-#' \item{\code{cbmi}} BMI value based on length/height given by clenhei
+#' \item{\code{clenhei}} converted length/height for deriving z-scores.
+#' \item{\code{cmeasure}} cleaned measurement position used in the computation; for children under 9 months measured incorrectly, the value is replaced by `NA`.
+#' \item{\code{c9mo_flag}} a value of 0 means the measurement position is appropriate, while 1 means it is incorrect.
+#' \item{\code{cbmi}} BMI value based on length/height given by `clenhei`.
 #'
 #' \item{\code{zlen}} Length/Height-for-age z-score
 #' \item{\code{flen}} 1, if \code{abs(zlen) > 6}
@@ -157,24 +157,32 @@
 #' @include anthro-package.R
 #' @include assertions.R
 #' @export
-anthro_zscores <- function(sex,
-                           age = NA_real_,
-                           is_age_in_month = FALSE,
-                           weight = NA_real_,
-                           lenhei = NA_real_,
-                           measure = NA_character_,
-                           headc = NA_real_,
-                           armc = NA_real_,
-                           triskin = NA_real_,
-                           subskin = NA_real_,
-                           oedema = "n") {
+anthro_zscores <- function(
+  sex,
+  age = NA_real_,
+  is_age_in_month = FALSE,
+  weight = NA_real_,
+  lenhei = NA_real_,
+  measure = NA_character_,
+  headc = NA_real_,
+  armc = NA_real_,
+  triskin = NA_real_,
+  subskin = NA_real_,
+  oedema = "n"
+) {
   assert_logical(is_age_in_month)
   assert_length(is_age_in_month, 1L)
   assert_character_or_numeric(sex)
-  assert_values_in_set(sex,
+  assert_values_in_set(
+    sex,
     allowed = c(
-      "1", "2", "m",
-      "f", "M", "F", NA_character_
+      "1",
+      "2",
+      "m",
+      "f",
+      "M",
+      "F",
+      NA_character_
     )
   )
   assert_numeric(age)
@@ -186,7 +194,8 @@ anthro_zscores <- function(sex,
   assert_numeric(armc)
   assert_numeric(triskin)
   assert_numeric(subskin)
-  assert_values_in_set(oedema,
+  assert_values_in_set(
+    oedema,
     allowed = c("n", "y", "N", "Y", "2", "1", NA_character_)
   )
 
@@ -227,6 +236,9 @@ anthro_zscores <- function(sex,
   age_in_days <- age_to_days(age, is_age_in_month = is_age_in_month)
   age_in_months <- age_to_months(age, is_age_in_month = is_age_in_month)
 
+  # we assume everything is plausible by default
+  measure_implausible <- rep.int(FALSE, length(cmeasure))
+
   # we consider a height measure for children younger than 9 months as
   # implausible
   measure_implausible <- !is.na(cmeasure) &
@@ -235,13 +247,16 @@ anthro_zscores <- function(sex,
     age_in_months < 9
   cmeasure[measure_implausible] <- NA_character_
 
+  c9mo_flag <- as.integer(measure_implausible)
+
   clenhei <- adjust_lenhei(age_in_days, cmeasure, lenhei)
 
   cbmi <- weight / ((clenhei / 100)^2)
   cbind(
     clenhei,
-    cbmi,
     cmeasure,
+    c9mo_flag,
+    cbmi,
     csex,
     anthro_zscore_length_for_age(
       lenhei = clenhei,

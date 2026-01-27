@@ -21,12 +21,17 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Dirk Schumacher \email{mail@dirk-schumacher.net}
+\strong{Maintainer}: Elaine Borghi \email{nfsdata@who.int} [contributor]
+
+Authors:
+\itemize{
+  \item Dirk Schumacher \email{mail@dirk-schumacher.net}
+}
 
 Other contributors:
 \itemize{
-  \item Elaine Borghi \email{borghie@who.int} [contributor]
   \item Jonathan Polonsky \email{polonskyj@who.int} [contributor]
+  \item Giovanna Gatica Dominguez \email{gaticag@who.int} [contributor]
   \item World Health Organization [copyright holder]
 }
 

@@ -6,8 +6,12 @@ test_that("age groups are computed correctly", {
 
   expect_true(is.factor(groups))
   expected_groups <- c(
-    "00-05 mo", "06-11 mo", "12-23 mo",
-    "24-35 mo", "36-47 mo", "48-59 mo"
+    "00-05 mo",
+    "06-11 mo",
+    "12-23 mo",
+    "24-35 mo",
+    "36-47 mo",
+    "48-59 mo"
   )
   expect_equal(levels(groups), expected_groups)
   expect_equal(as.character(anthro_age_groups(59.9)), "48-59 mo")

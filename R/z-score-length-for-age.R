@@ -11,8 +11,14 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_length_for_age <-
-  function(lenhei, age_in_days, age_in_months, sex, flag_threshold = 6,
-           growthstandards = growthstandards_lenanthro) {
+  function(
+    lenhei,
+    age_in_days,
+    age_in_months,
+    sex,
+    flag_threshold = 6,
+    growthstandards = growthstandards_lenanthro
+  ) {
     anthro_zscore_adjusted(
       name = "len",
       measure = lenhei,

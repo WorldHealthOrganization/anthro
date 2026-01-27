@@ -23,7 +23,10 @@ column_values.simple_design <- function(x, col) {
 
 #' @export
 compute_prevalence_zscore_summaries_by.simple_design <- function(
-    data, indicator, subset_col_name) {
+  data,
+  indicator,
+  subset_col_name
+) {
   zscore_col_name <- prev_zscore_value_column(indicator)
   compute_and_aggregate(
     data,
@@ -42,7 +45,11 @@ compute_prevalence_zscore_summaries_by.simple_design <- function(
 
 #' @export
 compute_prevalence_estimates_for_column_by.simple_design <- function(
-    data, indicator_name, subset_col_name, prev_col_name) {
+  data,
+  indicator_name,
+  subset_col_name,
+  prev_col_name
+) {
   compute_and_aggregate(
     data,
     prev_col_name,
@@ -59,7 +66,10 @@ compute_prevalence_estimates_for_column_by.simple_design <- function(
 
 #' @export
 compute_prevalence_sample_size_by.simple_design <- function(
-    data, indicator, subset_col_name) {
+  data,
+  indicator,
+  subset_col_name
+) {
   column_name <- prev_prevalence_column_name(indicator)
   compute_and_aggregate(
     data,
@@ -75,9 +85,16 @@ compute_prevalence_sample_size_by.simple_design <- function(
 
 #' @importFrom stats aggregate
 compute_and_aggregate <- function(
-    data, value_column, subset_column, compute, empty_data_prototype) {
+  data,
+  value_column,
+  subset_column,
+  compute,
+  empty_data_prototype
+) {
   col_values <- column_values(data, value_column)
   N <- length(col_values)
+  weights <- data$data[["sampling_weights"]]
+  has_weights <- !is.null(weights)
   grouping <- column_values(data, subset_column)
   groups <- if (is.factor(grouping)) {
     levels(grouping)
@@ -88,11 +105,21 @@ compute_and_aggregate <- function(
   values <- vector(mode = "list", length(groups))
   names(values) <- groups
   for (group in groups) {
-    values[[group]] <- compute(
-      col_values[grouping == group],
-      N = N,
-      empty_data_prototype = empty_data_prototype
-    )
+    values[[group]] <- if (has_weights) {
+      subroup <- grouping == group
+      compute(
+        col_values[subroup],
+        N = N,
+        weights = weights[subroup],
+        empty_data_prototype = empty_data_prototype
+      )
+    } else {
+      compute(
+        col_values[grouping == group],
+        N = N,
+        empty_data_prototype = empty_data_prototype
+      )
+    }
   }
   Group <- names(values)
   data <- do.call(rbind, values)
@@ -164,5 +191,5 @@ sample_size <- function(x, N, empty_data_prototype) {
 sample_se <- function(x, x_mean, n, N) {
   scale <- N / (N - 1)
   x_deviation <- x - x_mean
-  sqrt(scale)/n * sqrt(sum(x_deviation * x_deviation))
+  sqrt(scale) / n * sqrt(sum(x_deviation * x_deviation))
 }

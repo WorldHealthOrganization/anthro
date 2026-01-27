@@ -1,9 +1,23 @@
 # anthro (development version)
 
+## Method
+
+* The `Weight-for-length/height (zwfl)` z-score indicator is now also computed
+  for observations where `weight` or `lenhei` is outside the plausible ranges.
+  The plausible ranges were 0.9-58 for `weight` and 38-150 for `lenhei`.
+
+## Z-scores
+
+* The resulting data frame of `anthro_zscores` has a new column `c9mo_flag`
+  to indicate whether an incorrect measurement position was observed with
+  children younger than 9 months.
+
 ## Performance
 
-* For inputs with `cluster/strata = NULL` and `sw = NULL or 1` a faster
-  method was added for this special case to compute `anthro_prevalence`.
+* For inputs with `cluster/strata = NULL` a faster
+  method was added for this special case to compute `anthro_prevalence`. This
+  method yields the same results within an observed tolerance of `< 0.0001` on
+  test data.
 
 ## Bugfix
 

@@ -11,8 +11,14 @@
 #' @include z-score-helper.R
 #' @noRd
 anthro_zscore_triceps_skinfold_for_age <-
-  function(triskin, age_in_days, age_in_months, sex, flag_threshold = 5,
-           growthstandards = growthstandards_tsanthro) {
+  function(
+    triskin,
+    age_in_days,
+    age_in_months,
+    sex,
+    flag_threshold = 5,
+    growthstandards = growthstandards_tsanthro
+  ) {
     anthro_zscore_adjusted(
       name = "ts",
       measure = triskin,

@@ -15,8 +15,8 @@ Authors@R: c(person("Dirk", "Schumacher", ,
              person(given = "World Health Organization", role = "cph"))
 License: GPL-3
 Encoding: UTF-8
-URL: https://github.com/worldhealthorganization/anthro
-BugReports: https://github.com/worldhealthorganization/anthro/issues
+URL: https://github.com/WorldHealthOrganization/anthro
+BugReports: https://github.com/WorldHealthOrganization/anthro/issues
 ByteCompile: true
 Depends: R (>= 3.2)
 Imports:

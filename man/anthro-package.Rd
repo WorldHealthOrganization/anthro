@@ -15,8 +15,8 @@ More information on the methods is available online:
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/worldhealthorganization/anthro}
-  \item Report bugs at \url{https://github.com/worldhealthorganization/anthro/issues}
+  \item \url{https://github.com/WorldHealthOrganization/anthro}
+  \item Report bugs at \url{https://github.com/WorldHealthOrganization/anthro/issues}
 }
 
 }

@@ -1,5 +1,7 @@
 # anthro (development version)
 
+# anthro 1.1.0
+
 ## Method
 
 * The `Weight-for-length/height (zwfl)` z-score indicator is now also computed

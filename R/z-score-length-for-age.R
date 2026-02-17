@@ -17,7 +17,8 @@ anthro_zscore_length_for_age <-
     age_in_months,
     sex,
     flag_threshold = 6,
-    growthstandards = growthstandards_lenanthro
+    growthstandards = growthstandards_lenanthro,
+    z_precision = 2L
   ) {
     anthro_zscore_adjusted(
       name = "len",
@@ -28,6 +29,7 @@ anthro_zscore_length_for_age <-
       growthstandards = growthstandards,
       flag_threshold = flag_threshold,
       allowed_age_range = c(0, 1856),
-      zscore_fun = compute_zscore
+      zscore_fun = compute_zscore,
+      z_precision = z_precision
     )
   }

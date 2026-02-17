@@ -27,7 +27,9 @@ compute_zscore <- function(y, m, l, s, ...) {
 #' @noRd
 compute_zscore_adjusted <- function(y, m, l, s, z_precision = 2L) {
   stopifnot(is.numeric(y), is.numeric(m), is.numeric(l), is.numeric(s))
-  stopifnot(is.integer(z_precision) && z_precision >= 0)
+  stopifnot(is.numeric(z_precision), length(z_precision) == 1L)
+  if (z_precision < 0) stop("z_precision must be >= 0", call. = FALSE)
+  z_precision <- as.integer(z_precision)
   calc_sd <- function(sd) m * ((1 + l * s * sd)^(1 / l))
 
   zscore <- compute_zscore(y, m, l, s)

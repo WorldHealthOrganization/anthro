@@ -15,7 +15,7 @@ test_that("negative z_precision is rejected", {
   expect_error(anthro_zscores(sex = "f", age = 10, is_age_in_month = TRUE, weight = 10, z_precision = -1L))
 })
 
-test_that("non-integer numeric z_precision is rejected", {
-  # passing 3 (numeric double) should be rejected because internal checks expect integer
-  expect_error(anthro_zscores(sex = "f", age = 10, is_age_in_month = TRUE, weight = 10, z_precision = 3))
+test_that("non-integer numeric z_precision is accepted and coerced to integer", {
+  res3 <- anthro_zscores(sex = "f", age = 10, is_age_in_month = TRUE, weight = 10, z_precision = 3)
+  expect_equal(res3$zwei, round(res3$zwei, 3))
 })

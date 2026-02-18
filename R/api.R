@@ -4,6 +4,7 @@
 #' @param m a numeric vector
 #' @param l a numeric vector
 #' @param s a numeric vector
+#' @param z_precision number of digits to round the zscore to. If NULL, 2 digits are used.
 #'
 #' @note
 #' This function is meant to be used by other anthro related packages.
@@ -23,6 +24,7 @@ anthro_api_compute_zscore <- compute_zscore
 #' @param m a numeric vector
 #' @param l a numeric vector
 #' @param s a numeric vector
+#' @param z_precision number of digits to round the zscore to. If NULL, 2 digits are used.
 #'
 #' @note
 #' This function is meant to be used by other anthro related packages.
@@ -52,6 +54,7 @@ anthro_api_compute_zscore_adjusted <- compute_zscore_adjusted
 #'   -3.1 if \code{oedema = "y"} for prevalence estimates.}
 #'   \item{auxiliary_zscore_condition}{optional function to define a special
 #'   condition when the z-score should be set to -3.1}
+#'   \item{z_precision}{number of digits to round the zscore to. If NULL, 2 digits are used.}
 #' }
 #' @param survey_subsets subsets for which the prevalence values should be
 #' computed. It is a named list of characters, where the values correspond

@@ -83,6 +83,7 @@
 #'             BUT they are treated as being < -3 SD in the weight-related
 #'             indicator prevalence (\code{\link{anthro_prevalence}})
 #'             estimation.
+#' @param z_precision An integer specifying the number of digits to round the z-scores to. The default value is 2. It must be a non-negative integer.
 #'
 #' @return A `data.frame` with three types of columns: columns starting with a
 #' "c" are cleaned versions of the input arguments
@@ -168,7 +169,8 @@ anthro_zscores <- function(
   armc = NA_real_,
   triskin = NA_real_,
   subskin = NA_real_,
-  oedema = "n"
+  oedema = "n",
+  z_precision = 2L
 ) {
   assert_logical(is_age_in_month)
   assert_length(is_age_in_month, 1L)
@@ -198,6 +200,11 @@ anthro_zscores <- function(
     oedema,
     allowed = c("n", "y", "N", "Y", "2", "1", NA_character_)
   )
+
+  # ensure z_precision is an integer >= 0
+  assert_numeric(z_precision)
+  z_precision <- as.integer(z_precision)
+  stopifnot(!is.na(z_precision) && z_precision >= 0)
 
   # make all input lengths equal
   max_len <- pmax(
@@ -262,14 +269,16 @@ anthro_zscores <- function(
       lenhei = clenhei,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
-      sex = csex
+      sex = csex,
+      z_precision = z_precision
     ),
     anthro_zscore_weight_for_age(
       weight = weight,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
       sex = csex,
-      oedema = oedema
+      oedema = oedema,
+      z_precision = z_precision
     ),
     anthro_zscore_weight_for_lenhei(
       weight = weight,
@@ -278,38 +287,44 @@ anthro_zscores <- function(
       age_in_days = age_in_days,
       age_in_months = age_in_months,
       sex = csex,
-      oedema = oedema
+      oedema = oedema,
+      z_precision = z_precision
     ),
     anthro_zscore_bmi_for_age(
       bmi = cbmi,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
       sex = csex,
-      oedema = oedema
+      oedema = oedema,
+      z_precision = z_precision
     ),
     anthro_zscore_head_circumference_for_age(
       headc,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
-      sex = csex
+      sex = csex,
+      z_precision = z_precision
     ),
     anthro_zscore_arm_circumference_for_age(
       armc = armc,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
-      sex = csex
+      sex = csex,      
+      z_precision = z_precision
     ),
     anthro_zscore_triceps_skinfold_for_age(
       triskin = triskin,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
-      sex = csex
+      sex = csex,
+      z_precision = z_precision
     ),
     anthro_zscore_subscapular_skinfold_for_age(
       subskin = subskin,
       age_in_days = age_in_days,
       age_in_months = age_in_months,
-      sex = csex
+      sex = csex,
+      z_precision = z_precision
     ),
     stringsAsFactors = FALSE
   )

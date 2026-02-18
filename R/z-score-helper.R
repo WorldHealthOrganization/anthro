@@ -9,7 +9,7 @@
 #' http://www.who.int/childgrowth/standards/Chap_7.pdf
 #'
 #' @noRd
-compute_zscore <- function(y, m, l, s) {
+compute_zscore <- function(y, m, l, s, ...) {
   stopifnot(is.numeric(y), is.numeric(m), is.numeric(l), is.numeric(s))
   ((y / m)^l - 1) / (s * l)
 }
@@ -25,8 +25,11 @@ compute_zscore <- function(y, m, l, s) {
 #' http://www.who.int/childgrowth/standards/Chap_7.pdf
 #'
 #' @noRd
-compute_zscore_adjusted <- function(y, m, l, s) {
+compute_zscore_adjusted <- function(y, m, l, s, z_precision = 2L) {
   stopifnot(is.numeric(y), is.numeric(m), is.numeric(l), is.numeric(s))
+  stopifnot(is.numeric(z_precision), length(z_precision) == 1L)
+  if (z_precision < 0) stop("z_precision must be >= 0", call. = FALSE)
+  z_precision <- as.integer(z_precision)
   calc_sd <- function(sd) m * ((1 + l * s * sd)^(1 / l))
 
   zscore <- compute_zscore(y, m, l, s)
@@ -42,6 +45,7 @@ compute_zscore_adjusted <- function(y, m, l, s) {
   zscore_lt_3 <- not_zscore_na & zscore < -3
   zscore[zscore_lt_3] <- (-3 + ((y - SD3neg) / SD23neg))[zscore_lt_3]
 
+  zscore <- round(zscore, digits = z_precision)
   zscore
 }
 
@@ -50,7 +54,8 @@ apply_zscore_and_growthstandards <- function(
   growthstandards,
   age_in_days,
   sex,
-  measure
+  measure,
+  z_precision = 2L
 ) {
   n <- length(measure)
   age_in_days[!is.na(age_in_days) & age_in_days < 0] <- NA_real_
@@ -70,8 +75,8 @@ apply_zscore_and_growthstandards <- function(
   m <- merged_df[["m"]]
   l <- merged_df[["l"]]
   s <- merged_df[["s"]]
-  zscore <- zscore_fun(y, m, l, s)
-  round(zscore, digits = 2L)
+  zscore <- zscore_fun(y, m, l, s, z_precision = z_precision)
+  round(zscore, digits = z_precision)
 }
 
 flag_zscore <- function(flag_threshold, score_name, zscore, valid_zscore) {
@@ -135,7 +140,8 @@ anthro_zscore_adjusted <-
     flag_threshold,
     allowed_age_range = c(0, 1856),
     zscore_is_valid = rep.int(TRUE, length(measure)),
-    zscore_fun = compute_zscore_adjusted
+    zscore_fun = compute_zscore_adjusted,
+    z_precision = 2L
   ) {
     stopifnot(is.character(name), length(name) == 1L, !is.na(name))
     stopifnot(is.numeric(measure))
@@ -165,7 +171,8 @@ anthro_zscore_adjusted <-
       growthstandards,
       age_in_days,
       sex,
-      measure
+      measure,
+      z_precision = z_precision
     )
 
     # we only compute zscores for children age < 60 months

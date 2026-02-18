@@ -25,7 +25,8 @@ anthro_zscore_weight_for_lenhei <-
     oedema,
     flag_threshold = 5,
     growthstandards_wfl = growthstandards_wflanthro,
-    growthstandards_wfh = growthstandards_wfhanthro
+    growthstandards_wfh = growthstandards_wfhanthro,
+    z_precision = 2L
   ) {
     stopifnot(is.numeric(weight))
     stopifnot(is.numeric(weight))
@@ -127,8 +128,8 @@ anthro_zscore_weight_for_lenhei <-
     )
     s <- as.numeric(s)
 
-    zscore <- compute_zscore_adjusted(y, m, l, s)
-    zscore <- round(zscore, digits = 2L)
+    zscore <- compute_zscore_adjusted(y, m, l, s, z_precision = z_precision)
+    zscore <- round(zscore, digits = z_precision)
 
     valid_zscore <- !is.na(lenhei) &
       ifelse(

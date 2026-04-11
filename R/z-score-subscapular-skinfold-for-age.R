@@ -17,7 +17,8 @@ anthro_zscore_subscapular_skinfold_for_age <-
     age_in_months,
     sex,
     flag_threshold = 5,
-    growthstandards = growthstandards_ssanthro
+    growthstandards = growthstandards_ssanthro,
+    z_precision = 2L
   ) {
     anthro_zscore_adjusted(
       name = "ss",
@@ -27,6 +28,7 @@ anthro_zscore_subscapular_skinfold_for_age <-
       sex = sex,
       growthstandards = growthstandards,
       flag_threshold = flag_threshold,
-      allowed_age_range = c(91, 1856)
+      allowed_age_range = c(91, 1856),
+      z_precision = z_precision
     )
   }

@@ -21,6 +21,7 @@ The list needs to have 4 named values:
   -3.1 if \code{oedema = "y"} for prevalence estimates.}
   \item{auxiliary_zscore_condition}{optional function to define a special
   condition when the z-score should be set to -3.1}
+  \item{z_precision}{number of digits to round the zscore to. If NULL, 2 digits are used.}
 }}
 
 \item{survey_subsets}{subsets for which the prevalence values should be

@@ -15,7 +15,8 @@ anthro_zscores(
   armc = NA_real_,
   triskin = NA_real_,
   subskin = NA_real_,
-  oedema = "n"
+  oedema = "n",
+  z_precision = 2L
 )
 }
 \arguments{
@@ -104,6 +105,8 @@ treated as non-oedema. For oedema, weight related z-scores
 BUT they are treated as being < -3 SD in the weight-related
 indicator prevalence (\code{\link{anthro_prevalence}})
 estimation.}
+
+\item{z_precision}{An integer specifying the number of digits to round the z-scores to. The default value is 2. It must be a non-negative integer.}
 }
 \value{
 A `data.frame` with three types of columns: columns starting with a

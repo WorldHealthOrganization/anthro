@@ -18,7 +18,8 @@ anthro_zscore_bmi_for_age <-
     sex,
     oedema,
     flag_threshold = 5,
-    growthstandards = growthstandards_bmianthro
+    growthstandards = growthstandards_bmianthro,
+    z_precision = 2L
   ) {
     anthro_zscore_adjusted(
       name = "bmi",
@@ -29,6 +30,7 @@ anthro_zscore_bmi_for_age <-
       growthstandards = growthstandards,
       flag_threshold = flag_threshold,
       allowed_age_range = c(0, 1856),
-      !(oedema %in% "y")
+      !(oedema %in% "y"),
+      z_precision = z_precision
     )
   }

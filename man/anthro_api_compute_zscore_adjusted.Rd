@@ -4,7 +4,7 @@
 \alias{anthro_api_compute_zscore_adjusted}
 \title{Helper function to compute the adjusted zscore}
 \usage{
-anthro_api_compute_zscore_adjusted(y, m, l, s)
+anthro_api_compute_zscore_adjusted(y, m, l, s, z_precision = 2L)
 }
 \arguments{
 \item{y}{a numeric vector}
@@ -14,6 +14,8 @@ anthro_api_compute_zscore_adjusted(y, m, l, s)
 \item{l}{a numeric vector}
 
 \item{s}{a numeric vector}
+
+\item{z_precision}{number of digits to round the zscore to. If NULL, 2 digits are used.}
 }
 \description{
 Helper function to compute the adjusted zscore

@@ -18,7 +18,8 @@ anthro_zscore_weight_for_age <-
     sex,
     oedema,
     flag_threshold = c(-6, 5),
-    growthstandards = growthstandards_weianthro
+    growthstandards = growthstandards_weianthro,
+    z_precision = 2L
   ) {
     anthro_zscore_adjusted(
       "wei",
@@ -29,6 +30,7 @@ anthro_zscore_weight_for_age <-
       growthstandards,
       flag_threshold,
       allowed_age_range = c(0, 1856),
-      !(oedema %in% "y")
+      !(oedema %in% "y"),
+      z_precision = z_precision
     )
   }
